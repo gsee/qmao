@@ -1,11 +1,11 @@
 Package: qmao
 Type: Package
-Title: Quantmod Add=on
+Title: Quantmod Add-on
 Version: 1.0
 Date: 2011-06-06
 Author: Garrett See
 Depends: quantmod, FinancialInstrument
 Maintainer: Garrett See <gsee000@gmail.com>
-Description: A package of functions that should probably be included in quantmod, but aren't yet.
+Description: some quantmod-like functions.
 License: GPL-3
 LazyLoad: yes
