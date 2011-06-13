@@ -14,8 +14,8 @@ function(symbols, env=.GlobalEnv) {
 		ff <- na.omit(ff)
 	}
 	for (sym in symbols) {
-		assign(sym,ff[,grep(sym,colnames(ff))],pos=env)
+        asym <- strsplit(sym,"_")[[1]][1] #only use root of futures or options in col names
+		assign(sym,ff[,grep(asym,colnames(ff))],pos=env)
 	}
 	symbols
 }
-
