@@ -1,10 +1,5 @@
 makePriceFrame <-
-function(symbols) {
-	if (length(symbols) < 2) stop("You must provide a list containing 2 instrument names")
-	#if (length(symbols) > 2) { 
-	#	warning("only using 1st 2 symbols") 
-	#	symbols <- symbols[1:2]
-	#}
+function(symbols, from=NULL, to=NULL, prefer=NULL) {
 	mult <- NULL
 	for (Symbol in symbols) {
 		tmp_instr <- try(getInstrument(Symbol))
@@ -20,9 +15,15 @@ function(symbols) {
         pframe <- cbind(pframe, estAd(get(symbols[i],pos=.GlobalEnv)) * mult[i], all=FALSE)
     }
 	na.omit(pframe)
+    if (is.null(from)) from <- first(index(pframe))
+    if (is.null(to)) to <- last(index(pframe))
+    pframe[paste(from,to,sep="::")]
 }
 
-makeReturnFrame <- function(symbols, env=.GlobalEnv, ...) {
-    frame <- makePriceFrame(symbols)
+makeReturnFrame <- function(symbols, env=.GlobalEnv, from=NULL, to=NULL, ...) {
+    frame <- makePriceFrame(symbols,from,to)
     ROC(frame, ...)
 }
+
+
+

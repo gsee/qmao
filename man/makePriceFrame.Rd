@@ -8,15 +8,24 @@ Merge Adjusted prices (or returns of adjusted prices) of several symbols
 Given the names of symbols, merge together Adjusted columns of their xts objects
 }
 \usage{
-makePriceFrame(symbols)
-makeReturnFrame(symbols, env = .GlobalEnv, ...)
+makePriceFrame(symbols, from=NULL, to=NULL, prefer=NULL)
+makeReturnFrame(symbols, env = .GlobalEnv, from=NULL, to=NULL, ...)
 }
 \arguments{
   \item{symbols}{
 vector of character strings 
 }
+  \item{from}{
+include no data before this date/timestamp
+}
+  \item{to}{
+include data through this date/timestamp
+}
   \item{env}{
 environment in which to look for xts objects
+}
+  \item{prefer}{
+column to use. If NULL, the first of the following columns that is found will be used: Adjusted, Close, Mid
 }
   \item{\dots}{
 arguments to be passed to \code{ROC}.  These can be \sQuote{n}, \sQuote{type}, \sQuote{na.pad}, 
