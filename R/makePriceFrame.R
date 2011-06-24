@@ -2,7 +2,7 @@ makePriceFrame <-
 function(symbols, from=NULL, to=NULL, prefer=NULL) {
 	mult <- NULL
 	for (Symbol in symbols) {
-		tmp_instr <- try(getInstrument(Symbol))
+		tmp_instr <- try(getInstrument(Symbol,silent=TRUE))
 		if (inherits(tmp_instr, "try-error") || !is.instrument(tmp_instr)) {
 			warning(paste("Instrument", Symbol, " not found, using contract multiplier of 1"))
 			mult <- c(mult,1)
