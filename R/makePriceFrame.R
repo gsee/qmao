@@ -7,7 +7,7 @@ function(symbols, from=NULL, to=NULL, prefer=NULL, env=.GlobalEnv) {
 			warning(paste("Instrument", Symbol, " not found, using contract multiplier of 1"))
 			mult <- c(mult,1)
 		} else {
-			mult <- c(mult,tmp_instr$multiplier)
+			mult <- c(mult,as.numeric(tmp_instr$multiplier))
 		}		
 	}
     pframe <- NULL
