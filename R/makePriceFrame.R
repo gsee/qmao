@@ -1,4 +1,4 @@
-makePriceFrame <-
+PF <- makePriceFrame <-
 function(symbols, from=NULL, to=NULL, prefer=NULL) {
 	mult <- NULL
 	for (Symbol in symbols) {
@@ -20,7 +20,7 @@ function(symbols, from=NULL, to=NULL, prefer=NULL) {
     pframe[paste(from,to,sep="::")]
 }
 
-makeReturnFrame <- function(symbols, env=.GlobalEnv, from=NULL, to=NULL, ...) {
+RF <- makeReturnFrame <- function(symbols, env=.GlobalEnv, from=NULL, to=NULL, ...) {
     frame <- makePriceFrame(symbols,from,to)
     ROC(frame, ...)
 }

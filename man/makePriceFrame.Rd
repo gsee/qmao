@@ -1,6 +1,8 @@
 \name{makePriceFrame}
 \alias{makePriceFrame}
 \alias{makeReturnFrame}
+\alias{PF}
+\alias{RF}
 \title{
 Merge Adjusted prices (or returns of adjusted prices) of several symbols
 }
@@ -32,6 +34,7 @@ arguments to be passed to \code{ROC}.  These can be \sQuote{n}, \sQuote{type}, \
 }
 }
 \details{
+\code{PF} and \code{RF} are aliases.
 \code{makePriceFrame} merges price columns of several symbols where the column is adjusted if it exists,
 or close, mid, or price if it does not. 
 \code{makeReturnFrame} first calls \code{makePriceFrame}, then calculates returns on those price series
