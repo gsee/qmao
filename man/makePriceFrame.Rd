@@ -10,8 +10,8 @@ Merge Adjusted prices (or returns of adjusted prices) of several symbols
 Given the names of symbols, merge together Adjusted columns of their xts objects
 }
 \usage{
-makePriceFrame(symbols, from=NULL, to=NULL, prefer=NULL)
-makeReturnFrame(symbols, env = .GlobalEnv, from=NULL, to=NULL, ...)
+makePriceFrame(symbols, from=NULL, to=NULL, prefer=NULL, env=.GlobalEnv)
+makeReturnFrame(symbols, from=NULL, to=NULL, prefer=NULL, env = .GlobalEnv, ...)
 }
 \arguments{
   \item{symbols}{

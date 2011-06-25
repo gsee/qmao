@@ -1,5 +1,5 @@
 PF <- makePriceFrame <-
-function(symbols, from=NULL, to=NULL, prefer=NULL) {
+function(symbols, from=NULL, to=NULL, prefer=NULL, env=.GlobalEnv) {
 	mult <- NULL
 	for (Symbol in symbols) {
 		tmp_instr <- try(getInstrument(Symbol,silent=TRUE))
@@ -12,7 +12,7 @@ function(symbols, from=NULL, to=NULL, prefer=NULL) {
 	}
     pframe <- NULL
     for (i in 1:length(symbols)) {
-        pframe <- cbind(pframe, estAd(get(symbols[i],pos=.GlobalEnv)) * mult[i], all=FALSE)
+        pframe <- cbind(pframe, estAd(get(symbols[i],pos=env)) * mult[i], all=FALSE)
     }
 	na.omit(pframe)
     if (is.null(from)) from <- first(index(pframe))
@@ -20,10 +20,11 @@ function(symbols, from=NULL, to=NULL, prefer=NULL) {
     pframe[paste(from,to,sep="::")]
 }
 
-RF <- makeReturnFrame <- function(symbols, env=.GlobalEnv, from=NULL, to=NULL, ...) {
-    frame <- makePriceFrame(symbols,from,to)
+RF <- makeReturnFrame <- function(symbols, from=NULL, to=NULL, prefer=NULL, env=.GlobalEnv, ...) {
+    frame <- makePriceFrame(symbols,from,to,prefer,env)
     ROC(frame, ...)
 }
+
 
 
 
