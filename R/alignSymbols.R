@@ -4,7 +4,7 @@ function(symbols, env=.GlobalEnv) {
 		stop("Must provide at least 2 symbols")
 	if (any(!is.character(symbols))) 
 		stop("Symbols must be vector of character strings.")
-	ff <- try(get(symbols[1],env=env))
+	ff <- try(get(symbols[1],pos=env))
 	if (inherits(ff, 'try-error')) stop('You must create an xts object for each symbol first.')
 	ncols <- ncol(ff)	#compare all symbols ncols to 1st one; make sure they're the same
 	for (sym in symbols[-1]) {
