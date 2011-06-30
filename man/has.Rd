@@ -4,6 +4,8 @@
 \alias{has.Chg}
 \alias{is.BAM}
 \alias{is.BATM}
+\alias{has.BAM}
+\alias{has.BATM}
 \title{
 Check for Bid, Ask, Mid, and/or Trade columns in data
 }
@@ -18,6 +20,8 @@ has.BidSize(x, which=FALSE)
 has.Chg(x, which=FALSE)
 is.BATM(x)
 is.BAM(x)
+has.BAM(x, which=FALSE)
+has.BATM(x, which=FALSE)
 }
 \arguments{
   \item{x}{ data object }
