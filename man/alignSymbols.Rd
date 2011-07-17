@@ -20,7 +20,7 @@ The environment that holds the xts objects
 }
 \details{
 alignSymbols will get symbols from the specified environment (.GlobalEnv by default),
-merge them together, and delete all rows that have any NAs.  Then it will sQuote{unmerge} and assign the cleaned data back to the xts objects named by \code{symbols}.
+merge them together, and delete all rows that have any NAs.  Then it will \sQuote{unmerge} and assign the cleaned data back to the xts objects named by \code{symbols}.
 }
 \value{
 used for its side effect.
