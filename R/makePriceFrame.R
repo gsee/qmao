@@ -1,10 +1,10 @@
 PF <- makePriceFrame <-
-function(symbols, from=NULL, to=NULL, prefer=NULL, env=.GlobalEnv) {
+function(symbols, from=NULL, to=NULL, prefer=NULL, env=.GlobalEnv, silent=FALSE) {
 	mult <- NULL
 	for (Symbol in symbols) {
 		tmp_instr <- try(getInstrument(Symbol,silent=TRUE))
 		if (inherits(tmp_instr, "try-error") || !is.instrument(tmp_instr)) {
-			warning(paste("Instrument", Symbol, " not found, using contract multiplier of 1"))
+			if (!silent) warning(paste("Instrument", Symbol, " not found, using contract multiplier of 1"))
 			mult <- c(mult,1)
 		} else {
 			mult <- c(mult,as.numeric(tmp_instr$multiplier))
