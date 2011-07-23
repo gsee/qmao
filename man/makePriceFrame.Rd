@@ -10,8 +10,8 @@ Merge Adjusted prices (or returns of adjusted prices) of several symbols
 Given the names of symbols, merge together Adjusted columns of their xts objects
 }
 \usage{
-makePriceFrame(symbols, from=NULL, to=NULL, prefer=NULL, env=.GlobalEnv, silent=FALSE)
-makeReturnFrame(symbols, from=NULL, to=NULL, prefer=NULL, env = .GlobalEnv, ...)
+makePriceFrame(symbols, from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, env=.GlobalEnv, silent=FALSE)
+makeReturnFrame(symbols, from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, env = .GlobalEnv, silent=FALSE, ...)
 }
 \arguments{
   \item{symbols}{
@@ -23,14 +23,20 @@ include no data before this date/timestamp
   \item{to}{
 include data through this date/timestamp
 }
+  \item{prefer}{
+column to use. If NULL, the first of the following columns that is found will be used: \sQuote{Adjusted}, \sQuote{Close}, \sQuote{Mid}
+}
+  \item{notional}{
+Should the prices will be multiplied by their multipliers, to get notional values? Default is \code{TRUE}
+}
+  \item{na.omit}{
+Should \code{NA} values be removed? Default is \code{TRUE}
+}
   \item{env}{
 environment in which to look for xts objects
 }
-  \item{prefer}{
-column to use. If NULL, the first of the following columns that is found will be used: Adjusted, Close, Mid
-}
   \item{silent}{
-silence warnings?  
+silence warnings? (Currently, the only warning message is \dQuote{Instrument not found, using contract multiplier of 1})
 }
   \item{\dots}{
 arguments to be passed to \code{ROC}.  These can be \sQuote{n}, \sQuote{type}, \sQuote{na.pad}, 

@@ -14,11 +14,12 @@ M2C <- function(month) {
                     apr='J',may='K',jun='M',
                     jul='N',aug='Q',sep='U',
                     oct='V',nov='X',dec='Z')
-    else switch(month, jan=, Jan='F',feb=, Feb='G',
-                mar=, Mar='H', apr=, Apr='J',
-                may=, May='K', jun=, Jun='M',
-                jul=, Jul='N', aug=, Aug='Q',
-                sep=, Sep='U', oct=, Oct='V',
-                nov=, Nov='X', dec=, Dec='Z')
+    else switch(toupper(month), JAN=, JANUARY='F',
+                FEB=, FEBRUARY='G',MAR=, MARCH='H', 
+                APR=, APRIL='J', MAY='K', JUN=, JUNE='M',
+                JUL=, JULY='N', AUG=, AUGUST='Q',
+                SEP=, SEPTEMBER='U', OCT=, OCTOBER='V',
+                NOV=, NOVEMBER='X', DEC=, DECEMBER='Z')
 }
+
 
