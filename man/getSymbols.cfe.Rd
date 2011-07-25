@@ -1,8 +1,9 @@
 \name{getSymbols.cfe}
 \alias{getSymbols.cfe}
 \title{Load Data from the CBOE Futures Exchange website...}
-\usage{getSymbols.cfe(Symbols, Month, Year, nonzero.close=TRUE, rescale=TRUE,
-    env, return.class="xts", index.class="Date", ...)}
+\usage{getSymbols.cfe(Symbols, Month, Year, from="2004-06-01", to=Sys.Date(),
+    nonzero.close=TRUE, rescale=TRUE, env, return.class="xts",
+    index.class="Date", ...)}
 \description{Load Data from the CBOE Futures Exchange website}
 \details{Download \code{Symbols} to specified \code{env} from \sQuote{cfe.cboe.com}. This method is 
 not to be called directly; instead, a call to \code{getSymbols(symbols, src='cfe')} will in
@@ -33,8 +34,8 @@ be divided by 10 ("rescaled").  See References.}
 \seealso{\code{\link{remove_zero_rows}} for removing rows where a column has zero values.  
 
 \code{getSymbols}, \code{setSymbolLookup}}
-\section{TODO}{Add 'from' and 'to' arguments.
-Add support for suffix_ids with 1 digit years, and/or 3 letter month codes.}
+\section{TODO}{Add suffix.format arg for making symbols
+Add support for reading suffix_ids with 1 digit years, and/or 3 letter month codes.}
 \note{Currently listed contracts:
 VIX Futures (VX), Mini-VIX Futures (VM),
 CBOE S&P 500 3-Month Variance Futures (VT),
@@ -47,6 +48,8 @@ if \code{Month} and \code{Year} are provided a vector of names of root symbols, 
 element of \code{Symbols} contains an underscore, this will be ignored.}
 \item{Year}{optional vector of years. Can either be 2 or 4 digits each. If any element of \code{Symbols} 
 contains an underscore, this will be ignored.}
+\item{from}{retrieve data no earlier than this data (2004-06-01)}
+\item{to}{retrieve data through this data (Sys.Date())}
 \item{nonzero.close}{if \code{TRUE} rows where \sQuote{Close} is zero will be removed.}
 \item{rescale}{Should data from before March 26, 2007 be adjusted? See Details and References. Only applicable if \code{Symbols} is "VX" or "DV".}
 \item{env}{where to create objects (.GlobalEnv)}

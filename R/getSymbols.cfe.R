@@ -27,6 +27,8 @@
 #' element of \code{Symbols} contains an underscore, this will be ignored.
 #' @param Year optional vector of years. Can either be 2 or 4 digits each. If any element of \code{Symbols} 
 #' contains an underscore, this will be ignored.
+#' @param from retrieve data no earlier than this data (2004-06-01)
+#' @param to retrieve data through this data (Sys.Date())
 #' @param nonzero.close if \code{TRUE} rows where \sQuote{Close} is zero will be removed.
 #' @param rescale Should data from before March 26, 2007 be adjusted? See Details and References. Only applicable if \code{Symbols} is "VX" or "DV".
 #' @param env where to create objects (.GlobalEnv)
@@ -41,8 +43,8 @@
 #' @seealso \code{\link{remove_zero_rows}} for removing rows where a column has zero values.  
 #'
 #' \code{getSymbols}, \code{setSymbolLookup}
-#' @TODO Add 'from' and 'to' arguments.
-#' Add support for suffix_ids with 1 digit years, and/or 3 letter month codes.
+#' @TODO Add suffix.format arg for making symbols
+#' Add support for reading suffix_ids with 1 digit years, and/or 3 letter month codes.
 #' @note Currently listed contracts:
 #' VIX Futures (VX), Mini-VIX Futures (VM),
 #' CBOE S&P 500 3-Month Variance Futures (VT),
@@ -65,6 +67,8 @@
 getSymbols.cfe <- function(Symbols, 
                             Month=NULL, 
                             Year=NULL, 
+                            from='2004-06-01',
+                            to=Sys.Date(),
                             nonzero.close=TRUE,
                             rescale=TRUE,
                             env, 
@@ -127,6 +131,7 @@ getSymbols.cfe <- function(Symbols,
         colnames(fr) <- paste(toupper(Symbols[[i]]), 
             c("Open", "High", "Low", "Close", "Settle", "Change", "Volume", "EFP", "OpInt"), 
             sep = ".")
+        fr <- fr[paste(from,to,sep="/")] #Subset by from and to
         if (nonzero.close && !identical(integer(0), grep('Close', colnames(fr), ignore.case = TRUE)) ) {
             {
                 volm <- fr[, grep('Close',colnames(fr),ignore.case=TRUE)]
