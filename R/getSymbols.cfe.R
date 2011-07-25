@@ -87,15 +87,21 @@ getSymbols.cfe <- function(Symbols,
     if (all(Symbols == gsub("_","",Symbols)) ){
         Roots <- Symbols
         Symbols <- NULL        
+
+        xargs <-list(...) 
+        if(length(xargs)==0) xargs=NULL
+        
         for (Root in Roots) {
             if (is.null(Month)) {
-                if (hasArg(Months)) Month=Months
-                Month <- if (any(Roots == "VT")) { 
-                    round(as.numeric(format(Sys.Date(), "%m"))/3)*3                    
-                } else as.numeric(format(Sys.Date(), "%m"))
+                if (!is.null(xargs) && hasArg(Months)) {
+                    Month <- xargs[["Months"]]
+                } else { 
+                    if(any(Roots == "VT")) { 
+                        round(as.numeric(format(Sys.Date(), "%m"))/3)*3
+                    } else as.numeric(format(Sys.Date(), "%m"))
+                } 
             }
-            if (is.null(Year)) Year <- format(Sys.Date(),"%Y")
-            if (hasArg(Years)) Year <- Years            
+            if (is.null(Year)) Year <- ifelse(hasArg(Years), Years, format(Sys.Date(),"%Y"))
             Year[nchar(Year) == 4] <- substr(Year[nchar(Year) == 4], 3, 4)
             Year <- sprintf("%02d",as.numeric(Year))
             if (is.numeric(Month)) Month <- C2M()[Month]
