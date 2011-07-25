@@ -89,11 +89,13 @@ getSymbols.cfe <- function(Symbols,
         Symbols <- NULL        
         for (Root in Roots) {
             if (is.null(Month)) {
+                if (hasArg(Months)) Month=Months
                 Month <- if (any(Roots == "VT")) { 
                     round(as.numeric(format(Sys.Date(), "%m"))/3)*3                    
                 } else as.numeric(format(Sys.Date(), "%m"))
             }
             if (is.null(Year)) Year <- format(Sys.Date(),"%Y")
+            if (hasArg(Years)) Year <- Years            
             Year[nchar(Year) == 4] <- substr(Year[nchar(Year) == 4], 3, 4)
             Year <- sprintf("%02d",as.numeric(Year))
             if (is.numeric(Month)) Month <- C2M()[Month]
@@ -148,7 +150,7 @@ getSymbols.cfe <- function(Symbols,
             indexClass(fr) <- index.class
         Symbols[[i]] <- toupper(Symbols[[i]])
 
-        if (auto.assign && length(fr[,1]) > 0) { 
+        if (auto.assign && length(fr[,1]) > 0 && !any(is.na(index(fr))) ) { 
             assign(Symbols[[i]], fr, env)
             symout <- c(symout, Symbols[[i]])        
         }

@@ -3,7 +3,9 @@ plotRelPerf <- function(symbols, timespan="", prefer=NULL, env=.GlobalEnv) {
     x <- xts()
     if (length(symbols) <= 1) stop('vector of symbol names required')    
     for (symbol in symbols) { 
-        x <- cbind(x,cumsum(ROC(getPrice(na.omit(get(symbol,pos=env)),prefer=prefer)[,1],na.pad=FALSE)))
+        tmp <- try(getPrice(na.omit(get(symbol,pos=env)),prefer=prefer)[,1],TRUE)
+        if (!inherits(tmp, 'try-error') && length(tmp))
+            x <- cbind(x,cumsum(ROC(tmp,na.pad=FALSE)))
     }
     ts.plot(x[timespan],col=rainbow(NCOL(x)))
 }
@@ -16,7 +18,9 @@ plotInstruments <- function(symbols,timespan="",prefer=NULL, env=.GlobalEnv) {
     x <- xts()
     if (length(symbols) <= 1) stop('vector of symbol names required')    
     for (symbol in symbols) { 
-        x <- cbind(x,getPrice(na.omit(get(symbol,pos=env)),prefer=prefer)[,1])
+        tmp <- try(getPrice(na.omit(get(symbol,pos=env)),prefer=prefer)[,1],TRUE)
+        if (!inherits(tmp, 'try-error') && length(tmp))
+           x <- cbind(x, tmp)
     }
     ts.plot(x[timespan],col=rainbow(NCOL(x)))
 }
@@ -26,11 +30,12 @@ plotInstruments <- function(symbols,timespan="",prefer=NULL, env=.GlobalEnv) {
 plotBAT <- function(symbols, timespan="", prefer=NULL, env=.GlobalEnv) {
     x <- xts()
     for (symbol in symbols) {
-        x <- cbind(x, getPrice(na.omit(get(symbol,pos=env)),prefer="bid")[,1],
-                    getPrice(na.omit(get(symbol,pos=env)),prefer="ask")[,1],
-                    getPrice(na.omit(get(symbol,pos=env)),prefer=prefer)[,1])
+        b <- try(getPrice(na.omit(get(symbol,pos=env)),prefer="bid")[,1],TRUE)
+        a <- try(getPrice(na.omit(get(symbol,pos=env)),prefer="ask")[,1],TRUE)     
+        tr <- try(getPrice(na.omit(get(symbol,pos=env)),prefer=prefer)[,1],TRUE)
+        if (!any(sapply(list(b,a,tr), inherits, 'try-error'))) 
+        x <- cbind(x, b, a, tr)
     }
     ts.plot(x[timespan],col=c("blue","red","black"))
 }
-
 

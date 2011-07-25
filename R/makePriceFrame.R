@@ -17,7 +17,9 @@ function(symbols, from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, 
 
     pframe <- NULL
     for (i in 1:length(symbols)) {
-        pframe <- cbind(pframe, estAd(get(symbols[i],pos=env),prefer=prefer) * mult[i], all=TRUE)
+        tmp.dat <- try(estAd(get(symbols[i],pos=env),prefer=prefer),TRUE)
+        if (!inherits(tmp.dat,'try-error') && length(tmp.dat))
+            pframe <- cbind(pframe, tmp.dat * mult[i], all=TRUE)
     }
     if (na.omit) pframe <- na.omit(pframe)
     if (is.null(from)) from <- first(index(pframe))
@@ -29,9 +31,4 @@ RF <- makeReturnFrame <- function(symbols, from=NULL, to=NULL, prefer=NULL, noti
     frame <- makePriceFrame(symbols,from,to,prefer,notional,na.omit,env,silent)
     ROC(frame, ...)
 }
-
-
-
-
-
 
