@@ -161,8 +161,8 @@ getSymbols.cfe <- function(Symbols,
             symout <- c(symout, Symbols[[i]])        
         }
         if (i >= 5 && length(Symbols) > 5) {
-            message("pausing 1 second between requests for more than 5 symbols")
-            Sys.sleep(1)
+            message("pausing .1 seconds between requests for more than 5 symbols")
+            Sys.sleep(.1)
         }
     }
     if (auto.assign) 
