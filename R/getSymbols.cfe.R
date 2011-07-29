@@ -92,16 +92,17 @@ getSymbols.cfe <- function(Symbols,
         if(length(xargs)==0) xargs=NULL
         
         for (Root in Roots) {
+            #TODO: add option to get rolling contract if month and year aren't specfied?            
             if (is.null(Month)) {
                 if (!is.null(xargs) && hasArg(Months)) {
                     Month <- xargs[["Months"]]
                 } else { 
-                    if(any(Roots == "VT")) { 
+                    Month <- if(any(Roots == "VT")) { 
                         round(as.numeric(format(Sys.Date(), "%m"))/3)*3
                     } else as.numeric(format(Sys.Date(), "%m"))
                 } 
             }
-            if (is.null(Year)) Year <- ifelse(hasArg(Years), Years, format(Sys.Date(),"%Y"))
+            if (is.null(Year)) Year <- ifelse(hasArg(Years), xargs$Years, format(Sys.Date(),"%Y"))
             Year[nchar(Year) == 4] <- substr(Year[nchar(Year) == 4], 3, 4)
             Year <- sprintf("%02d",as.numeric(Year))
             if (is.numeric(Month)) Month <- C2M()[Month]
@@ -114,7 +115,7 @@ getSymbols.cfe <- function(Symbols,
         }    
     } 
 
-    #TODO: If length of suffix_id != 3, use some magic to support formats VX_U1, VX_SEP1, VX_SEP11
+    #TODO: If length of suffix_id != 3, use parse_id function to support formats VX_U1, VX_SEP1, VX_SEP11
     #TODO: format output symbols the same as input?...maybe add option to do that.
 
     symout <- NULL
