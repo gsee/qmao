@@ -7,13 +7,20 @@ Add vertical line to a quantmod chart
 Adds a vertical line to the current quantmod chart
 }
 \usage{
-addVLine(dtlist)
+addVLine(dtlist, on = 1, col = "blue")
 }
 
 \arguments{
   \item{dtlist}{
 Plots a vertical line at given index
 }
+  \item{on}{
+panel to add vertical line on
+}
+  \item{col}{
+color of the line
+}
+
 }
 \details{
 }
