@@ -27,9 +27,11 @@ Garrett See
 }
 
 \examples{
-C2M("M")
-M2C("sep")
 C2M()
+C2M("M")
+C2M()[6]
 M2C()
+M2C("Sep")
+M2C()[9]
 }
 
