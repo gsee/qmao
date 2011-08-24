@@ -1,5 +1,6 @@
 
 plotRelPerf <- function(symbols, timespan="", prefer=NULL, env=.GlobalEnv) {
+    if (is.xts(symbols)) stop('symbols must be a character vector')
     x <- xts()
     if (length(symbols) <= 1) stop('vector of symbol names required')    
     for (symbol in symbols) { 
@@ -15,6 +16,7 @@ plotRelPerf <- function(symbols, timespan="", prefer=NULL, env=.GlobalEnv) {
 #plotRelPerf(symbols)
 
 plotInstruments <- function(symbols,timespan="",prefer=NULL, env=.GlobalEnv) {
+    if (is.xts(symbols)) stop('symbols must be a character vector')
     x <- xts()
     if (length(symbols) <= 1) stop('vector of symbol names required')    
     for (symbol in symbols) { 
@@ -28,6 +30,7 @@ plotInstruments <- function(symbols,timespan="",prefer=NULL, env=.GlobalEnv) {
 #plotInstruments(c("VIX_JAN11","VIX_FEB11","VIX_MAR11","VIX_APR11"))
 
 plotBAT <- function(symbols, timespan="", prefer=NULL, env=.GlobalEnv) {
+    if (is.xts(symbols)) stop('symbols must be a character vector')
     x <- xts()
     for (symbol in symbols) {
         b <- try(getPrice(na.omit(get(symbol,pos=env)),prefer="bid")[,1],TRUE)
