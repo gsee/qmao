@@ -23,9 +23,9 @@
 #' be divided by 10 ("rescaled").  See References.
 #' @param Symbols vector of names of instruments formated like e.g. "VX_U09", "GV_Z10", etc. OR 
 #' if \code{Month} and \code{Year} are provided a vector of names of root symbols, eg. "VX","GV",etc.
-#' @param Month optional vector of months. Can be numerical or the names of the months in English. If any 
+#' @param Month optional vector of expiration months. Can be numeric or the names of the months in English. If any 
 #' element of \code{Symbols} contains an underscore, this will be ignored.
-#' @param Year optional vector of years. Can either be 2 or 4 digits each. If any element of \code{Symbols} 
+#' @param Year optional vector of expiration years. Can either be 2 or 4 digits each. If any element of \code{Symbols} 
 #' contains an underscore, this will be ignored.
 #' @param from retrieve data no earlier than this data (2004-06-01)
 #' @param to retrieve data through this data (Sys.Date())
