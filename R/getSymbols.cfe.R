@@ -192,7 +192,7 @@ CBOEcalendar <- function(year=format(Sys.Date(),'%Y'), show=c("pdf", "webpage"))
             if (.Platform$OS.type == "windows") { #thanks to Jeff Ryan's "IBrokersRef" function for this if else usage
                 shell.exec(tmp) 
             } else system(paste(shQuote(getOption("pdfviewer")), shQuote(tmp)), wait=FALSE)
-        }, webpage=, url= {
+        }, webpage=, web=, url= {
             browseURL(paste("http://www.cboe.com/AboutCBOE/xcal", year, ".pdf", sep=""))            
         })
 }
