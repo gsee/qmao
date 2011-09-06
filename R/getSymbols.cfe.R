@@ -171,4 +171,32 @@ getSymbols.cfe <- function(Symbols,
     return(fr)
 }
 
+#' View the CBOE Expiration Calendar
+#'
+#' Download and view the CBOE Expiration Calendar for a given year in pdf format, 
+#' or view the pdf on the web without downloading it.
+#' @param year 4 digit year of the calendar that you would like to view. Defaults to the current year as determined by \code{Sys.Date()}
+#' @show what to show. Either \dQuote{pdf} or dQuote{webpage}. (Alternatively, can be be numeric: 1 for \dQuote{pdf}, 2 for \dQuote{webpage})
+#' @return called for side-effect
+#' @examples
+#' \dontrun{
+#' CBOEcalendar() #This year's calendar in your pdf viewer.
+#' CBOEcalendar(2010, show='web') #open webpage with 2010 calendar 
+#' }
+CBOEcalendar <- function(year=format(Sys.Date(),'%Y'), show=c("pdf", "webpage")) {
+    if (is.numeric(show)) show <- c("pdf","webpage")[show]
+    switch (show[[1]], 
+        pdf={
+            tmp <- tempfile()
+            download.file(paste("http://www.cboe.com/AboutCBOE/xcal", year, ".pdf", sep=""), destfile=tmp)
+            if (.Platform$OS.type == "windows") { #thanks to Jeff Ryan's "IBrokersRef" function for this if else usage
+                shell.exec(tmp) 
+            } else system(paste(shQuote(getOption("pdfviewer")), shQuote(tmp)), wait=FALSE)
+        }, webpage=, url= {
+            browseURL(paste("http://www.cboe.com/AboutCBOE/xcal", year, ".pdf", sep=""))            
+        })
+}
 
+#' @export
+#' @rdname CBOEcalendar
+CFEcalendar <- CBOEcalendar
