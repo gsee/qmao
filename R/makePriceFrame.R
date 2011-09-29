@@ -1,7 +1,7 @@
 #'
 
 PF <- makePriceFrame <-
-function(symbols, from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, env=.GlobalEnv, silent=FALSE) {
+function(symbols, from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, subset=NULL, env=.GlobalEnv, silent=FALSE) {
 	mult <- NULL
 	for (Symbol in symbols) {
 		tmp_instr <- try(getInstrument(Symbol,silent=TRUE))
@@ -18,6 +18,7 @@ function(symbols, from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, 
     pframe <- NULL
     for (i in 1:length(symbols)) {
         tmp.dat <- try(estAd(get(symbols[i],pos=env),prefer=prefer),TRUE)
+        if (!is.null(subset)) tmp.dat <- tmp.dat[subset]
         if (!inherits(tmp.dat,'try-error') && length(tmp.dat))
             pframe <- cbind(pframe, tmp.dat * mult[i], all=TRUE)
     }
@@ -27,8 +28,8 @@ function(symbols, from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, 
     pframe[paste(from,to,sep="::")]
 }
 
-RF <- makeReturnFrame <- function(symbols, from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, env=.GlobalEnv, silent=FALSE, ...) {
-    frame <- makePriceFrame(symbols,from,to,prefer,notional,na.omit,env,silent)
+RF <- makeReturnFrame <- function(symbols, from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, subset=NULL, env=.GlobalEnv, silent=FALSE, ...) {
+    frame <- makePriceFrame(symbols,from,to,prefer,notional,na.omit,subset,env,silent)
     ROC(frame, ...)
 }
 

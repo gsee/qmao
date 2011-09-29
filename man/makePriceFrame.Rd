@@ -10,8 +10,8 @@ Merge Adjusted prices (or returns of adjusted prices) of several symbols
 Given the names of symbols, merge together Adjusted columns of their xts objects
 }
 \usage{
-makePriceFrame(symbols, from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, env=.GlobalEnv, silent=FALSE)
-makeReturnFrame(symbols, from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, env = .GlobalEnv, silent=FALSE, ...)
+makePriceFrame(symbols, from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, subset=NULL, env=.GlobalEnv, silent=FALSE)
+makeReturnFrame(symbols, from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, subset=NULL, env = .GlobalEnv, silent=FALSE, ...)
 }
 \arguments{
   \item{symbols}{
@@ -31,6 +31,9 @@ Should the prices will be multiplied by their multipliers, to get notional value
 }
   \item{na.omit}{
 Should \code{NA} values be removed? Default is \code{TRUE}
+}
+  \item{subset}{
+xts style subsetting argument
 }
   \item{env}{
 environment in which to look for xts objects
