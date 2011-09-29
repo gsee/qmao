@@ -25,7 +25,7 @@ function(symbols, from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, 
     if (na.omit) pframe <- na.omit(pframe)
     if (is.null(from)) from <- first(index(pframe))
     if (is.null(to)) to <- last(index(pframe))
-    pframe[paste(from,to,sep="::")]
+    pframe[paste(from,to,sep="/")]
 }
 
 RF <- makeReturnFrame <- function(symbols, from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, subset=NULL, env=.GlobalEnv, silent=FALSE, ...) {

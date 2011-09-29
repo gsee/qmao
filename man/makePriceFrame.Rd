@@ -33,7 +33,7 @@ Should the prices will be multiplied by their multipliers, to get notional value
 Should \code{NA} values be removed? Default is \code{TRUE}
 }
   \item{subset}{
-xts style subsetting argument
+xts style subsetting argument. (e.g. "T08:30/T15:00") Default is \code{NULL}
 }
   \item{env}{
 environment in which to look for xts objects
@@ -50,6 +50,9 @@ arguments to be passed to \code{ROC}.  These can be \sQuote{n}, \sQuote{type}, \
 \code{makePriceFrame} merges price columns of several symbols where the column is adjusted if it exists,
 or close, mid, or price if it does not. 
 \code{makeReturnFrame} first calls \code{makePriceFrame}, then calculates returns on those price series
+
+The \code{from} and \code{to} arguments are intended to be used to indicate the starting and ending date, whereas
+the \code{subset} argument is intended to be used to subset intraday data by time of day.
 }
 \value{
 xts object with same number of columns as length of \code{symbols}: 1 for each symbol's [adjusted] prices (returns)
