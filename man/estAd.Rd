@@ -33,11 +33,12 @@ for \code{estAd} what column to get if none of the defaults can be found.
 }
 }
 \details{
-\code{estAd} looks for "adjusted", "close", "mid", "price", "trade", in that order.
-If and only if those columns cannot be found, \code{prefer} and \code{symbol} 
-will be passed in a call to \code{getPrice}
+If \code{prefer} is not NULL, \code{estAd} will simply call \code{\link{getPrice}} with \code{symbol} 
+and \code{prefer}.  Otherwise, \code{estAd} will look for "adjusted", "close", "mid", "price", "trade", 
+in that order.  If and only if those columns cannot be found, \code{symbol} will be passed in a call to 
+\code{getPrice}
 
-Bi, As, etc. display Bid, Ask, etc. data.
+Bi, As, Ch, Tr display Bid, Ask, Change, Trade data.
 }
 \value{
 xts object with only one column of prices
