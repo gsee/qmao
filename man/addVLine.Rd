@@ -1,46 +1,33 @@
 \name{addVLine}
 \alias{addVLine}
-\title{
-Add vertical line to a quantmod chart
-}
-\description{
-Adds a vertical line to the current quantmod chart
-}
+\title{Add vertical line to a quantmod chart}
 \usage{
-addVLine(dtlist, on = 1, col = "blue")
+  addVLine(dtlist, on = 1, col = "blue")
 }
-
 \arguments{
-  \item{dtlist}{
-Plots a vertical line at given index
-}
-  \item{on}{
-panel to add vertical line on
-}
-  \item{col}{
-color of the line
-}
+  \item{dtlist}{Plots a vertical line at given index}
 
-}
-\details{
+  \item{on}{panel to add vertical line on}
+
+  \item{col}{color of the line}
 }
 \value{
-used for its side effect.
+  used for its side effect.
 }
-\references{
-}
-\author{
-Garrett See
-}
-\note{
-}
-
-
-\seealso{
-chartSeries, addTA
+\description{
+  Adds a vertical line to the current quantmod chart
 }
 \examples{
+\dontrun{
 getSymbols('SPY',adjust=TRUE)
 chartSeries(SPY)
 addVLine(index(SPY['2011-05-20::2011-05-25']))
 }
+}
+\author{
+  Garrett See
+}
+\seealso{
+  chartSeries, addTA
+}
+

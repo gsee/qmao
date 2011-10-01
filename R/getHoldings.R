@@ -3,6 +3,37 @@
 #There is a link called "Most Recent Net Asset Values" on https://www.spdrs.com/product/
 #it has all the SPDR funds, and it should be used here instead of just the sectorspdrs.
 
+
+
+#' get the holdings of an ETF
+#' 
+#' get the holdings of an iShares or Sector SPDR ETF.
+#' 
+#' Only iShares and the 8 Sector SPDR ETFs are supported.
+#' 
+#' @param symbols chr symbols of ETFs
+#' @param env environment to store the holdings data in
+#' @param auto.assign assign data?
+#' @return If called with \code{auto.assign=TRUE}, this function is called for
+#' side-effect. Holdings data are stored in variables that are \code{symbols}
+#' appended with .h Right now, all that is stored is the symbols and their
+#' weights. If called with \code{auto.assign=FALSE}, Holdings data will be
+#' returned, and not stored.
+#' @note This should get SPDR data from a csv that can be downloaded at
+#' https://www.spdrs.com/product. Could also be updated to return more info
+#' than just weights and symbols.
+#' @author Garrett See
+#' @references Sector SPDRs \url{www.sectorspdr.com} iShares
+#' \url{www.ishares.com}
+#' @examples
+#' 
+#' \dontrun{
+#' getHoldings('XLF')
+#' getHoldings('IVE')
+#' XLF.h
+#' IVE.h
+#' }
+#' @export
 getHoldings <-function(symbols, env=.GlobalEnv, auto.assign=TRUE) {
 	spdr.syms <- c('XLY','XLP','XLE','XLF','XLV','XLI','XLB','XLK','XLU')
 	if (missing(symbols)) symbols <- c(ishr.syms,spdr.syms)

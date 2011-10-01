@@ -1,9 +1,17 @@
+#' Remove rows where specified column(s) has zero value...
+#' 
 #' Remove rows where specified column(s) has zero value
+#' 
+#' 
 #' @param Symbols names of instruments
-#' @param columns which columns to require to have positive, non-zero values ('Volume')
+#' @param columns which columns to require to have positive, non-zero values
+#' ('Volume')
 #' @param env where to find the data. (.GlobalEnv)
-#' @param store should the data be overwritten? Must be \code{TRUE} if \code{length(Symbols) > 1}. If \code{FALSE} the cleaned data will be returned.
-#' @return usually called for side-effect, returning only the symbol names. If \code{store=FALSE} the cleaned data is returned.
+#' @param store should the data be overwritten? Must be \code{TRUE} if
+#' \code{length(Symbols) > 1}. If \code{FALSE} the cleaned data will be
+#' returned.
+#' @return usually called for side-effect, returning only the symbol names. If
+#' \code{store=FALSE} the cleaned data is returned.
 #' @author Garrett See
 #' @examples
 #' \dontrun{

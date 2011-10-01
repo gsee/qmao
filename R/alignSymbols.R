@@ -1,3 +1,28 @@
+#' Delete rows that not all symbols have in common
+#' 
+#' Deletes rows that not all symbols have in common
+#' 
+#' alignSymbols will get symbols from the specified environment (.GlobalEnv by
+#' default), merge them together, and delete all rows that have any NAs.  Then
+#' it will \sQuote{unmerge} and assign the cleaned data back to the xts objects
+#' named by \code{symbols}.
+#' 
+#' @param symbols character vector of symbol names which correspond to xts
+#' objects
+#' @param env The environment that holds the xts objects
+#' @return used for its side effect.
+#' @author Garrett See
+#' @seealso merge, merge.xts, cbind, cbind.xts, assign
+#' @examples
+#' 
+#' \dontrun{
+#' symbols <- c("SPY","DIA","CORN")
+#' getSymbols(symbols)
+#' length(Cl(SPY));length(Cl(DIA));length(Cl(CORN))
+#' alignSymbols(symbols)
+#' length(Cl(SPY));length(Cl(DIA));length(Cl(CORN))
+#' }
+#' @export
 alignSymbols <-
 function(symbols, env=.GlobalEnv) {
 	if (length(symbols) < 2) 

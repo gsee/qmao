@@ -1,41 +1,29 @@
 \name{ClOp}
 \alias{ClOp}
-\title{
-Close to Open return
-}
-\description{
-Calculates returns from previous days' closes to current days' opens
-}
+\title{Close to Open return}
 \usage{
-ClOp(x)
+  ClOp(x)
 }
-
 \arguments{
-  \item{x}{
-an xts object with Close and Open columns
-}
-}
-\details{
-
+  \item{x}{an xts object with Close and Open columns}
 }
 \value{
-an xts object of returns
+  an xts object of returns
 }
-\references{
-
-}
-\author{
-Garrett See
-}
-\note{
-
-}
-
-
-\seealso{
-OpOp, ClCl, OpCl
+\description{
+  Calculates returns from previous days' closes to current
+  days' opens
 }
 \examples{
+\dontrun{
 getSymbols("SPY")
 ClOp(SPY)
 }
+}
+\author{
+  Garrett See
+}
+\seealso{
+  OpOp, ClCl, OpCl
+}
+

@@ -1,19 +1,28 @@
+#' Get Spread Dividends...
+#' 
 #' Get Spread Dividends
-#'
+#' 
 #' Given a spread_id, this will look for dividend data for each of the
-#' constituent legs of the spread in the the env specified.  If dividend
-#' data are not in \code{env} a call will be made to \code{getSymbols}
-#' The memberratio (stored in the spread instrument) will be used to weight
-#' the dividends.  Negative values in \sQuote{memberratio} indicate short
+#' constituent legs of the spread in the the env specified.  If dividend data
+#' are not in \code{env} a call will be made to \code{getSymbols} The
+#' memberratio (stored in the spread instrument) will be used to weight the
+#' dividends.  Negative values in \sQuote{memberratio} indicate short
 #' positions.  Dividends on short legs will be negative.
-#' @param spread_id chr primary identifier for an already defined spread instrument 
+#' 
+#' @param spread_id chr primary identifier for an already defined spread
+#' instrument
 #' @param from Date from which to get dividends
 #' @param to get dividends through this date
-#' @param auto.assign if TRUE (default), spread dividends will be stored in an environment
-#' @param env where to get data. If \code{auto.assign} is TRUE it is also where the spread dividends will be stored
-#' @return if \code{auto.assign} is TRUE the output will be written in the env specified with a .div appended to the name, and only the name of the symbol where the dividends were stored will be returned.
+#' @param auto.assign if TRUE (default), spread dividends will be stored in an
+#' environment
+#' @param env where to get data. If \code{auto.assign} is TRUE it is also where
+#' the spread dividends will be stored
+#' @return if \code{auto.assign} is TRUE the output will be written in the env
+#' specified with a .div appended to the name, and only the name of the symbol
+#' where the dividends were stored will be returned.
 #' 
-#' otherwise, an xts object containing dividends with negative values indicating payments in leiu of dividends.
+#' otherwise, an xts object containing dividends with negative values
+#' indicating payments in leiu of dividends.
 #' @examples
 #' \dontrun{
 #' s <- define_stocks(c("SPY","DIA"))

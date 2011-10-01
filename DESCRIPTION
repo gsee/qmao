@@ -1,11 +1,32 @@
 Package: qmao
 Type: Package
 Title: Quantmod Add-on
-Version: 1.0
-Date: 2011-06-06
+Version: 1.1
+Date: 2011-10-01
 Author: Garrett See
-Depends: quantmod, FinancialInstrument
+Depends:
+    quantmod,
+    FinancialInstrument
 Maintainer: Garrett See <gsee000@gmail.com>
 Description: some quantmod-like functions.
 License: GPL-3
 LazyLoad: yes
+Collate:
+    'addVLine.R'
+    'adjustBAM.R'
+    'alignSymbols.R'
+    'applyFilter.R'
+    'BAM.R'
+    'ClOp.R'
+    'convert.illions.R'
+    'estAd.R'
+    'getHoldings.R'
+    'getSpreadDividends.R'
+    'getSymbols.cfe.R'
+    'has.Chg.R'
+    'makePriceFrame.R'
+    'makeTestData.R'
+    'MiBiAsChTr.R'
+    'plotRelPerf.R'
+    'qmao-package.R'
+    'remove_zero_rows.R'

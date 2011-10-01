@@ -1,59 +1,46 @@
 \name{estAd}
 \alias{estAd}
-\alias{Mi}
-\alias{Bi}
-\alias{As}
-\alias{Ch}
-\alias{Tr}
-\title{
-get column containing Price
-}
-\description{
-getPrice returns values in Price column
-estAd returns values in Adjusted column if it exists, or it's best guess if it doesn't
-}
+\title{get column containing Price}
 \usage{
-estAd(x, symbol=NULL, prefer=NULL)
-Mi(x)
-Bi(x)
-As(x)
-Ch(x)
-Tr(x)
+  estAd(x, symbol = NULL, prefer = NULL)
 }
-
 \arguments{
-  \item{x}{
-xts object
-}
-  \item{symbol}{
-character string
-}
-  \item{prefer}{
-for \code{estAd} what column to get if none of the defaults can be found.
-}
-}
-\details{
-If \code{prefer} is not NULL, \code{estAd} will simply call \code{\link{getPrice}} with \code{symbol} 
-and \code{prefer}.  Otherwise, \code{estAd} will look for "adjusted", "close", "mid", "price", "trade", 
-in that order.  If and only if those columns cannot be found, \code{symbol} will be passed in a call to 
-\code{getPrice}
+  \item{x}{xts object}
 
-Bi, As, Ch, Tr display Bid, Ask, Change, Trade data.
+  \item{symbol}{character string}
+
+  \item{prefer}{for \code{estAd} what column to get if none
+  of the defaults can be found.}
 }
 \value{
-xts object with only one column of prices
+  xts object with only one column of prices
 }
-\author{
-Garrett See
+\description{
+  \code{estAd} returns values in Adjusted column if it
+  exists, or it's best guess if it doesn't
+}
+\details{
+  If \code{prefer} is not NULL, \code{estAd} will simply
+  call \code{\link{getPrice}} with \code{symbol} and
+  \code{prefer}.  Otherwise, \code{estAd} will look for
+  "adjusted", "close", "mid", "price", "trade", in that
+  order.  If and only if those columns cannot be found,
+  \code{symbol} will be passed in a call to \code{getPrice}
 }
 \note{
-case insensitive
-}
-\seealso{
-getPrice, Op, Hi, Lo, Cl
+  case insensitive
 }
 \examples{
-
+\dontrun{
 getSymbols('SPY')
 estAd(SPY)
 }
+}
+\author{
+  Garrett See
+}
+\seealso{
+  \code{\link{getPrice}}, Op, Hi, Lo, \code{\link{Cl}}, Bi,
+  As, \code{\link{Mi}}, Tr
+}
+
