@@ -44,7 +44,8 @@
 #' head(rf)
 #' }
 #' @export
-PF <- makePriceFrame <-
+#' @rdname PF
+makePriceFrame <-
 function(symbols, from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, subset=NULL, env=.GlobalEnv, silent=FALSE) {
 	mult <- NULL
 	for (Symbol in symbols) {
@@ -72,8 +73,17 @@ function(symbols, from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, 
     pframe[paste(from,to,sep="/")]
 }
 
-RF <- makeReturnFrame <- function(symbols, from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, subset=NULL, env=.GlobalEnv, silent=FALSE, ...) {
+#' @export
+#' @rdname PF
+PF <- makePriceFrame
+
+#' @export
+#' @rdname PF
+makeReturnFrame <- function(symbols, from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, subset=NULL, env=.GlobalEnv, silent=FALSE, ...) {
     frame <- makePriceFrame(symbols,from,to,prefer,notional,na.omit,subset,env,silent)
     ROC(frame, ...)
 }
 
+#' @export
+#' @rdname PF
+RF <- makeReturnFrame

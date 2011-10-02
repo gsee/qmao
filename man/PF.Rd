@@ -1,13 +1,25 @@
-\name{PF}
+\name{makePriceFrame}
 \alias{makePriceFrame}
 \alias{makeReturnFrame}
 \alias{PF}
 \alias{RF}
 \title{Merge Adjusted prices (or returns of adjusted prices) of several symbols}
 \usage{
+  makePriceFrame(symbols, from = NULL, to = NULL, prefer =
+  NULL, notional = TRUE, na.omit = TRUE, subset = NULL, env
+  = .GlobalEnv, silent = FALSE)
+
   PF(symbols, from = NULL, to = NULL, prefer = NULL,
   notional = TRUE, na.omit = TRUE, subset = NULL, env =
   .GlobalEnv, silent = FALSE)
+
+  makeReturnFrame(symbols, from = NULL, to = NULL, prefer =
+  NULL, notional = TRUE, na.omit = TRUE, subset = NULL, env
+  = .GlobalEnv, silent = FALSE, ...)
+
+  RF(symbols, from = NULL, to = NULL, prefer = NULL,
+  notional = TRUE, na.omit = TRUE, subset = NULL, env =
+  .GlobalEnv, silent = FALSE, ...)
 }
 \arguments{
   \item{symbols}{vector of character strings}
