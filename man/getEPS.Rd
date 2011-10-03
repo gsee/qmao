@@ -7,7 +7,7 @@
 \arguments{
   \item{Symbol}{A single valid google symbol as a string.
   (may be updated in the future to support vector and
-  colon-delimited)}
+  semi-colon delimited)}
 
   \item{freq}{Quarterly or Annual (but, only the first
   letter is used, so "Q" and "A" work also)}

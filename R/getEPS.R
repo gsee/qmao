@@ -4,7 +4,7 @@
 #' the financial statements for \code{Symbol}.  Then it will extract
 #' only the \dQuote{Diluted Normalized EPS} row from the Income 
 #' Statement and convert it to an xts object. 
-#' @param Symbol A single valid google symbol as a string. (may be updated in the future to support vector and colon-delimited)
+#' @param Symbol A single valid google symbol as a string. (may be updated in the future to support vector and semi-colon delimited)
 #' @param freq Quarterly or Annual (but, only the first letter is used, so "Q" and "A" work also)
 #' @param src Only 'google' is currently supported.
 #' @return an xts object containing historical Diluted Normalized EPS according to google.
