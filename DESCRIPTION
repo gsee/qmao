@@ -30,3 +30,4 @@ Collate:
     'plotRelPerf.R'
     'qmao-package.R'
     'remove_zero_rows.R'
+    'getEPS.R'

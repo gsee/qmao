@@ -187,7 +187,7 @@ getSymbols.cfe <- function(Symbols,
 #' @aliases CBOEcalendar CFEcalendar
 #' @param year 4 digit year of the calendar that you would like to view.
 #' Defaults to the current year as determined by \code{Sys.Date()}
-#' @param show what to show. Either \dQuote{pdf} or dQuotewebpage.
+#' @param show what to show. Either \dQuote{pdf} or \dQuote{webpage}.
 #' (Alternatively, can be be numeric: 1 for \dQuote{pdf}, 2 for
 #' \dQuote{webpage})
 #' @return called for side-effect

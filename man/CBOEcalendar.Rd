@@ -15,8 +15,8 @@
   by \code{Sys.Date()}}
 
   \item{show}{what to show. Either \dQuote{pdf} or
-  dQuotewebpage. (Alternatively, can be be numeric: 1 for
-  \dQuote{pdf}, 2 for \dQuote{webpage})}
+  \dQuote{webpage}. (Alternatively, can be be numeric: 1
+  for \dQuote{pdf}, 2 for \dQuote{webpage})}
 }
 \value{
   called for side-effect
