@@ -11,7 +11,11 @@
 #' @seealso \code{\link[quantmod]{getFinancials}}
 #' @examples
 #' \dontrun{
-#' getEPS("GOOG")
+#' getEPS("GOOG") # Quarterly by default
+#' getEPS("GOOG","Annual")
+#'
+#' # get a single xts object with several stocks' EPS
+#' do.call(cbind, lapply(c("GOOG","MSFT","IBM"), getEPS))
 #' }
 #' @export
 getEPS <- function(Symbol, freq=c("Q","A"), src='google') {
