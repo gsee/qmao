@@ -3,17 +3,24 @@
 #' Given the names of symbols, merge together Adjusted columns of their xts
 #' objects
 #' 
-#' \code{PF} and \code{RF} are aliases. \code{makePriceFrame} merges price
-#' columns of several symbols where the column is adjusted if it exists, or
-#' close, mid, or price if it does not.  \code{makeReturnFrame} first calls
-#' \code{makePriceFrame}, then calculates returns on those price series
+#' \code{PF} and \code{RF} are aliases. \code{makePriceFrame} merges the \code{prefer}
+#' columns of several symbols if \code{prefer} is given.  Otherwise, it will use
+#'  the adjusted column is if it exists, or close, mid, or price if it does not. 
+#' (See \code{\link{estAd}}).
+#'
+#' If \code{notional} is \code{TRUE} and any \code{Symbols} are the names of 
+#' \code{\link[FinancialInstrument]{instrument}}s, prices will be multiplied by
+#' their multipliers.
+#' 
+#' \code{makeReturnFrame} first calls \code{makePriceFrame}, then calculates 
+#' returns on those price series
 #' 
 #' The \code{from} and \code{to} arguments are intended to be used to indicate
 #' the starting and ending date, whereas the \code{subset} argument is intended
 #' to be used to subset intraday data by time of day.
 #' 
 #' @aliases makePriceFrame makeReturnFrame PF RF
-#' @param symbols vector of character strings
+#' @param Symbols character vector of names of xts objects
 #' @param from include no data before this date/timestamp
 #' @param to include data through this date/timestamp
 #' @param prefer column to use. If NULL, the first of the following columns
@@ -28,12 +35,12 @@
 #' \dQuote{Instrument not found, using contract multiplier of 1})
 #' @param \dots arguments to be passed to \code{ROC}.  These can be \sQuote{n},
 #' \sQuote{type}, \sQuote{na.pad},
-#' @return xts object with same number of columns as length of \code{symbols}:
+#' @return xts object with same number of columns as length of \code{Symbols}, 
 #' 1 for each symbol's [adjusted] prices (returns)
-#' @note \code{makeReturnFrame} can be useful before calling
+#' @note \code{makeReturnFrame} can be useful before calling functions like
 #' charts.PerformanceSummary from the PortfolioAnalytics package.
 #' @author Garrett See
-#' @seealso estAd, getPrice, merge, cbind
+#' @seealso \code{\link{estAd}}, \code{\link[quantmod]{getPrice}}, merge, cbind
 #' @examples
 #' 
 #' \dontrun{
@@ -46,9 +53,9 @@
 #' @export
 #' @rdname PF
 makePriceFrame <-
-function(symbols, from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, subset=NULL, env=.GlobalEnv, silent=FALSE) {
+function(Symbols, from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, subset=NULL, env=.GlobalEnv, silent=FALSE) {
 	mult <- NULL
-	for (Symbol in symbols) {
+	for (Symbol in Symbols) {
 		tmp_instr <- try(getInstrument(Symbol,silent=TRUE))
 		if (inherits(tmp_instr, "try-error") || !is.instrument(tmp_instr)) {
 			if (!silent && notional) warning(paste("Instrument", Symbol, " not found, using contract multiplier of 1"))
@@ -61,8 +68,8 @@ function(symbols, from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, 
     if (!notional) mult <- rep(1,length(mult))
 
     pframe <- NULL
-    for (i in 1:length(symbols)) {
-        tmp.dat <- try(estAd(get(symbols[i],pos=env),prefer=prefer),TRUE)
+    for (i in 1:length(Symbols)) {
+        tmp.dat <- try(estAd(get(Symbols[i],pos=env),prefer=prefer),TRUE)
         if (!is.null(subset)) tmp.dat <- tmp.dat[subset]
         if (!inherits(tmp.dat,'try-error') && length(tmp.dat))
             pframe <- cbind(pframe, tmp.dat * mult[i], all=TRUE)
@@ -79,8 +86,8 @@ PF <- makePriceFrame
 
 #' @export
 #' @rdname PF
-makeReturnFrame <- function(symbols, from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, subset=NULL, env=.GlobalEnv, silent=FALSE, ...) {
-    frame <- makePriceFrame(symbols,from,to,prefer,notional,na.omit,subset,env,silent)
+makeReturnFrame <- function(Symbols, from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, subset=NULL, env=.GlobalEnv, silent=FALSE, ...) {
+    frame <- makePriceFrame(Symbols,from,to,prefer,notional,na.omit,subset,env,silent)
     ROC(frame, ...)
 }
 

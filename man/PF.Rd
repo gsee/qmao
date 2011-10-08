@@ -5,24 +5,24 @@
 \alias{RF}
 \title{Merge Adjusted prices (or returns of adjusted prices) of several symbols}
 \usage{
-  makePriceFrame(symbols, from = NULL, to = NULL, prefer =
+  makePriceFrame(Symbols, from = NULL, to = NULL, prefer =
   NULL, notional = TRUE, na.omit = TRUE, subset = NULL, env
   = .GlobalEnv, silent = FALSE)
 
-  PF(symbols, from = NULL, to = NULL, prefer = NULL,
+  PF(Symbols, from = NULL, to = NULL, prefer = NULL,
   notional = TRUE, na.omit = TRUE, subset = NULL, env =
   .GlobalEnv, silent = FALSE)
 
-  makeReturnFrame(symbols, from = NULL, to = NULL, prefer =
+  makeReturnFrame(Symbols, from = NULL, to = NULL, prefer =
   NULL, notional = TRUE, na.omit = TRUE, subset = NULL, env
   = .GlobalEnv, silent = FALSE, ...)
 
-  RF(symbols, from = NULL, to = NULL, prefer = NULL,
+  RF(Symbols, from = NULL, to = NULL, prefer = NULL,
   notional = TRUE, na.omit = TRUE, subset = NULL, env =
   .GlobalEnv, silent = FALSE, ...)
 }
 \arguments{
-  \item{symbols}{vector of character strings}
+  \item{Symbols}{character vector of names of xts objects}
 
   \item{from}{include no data before this date/timestamp}
 
@@ -53,7 +53,7 @@
 }
 \value{
   xts object with same number of columns as length of
-  \code{symbols}: 1 for each symbol's [adjusted] prices
+  \code{Symbols}, 1 for each symbol's [adjusted] prices
   (returns)
 }
 \description{
@@ -62,9 +62,16 @@
 }
 \details{
   \code{PF} and \code{RF} are aliases.
-  \code{makePriceFrame} merges price columns of several
-  symbols where the column is adjusted if it exists, or
-  close, mid, or price if it does not.
+  \code{makePriceFrame} merges the \code{prefer} columns of
+  several symbols if \code{prefer} is given.  Otherwise, it
+  will use the adjusted column is if it exists, or close,
+  mid, or price if it does not. (See \code{\link{estAd}}).
+
+  If \code{notional} is \code{TRUE} and any \code{Symbols}
+  are the names of
+  \code{\link[FinancialInstrument]{instrument}}s, prices
+  will be multiplied by their multipliers.
+
   \code{makeReturnFrame} first calls \code{makePriceFrame},
   then calculates returns on those price series
 
@@ -75,8 +82,8 @@
 }
 \note{
   \code{makeReturnFrame} can be useful before calling
-  charts.PerformanceSummary from the PortfolioAnalytics
-  package.
+  functions like charts.PerformanceSummary from the
+  PortfolioAnalytics package.
 }
 \examples{
 \dontrun{
@@ -91,6 +98,7 @@ head(rf)
   Garrett See
 }
 \seealso{
-  estAd, getPrice, merge, cbind
+  \code{\link{estAd}}, \code{\link[quantmod]{getPrice}},
+  merge, cbind
 }
 

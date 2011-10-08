@@ -12,7 +12,7 @@
 #' @param env The environment that holds the xts objects
 #' @return used for its side effect.
 #' @author Garrett See
-#' @seealso merge, merge.xts, cbind, cbind.xts, assign
+#' @seealso \code{\link{gsa}}, merge, merge.xts, cbind, cbind.xts, assign
 #' @examples
 #' 
 #' \dontrun{

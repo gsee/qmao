@@ -36,6 +36,7 @@ length(Cl(SPY));length(Cl(DIA));length(Cl(CORN))
   Garrett See
 }
 \seealso{
-  merge, merge.xts, cbind, cbind.xts, assign
+  \code{\link{gsa}}, merge, merge.xts, cbind, cbind.xts,
+  assign
 }
 
