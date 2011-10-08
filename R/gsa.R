@@ -26,11 +26,14 @@ gsa <- function(Symbols, subset='T08:30/T15:00', env=.GlobalEnv, store.to=env, i
     if (is.character(store.to)) store.to <- get(store.to, pos=.GlobalEnv)    
     stopifnot(is.environment(env), is.environment(store.to))
     symout <- NULL
+    intradayss <- if (is.character(subset) && substr(subset, 1, 1) == "T") {TRUE} else {FALSE}
     for (sym in Symbols) {
         xx <-  try(get(sym, pos=env))
         if (!inherits(xx, 'try-error')) {
-            assign(sym, xx[subset], pos=store.to)
-            symout <- c(symout, sym)
+            if (!(intradayss && periodicity(xx)$frequency >= 86400)){ 
+                assign(sym, xx[subset], pos=store.to)
+                symout <- c(symout, sym)
+            } else warning('intraday subset not applied to non-intraday data.')
         }
     }
     if (invisible) return(invisible())
