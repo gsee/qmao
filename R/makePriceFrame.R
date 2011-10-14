@@ -19,6 +19,11 @@
 #' the starting and ending date, whereas the \code{subset} argument is intended
 #' to be used to subset intraday data by time of day.
 #' 
+#' Since this function merges together the same \code{prefer} column from each Symbol,
+#' the column names can be simplified.  The \code{colnames} will simply be set
+#' to be the same as \code{Symbols}.  A "prefer" \code{attr} will be added to the 
+#' returned object so that you can see (using \code{str}, or \code{attr(x, "prefer")}) 
+#' what column was used to build the PriceFrame.
 #' @aliases makePriceFrame makeReturnFrame PF RF
 #' @param Symbols character vector of names of xts objects
 #' @param from include no data before this date/timestamp
@@ -36,11 +41,13 @@
 #' @param \dots arguments to be passed to \code{ROC}.  These can be \sQuote{n},
 #' \sQuote{type}, \sQuote{na.pad},
 #' @return xts object with same number of columns as length of \code{Symbols}, 
-#' 1 for each symbol's [adjusted] prices (returns)
+#' 1 for each symbol's [adjusted] prices (returns). The object will have a
+#' "prefer" \code{attr} indicating which column was used to build it.
 #' @note \code{makeReturnFrame} can be useful before calling functions like
 #' charts.PerformanceSummary from the PortfolioAnalytics package.
 #' @author Garrett See
-#' @seealso \code{\link{estAd}}, \code{\link[quantmod]{getPrice}}, merge, cbind
+#' @seealso \code{\link{estAd}}, \code{\link[quantmod]{getPrice}}, 
+#' \code{\link[base]{attr}}, merge, cbind
 #' @examples
 #' 
 #' \dontrun{
@@ -49,6 +56,8 @@
 #' head(pf)
 #' rf <- makeReturnFrame(c('SPY','DIA','QQQ'))
 #' head(rf)
+#' ## See what column was used to make pf
+#' attr(pf, "prefer") 
 #' }
 #' @export
 #' @rdname PF
@@ -77,7 +86,10 @@ function(Symbols, from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, 
     if (na.omit) pframe <- na.omit(pframe)
     if (is.null(from)) from <- first(index(pframe))
     if (is.null(to)) to <- last(index(pframe))
-    pframe[paste(from,to,sep="/")]
+    pframe <- pframe[paste(from,to,sep="/")]
+    attr(pframe, "prefer") <- sub("\\.", "", gsub(Symbols[[1]], "", colnames(pframe)[[1]]))
+    colnames(pframe) <- Symbols
+    pframe
 }
 
 #' @export

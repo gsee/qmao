@@ -54,7 +54,8 @@
 \value{
   xts object with same number of columns as length of
   \code{Symbols}, 1 for each symbol's [adjusted] prices
-  (returns)
+  (returns). The object will have a "prefer" \code{attr}
+  indicating which column was used to build it.
 }
 \description{
   Given the names of symbols, merge together Adjusted
@@ -79,6 +80,14 @@
   be used to indicate the starting and ending date, whereas
   the \code{subset} argument is intended to be used to
   subset intraday data by time of day.
+
+  Since this function merges together the same
+  \code{prefer} column from each Symbol, the column names
+  can be simplified.  The \code{colnames} will simply be
+  set to be the same as \code{Symbols}.  A "prefer"
+  \code{attr} will be added to the returned object so that
+  you can see (using \code{str}, or \code{attr(x,
+  "prefer")}) what column was used to build the PriceFrame.
 }
 \note{
   \code{makeReturnFrame} can be useful before calling
@@ -92,6 +101,8 @@ pf <- makePriceFrame(c('SPY','DIA','QQQ'))
 head(pf)
 rf <- makeReturnFrame(c('SPY','DIA','QQQ'))
 head(rf)
+## See what column was used to make pf
+attr(pf, "prefer")
 }
 }
 \author{
@@ -99,6 +110,6 @@ head(rf)
 }
 \seealso{
   \code{\link{estAd}}, \code{\link[quantmod]{getPrice}},
-  merge, cbind
+  \code{\link[base]{attr}}, merge, cbind
 }
 
