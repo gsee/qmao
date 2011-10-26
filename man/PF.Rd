@@ -7,19 +7,19 @@
 \usage{
   makePriceFrame(Symbols, from = NULL, to = NULL, prefer =
   NULL, notional = TRUE, na.omit = TRUE, subset = NULL, env
-  = .GlobalEnv, silent = FALSE)
+  = .GlobalEnv, silent)
 
   PF(Symbols, from = NULL, to = NULL, prefer = NULL,
   notional = TRUE, na.omit = TRUE, subset = NULL, env =
-  .GlobalEnv, silent = FALSE)
+  .GlobalEnv, silent)
 
   makeReturnFrame(Symbols, from = NULL, to = NULL, prefer =
   NULL, notional = TRUE, na.omit = TRUE, subset = NULL, env
-  = .GlobalEnv, silent = FALSE, ...)
+  = .GlobalEnv, silent, ...)
 
   RF(Symbols, from = NULL, to = NULL, prefer = NULL,
   notional = TRUE, na.omit = TRUE, subset = NULL, env =
-  .GlobalEnv, silent = FALSE, ...)
+  .GlobalEnv, silent, ...)
 }
 \arguments{
   \item{Symbols}{character vector of names of xts objects}

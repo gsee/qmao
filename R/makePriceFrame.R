@@ -62,7 +62,12 @@
 #' @export
 #' @rdname PF
 makePriceFrame <-
-function(Symbols, from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, subset=NULL, env=.GlobalEnv, silent=FALSE) {
+function(Symbols, from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, subset=NULL, env=.GlobalEnv, silent) {
+    if (any(sapply(Symbols, exists, .GlobalEnv) == FALSE))
+       stop(paste("No data in", deparse(substitute(env)), "for", Symbols[!sapply(Symbols, exists, .GlobalEnv)]))
+    if (missing(silent)) {
+        silent <- ifelse(is.environment(get('.instrument', pos=.GlobalEnv)), FALSE, TRUE)
+    }
 	mult <- NULL
 	for (Symbol in Symbols) {
 		tmp_instr <- try(getInstrument(Symbol,silent=TRUE))
@@ -79,9 +84,10 @@ function(Symbols, from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, 
     pframe <- NULL
     for (i in 1:length(Symbols)) {
         tmp.dat <- try(estAd(get(Symbols[i],pos=env),prefer=prefer),TRUE)
-        if (!is.null(subset)) tmp.dat <- tmp.dat[subset]
-        if (!inherits(tmp.dat,'try-error') && length(tmp.dat))
+        if (!inherits(tmp.dat,'try-error') && length(tmp.dat)) {
+            if (!is.null(subset)) tmp.dat <- tmp.dat[subset]
             pframe <- cbind(pframe, tmp.dat * mult[i], all=TRUE)
+        }
     }
     if (na.omit) pframe <- na.omit(pframe)
     if (is.null(from)) from <- first(index(pframe))
@@ -98,7 +104,10 @@ PF <- makePriceFrame
 
 #' @export
 #' @rdname PF
-makeReturnFrame <- function(Symbols, from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, subset=NULL, env=.GlobalEnv, silent=FALSE, ...) {
+makeReturnFrame <- function(Symbols, from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, subset=NULL, env=.GlobalEnv, silent, ...) {
+    if (missing(silent)) {
+        silent <- ifelse(is.environment(get('.instrument', pos=.GlobalEnv)), FALSE, TRUE)
+    }
     frame <- makePriceFrame(Symbols,from,to,prefer,notional,na.omit,subset,env,silent)
     ROC(frame, ...)
 }
