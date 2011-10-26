@@ -47,7 +47,7 @@
 #' charts.PerformanceSummary from the PortfolioAnalytics package.
 #' @author Garrett See
 #' @seealso \code{\link{estAd}}, \code{\link[quantmod]{getPrice}}, 
-#' \code{\link[base]{attr}}, merge, cbind
+#' \code{\link[base]{attr}}, \code{\link{gsa}}, \code{\link{alignSymbols}}, merge, cbind
 #' @examples
 #' 
 #' \dontrun{
@@ -63,7 +63,7 @@
 #' @rdname PF
 makePriceFrame <-
 function(Symbols, from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, subset=NULL, env=.GlobalEnv, silent) {
-    if (any(sapply(Symbols, exists, .GlobalEnv) == FALSE))
+    if (any(sapply(Symbols, exists, env) == FALSE))
        stop(paste("No data in", deparse(substitute(env)), "for", Symbols[!sapply(Symbols, exists, .GlobalEnv)]))
     if (missing(silent)) {
         silent <- ifelse(is.environment(get('.instrument', pos=.GlobalEnv)), FALSE, TRUE)

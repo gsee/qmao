@@ -110,6 +110,7 @@ attr(pf, "prefer")
 }
 \seealso{
   \code{\link{estAd}}, \code{\link[quantmod]{getPrice}},
-  \code{\link[base]{attr}}, merge, cbind
+  \code{\link[base]{attr}}, \code{\link{gsa}},
+  \code{\link{alignSymbols}}, merge, cbind
 }
 
