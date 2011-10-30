@@ -13,13 +13,13 @@
   notional = TRUE, na.omit = TRUE, subset = NULL, env =
   .GlobalEnv, silent)
 
-  makeReturnFrame(Symbols, from = NULL, to = NULL, prefer =
-  NULL, notional = TRUE, na.omit = TRUE, subset = NULL, env
-  = .GlobalEnv, silent, ...)
+  makeReturnFrame(Symbols, ..., from = NULL, to = NULL,
+  prefer = NULL, notional = TRUE, na.omit = TRUE, subset =
+  NULL, env = .GlobalEnv, silent)
 
-  RF(Symbols, from = NULL, to = NULL, prefer = NULL,
+  RF(Symbols, ..., from = NULL, to = NULL, prefer = NULL,
   notional = TRUE, na.omit = TRUE, subset = NULL, env =
-  .GlobalEnv, silent, ...)
+  .GlobalEnv, silent)
 }
 \arguments{
   \item{Symbols}{character vector of names of xts objects}

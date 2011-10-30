@@ -104,7 +104,7 @@ PF <- makePriceFrame
 
 #' @export
 #' @rdname PF
-makeReturnFrame <- function(Symbols, from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, subset=NULL, env=.GlobalEnv, silent, ...) {
+makeReturnFrame <- function(Symbols, ..., from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, subset=NULL, env=.GlobalEnv, silent) {
     if (missing(silent)) {
         silent <- ifelse(is.environment(get('.instrument', pos=.GlobalEnv)), FALSE, TRUE)
     }
