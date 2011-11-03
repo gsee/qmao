@@ -64,7 +64,7 @@
 makePriceFrame <-
 function(Symbols, from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, subset=NULL, env=.GlobalEnv, silent) {
     if (any(sapply(Symbols, exists, env) == FALSE))
-       stop(paste("No data in", deparse(substitute(env)), "for", Symbols[!sapply(Symbols, exists, .GlobalEnv)]))
+       stop(paste("No data in", deparse(substitute(env)), "for", Symbols[!sapply(Symbols, exists, .GlobalEnv)], '\n'))
     if (missing(silent)) {
         silent <- ifelse(is.environment(get('.instrument', pos=.GlobalEnv)), FALSE, TRUE)
     }
