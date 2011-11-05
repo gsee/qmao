@@ -32,3 +32,4 @@ Collate:
     'remove_zero_rows.R'
     'getEPS.R'
     'gsa.R'
+    'adjustIntraday.yahoo.R'
