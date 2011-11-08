@@ -94,6 +94,7 @@ function(Symbols, from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, 
     if (is.null(to)) to <- last(index(pframe))
     pframe <- pframe[paste(from,to,sep="/")]
     attr(pframe, "prefer") <- sub("\\.", "", gsub(Symbols[[1]], "", colnames(pframe)[[1]]))
+    if (!is.null(subset)) attr(pframe, "subset") <- subset
     colnames(pframe) <- Symbols
     pframe
 }
@@ -109,7 +110,13 @@ makeReturnFrame <- function(Symbols, ..., from=NULL, to=NULL, prefer=NULL, notio
         silent <- ifelse(is.environment(get('.instrument', pos=.GlobalEnv)), FALSE, TRUE)
     }
     frame <- makePriceFrame(Symbols,from,to,prefer,notional,na.omit,subset,env,silent)
-    ROC(frame, ...)
+    out <- ROC(frame, ...)
+    dargs <- list(...)
+    if (!is.null(dargs$n)) attr(out, "ROC.n") <- dargs$n 
+    if (!is.null(dargs$type)) { 
+        attr(out, "ROC.type") <- dargs$type 
+    } else attr(out, "ROC.type") <- "continuous"
+    out
 }
 
 #' @export
