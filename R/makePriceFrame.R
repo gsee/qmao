@@ -63,6 +63,7 @@
 #' @rdname PF
 makePriceFrame <-
 function(Symbols, from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, subset=NULL, env=.GlobalEnv, silent) {
+    Symbols <- do.call(c, strsplit(Symbols, ";")) 
     if (any(sapply(Symbols, exists, env) == FALSE))
        stop(paste("No data in", deparse(substitute(env)), "for", Symbols[!sapply(Symbols, exists, .GlobalEnv)], '\n'))
     if (missing(silent)) {
