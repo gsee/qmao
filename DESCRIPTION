@@ -33,3 +33,4 @@ Collate:
     'getEPS.R'
     'gsa.R'
     'adjustIntraday.yahoo.R'
+    'do.rbind.R'
