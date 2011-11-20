@@ -5,6 +5,7 @@ Version: 1.1.5
 Date: 2011-10-01
 Author: Garrett See
 Depends:
+    xts,
     quantmod,
     FinancialInstrument
 Maintainer: Garrett See <gsee000@gmail.com>

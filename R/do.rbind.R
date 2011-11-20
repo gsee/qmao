@@ -30,12 +30,12 @@ do.rbind <- function(x, FUN, f='days', indexAt='lastof') {
     x <- try.xts(x)
     FUN <- match.fun(FUN)
     switch(indexAt, 
-        lastof={
-            idx <- do.call(rbind, lapply(split(x,f), last))
+        lastof=, endof={
+            idx <- x[endpoints(x, f)]
             if (identical(FUN, last)) return(idx)
         },
-        firstof={
-            idx <- do.call(rbind, lapply(split(x,f), first))
+        firstof=, startof={
+            idx <- x[xts:::startof(x, f)]
             if (identical(FUN, first)) return(idx)
         })    
     xts(do.call(rbind, lapply(split(x, f), FUN)), index(idx))
