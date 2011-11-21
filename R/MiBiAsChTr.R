@@ -7,14 +7,29 @@
 #' \code{\link{Lo}}, \code{\link{Cl}}, \code{\link{Ad}}.  They use grep
 #' to locate the appropriate columns, and are case insensitive.
 #'
+#' \code{Mi} will calculate the Mid column if it does not exist, but Bid and Ask columns do exist.
+#'
 #' @param x a data object with columns containing data to be extracted
+#' @param symbol.name used only if the Mid column has to be calculated for creating the column name.
 #' @return an xts object with the appropriately named column
 #' 
 #' @export
 #' @rdname MiBiAsChTr
-Mi <- function(x) {
+Mi <- function(x, symbol.name=NULL) {
     if (has.Mid(x)) 
         return(x[, grep("Mid", colnames(x), ignore.case = TRUE)])
+    if (is.BBO(x)) {
+        mid <- (Bi(x)[,1] + As(x)[,1])/2
+        if (is.null(symbol.name)) {
+            tmpsym <- strsplit(colnames(Bi(x)[,1]), "\\.")[[1]][1]
+            if (identical(integer(0), grep("bid|ask", tmpsym, ignore.case=TRUE))) 
+                symbol.name <- tmpsym
+            else symbol.name <- NULL
+        }
+        if (is.null(symbol.name)) { sep="" } else sep="."
+        colnames(mid) <- paste(symbol.name, "Mid.Price", sep=sep)
+        return(mid)
+    }
     stop("subscript out of bounds: no column name containing \"Mid\"")
 }
 
