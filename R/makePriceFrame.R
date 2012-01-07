@@ -108,7 +108,7 @@ PF <- makePriceFrame
 #' @rdname PF
 makeReturnFrame <- function(Symbols, ..., from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, subset=NULL, env=.GlobalEnv, silent) {
     if (missing(silent)) {
-        silent <- ifelse(is.environment(get('.instrument', pos=.GlobalEnv)), FALSE, TRUE)
+        silent <- if( "package:FinancialInstrument" %in% search() ) { FALSE } else TRUE
     }
     frame <- makePriceFrame(Symbols,from,to,prefer,notional,na.omit,subset,env,silent)
     out <- ROC(frame, ...)
