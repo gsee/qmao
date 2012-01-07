@@ -67,7 +67,7 @@ function(Symbols, from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, 
     if (any(sapply(Symbols, exists, env) == FALSE))
        stop(paste("No data in", deparse(substitute(env)), "for", Symbols[!sapply(Symbols, exists, .GlobalEnv)], '\n'))
     if (missing(silent)) {
-        silent <- ifelse(is.environment(get('.instrument', pos=.GlobalEnv)), FALSE, TRUE)
+        silent <- if( "package:FinancialInstrument" %in% search() ) { FALSE } else TRUE
     }
 	mult <- NULL
 	for (Symbol in Symbols) {

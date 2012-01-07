@@ -112,7 +112,7 @@ get_div <- function(Symbol, force=FALSE, silent=TRUE) {
         div <- try(getDividends(Symbol))
         if (!inherits(div, 'try-error')) {
             instr$div <- div
-            assign(Symbol, instr, pos=.instrument)
+            assign(Symbol, instr, pos=FinancialInstrument:::.instrument)
         } else return(NULL)
     }
     instr$div    
@@ -135,7 +135,7 @@ get_spl <- function(Symbol, force=FALSE, silent=TRUE) {
         spl <- getSplits(Symbol)
         if (!inherits(spl, 'try-error')) {        
             instr$spl <- spl
-            assign(Symbol, instr, pos=.instrument)
+            assign(Symbol, instr, pos=FinancialInstrument:::.instrument)
         } else (return(NULL))
     } 
     instr$spl
