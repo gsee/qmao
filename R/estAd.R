@@ -17,7 +17,8 @@
 #' @return xts object with only one column of prices
 #' @note case insensitive
 #' @author Garrett See
-#' @seealso \code{\link{getPrice}}, Op, Hi, Lo, \code{\link{Cl}}, Bi, As, \code{\link{Mi}}, Tr
+#' @seealso \code{\link{getPrice}}, Op, Hi, Lo, \code{\link{Cl}}, Bi, As, 
+#' \code{\link{Mi}}, Tr
 #' @examples
 #' 
 #' \dontrun{
@@ -32,8 +33,8 @@ function(x, symbol = NULL, prefer=NULL) {
     if (is.null(prefer)) {
 	    if (has.Ad(x)) return(Ad(x))
 	    else if (has.Cl(x)) return(Cl(x))
-	    else if (has.Mid(x)) return(Mi(x))
-	    else getPrice(x, prefer=prefer)
+	    else if (has.Mid(x) || (has.Bid(x) && has.Ask)) return(Mi(x))
+	    else getPrice(x, prefer=NULL) # looks for price, then trade
     } else getPrice(x,prefer=prefer)
 }
 
