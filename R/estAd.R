@@ -33,7 +33,7 @@ function(x, symbol = NULL, prefer=NULL) {
     if (is.null(prefer)) {
 	    if (has.Ad(x)) return(Ad(x))
 	    else if (has.Cl(x)) return(Cl(x))
-	    else if (has.Mid(x) || (has.Bid(x) && has.Ask)) return(Mi(x))
+	    else if (has.Mid(x) || (has.Bid(x) && has.Ask(x))) return(Mi(x))
 	    else getPrice(x, prefer=NULL) # looks for price, then trade
     } else getPrice(x,prefer=prefer)
 }
