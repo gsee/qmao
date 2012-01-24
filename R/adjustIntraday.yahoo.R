@@ -111,7 +111,7 @@ get_div <- function(Symbol, force=FALSE, silent=TRUE) {
     if (is.null(instr$div) || force) {
         div <- try(getDividends(Symbol))
         if (!inherits(div, 'try-error')) {
-            colnames(div) <- paste(Symbol, "div", sep=".")            
+            if (!is.na(div)) colnames(div) <- paste(Symbol, "div", sep=".")            
             instr$div <- div
             assign(Symbol, instr, pos=FinancialInstrument:::.instrument)
         } else return(NULL)
@@ -134,8 +134,8 @@ get_spl <- function(Symbol, force=FALSE, silent=TRUE) {
     }
     if (is.null(instr$spl) || force) {
         spl <- getSplits(Symbol)
-        if (!inherits(spl, 'try-error')) {        
-            colnames(spl) <- paste(Symbol, "spl", sep=".")            
+        if (!inherits(spl, 'try-error')) {
+            if (!is.na(spl)) colnames(spl) <- paste(Symbol, "spl", sep=".")            
             instr$spl <- spl
             assign(Symbol, instr, pos=FinancialInstrument:::.instrument)
         } else (return(NULL))
