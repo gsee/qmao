@@ -2,8 +2,8 @@
 \alias{getSpreadDividends}
 \title{Get Spread Dividends...}
 \usage{
-  getSpreadDividends(spread_id, from = "2007-01-01", to =
-  Sys.Date(), auto.assign = TRUE, env = .GlobalEnv)
+  getSpreadDividends(spread_id, from = "2007-01-01",
+    to = Sys.Date(), auto.assign = TRUE, env = .GlobalEnv)
 }
 \arguments{
   \item{spread_id}{chr primary identifier for an already

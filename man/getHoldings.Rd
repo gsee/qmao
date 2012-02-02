@@ -2,8 +2,8 @@
 \alias{getHoldings}
 \title{get the holdings of an ETF}
 \usage{
-  getHoldings(symbols, env = .GlobalEnv, auto.assign =
-  TRUE)
+  getHoldings(symbols, env = .GlobalEnv,
+    auto.assign = TRUE)
 }
 \arguments{
   \item{symbols}{chr symbols of ETFs}

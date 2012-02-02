@@ -1,13 +1,15 @@
 Package: qmao
 Type: Package
 Title: Quantmod Add-on
-Version: 1.1.8
-Date: 2012-01-05
+Version: 1.1.9
+Date: 2012-02-02
 Author: Garrett See
 Depends:
     xts,
     quantmod,
     FinancialInstrument (>= 0.10.0)
+Suggests:
+    XML
 Maintainer: Garrett See <gsee000@gmail.com>
 Description: some quantmod-like functions.
 License: GPL-3
@@ -34,3 +36,4 @@ Collate:
     'getEPS.R'
     'gsa.R'
     'adjustIntraday.yahoo.R'
+    'getHistoricEarnings.R'

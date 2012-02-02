@@ -4,14 +4,14 @@
 \alias{plotRelPerf}
 \title{Plot several instruments on the same chart}
 \usage{
-  plotRelPerf(symbols, timespan = "", prefer = NULL, env =
-  .GlobalEnv)
+  plotRelPerf(symbols, timespan = "", prefer = NULL,
+    env = .GlobalEnv)
 
   plotInstruments(symbols, timespan = "", prefer = NULL,
-  env = .GlobalEnv)
+    env = .GlobalEnv)
 
-  plotBAT(symbols, timespan = "", prefer = NULL, env =
-  .GlobalEnv)
+  plotBAT(symbols, timespan = "", prefer = NULL,
+    env = .GlobalEnv)
 }
 \arguments{
   \item{symbols}{character strings. vector of names of xts
@@ -40,19 +40,19 @@
 }
 \examples{
 \dontrun{
-syms <- c('SPY','TLT','DBA')
-getSymbols(syms)
-plotRelPerf(syms)
-plotInstruments(syms)
+    syms <- c('SPY','TLT','DBA')
+    getSymbols(syms)
+    plotRelPerf(syms)
+    plotInstruments(syms)
 
-#Use intraday data from IB.
-#and demonstrate how you can put data in different environments
-twsData <- new.env()
-#The next block will take at least 60 seconds to run
-getBAT(twsSTK('TLT','SMART'),env=twsData)
-getBAT(twsSTK('DBA','SMART'),env=twsData)
-plotRelPerf(c('TLT','DBA'),env=twsData)
-plotBAT(c('TLT','DBA'),env=twsData)
+    #Use intraday data from IB.
+    #and demonstrate how you can put data in different environments
+    twsData <- new.env()
+    #The next block will take at least 60 seconds to run
+    getBAT(twsSTK('TLT','SMART'),env=twsData)
+    getBAT(twsSTK('DBA','SMART'),env=twsData)
+    plotRelPerf(c('TLT','DBA'),env=twsData)
+    plotBAT(c('TLT','DBA'),env=twsData)
 }
 }
 \author{

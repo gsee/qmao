@@ -1,7 +1,6 @@
 \docType{package}
 \name{qmao-package}
 \alias{qmao}
-\alias{"qmao-package"}
 \alias{qmao-package}
 \title{Some quantmod-like functions}
 \description{

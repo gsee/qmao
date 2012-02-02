@@ -2,8 +2,8 @@
 \alias{remove_zero_rows}
 \title{Remove rows where specified column(s) has zero value...}
 \usage{
-  remove_zero_rows(Symbols, columns = "Volume", env =
-  .GlobalEnv, store = TRUE)
+  remove_zero_rows(Symbols, columns = "Volume",
+    env = .GlobalEnv, store = TRUE)
 }
 \arguments{
   \item{Symbols}{names of instruments}

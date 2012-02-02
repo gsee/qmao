@@ -2,9 +2,9 @@
 \alias{adjustIntraday.yahoo}
 \title{Adjust intraday data for dividends and splits}
 \usage{
-  adjustIntraday.yahoo(Symbols, adjustVolume = TRUE, env =
-  .GlobalEnv, auto.assign = FALSE, store.to = env, verbose
-  = TRUE)
+  adjustIntraday.yahoo(Symbols, adjustVolume = TRUE,
+    env = .GlobalEnv, auto.assign = FALSE, store.to = env,
+    verbose = TRUE)
 }
 \arguments{
   \item{Symbols}{character name of xts object}

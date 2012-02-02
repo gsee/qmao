@@ -3,7 +3,7 @@
 \title{Get, Subset, Assign}
 \usage{
   gsa(Symbols, subset = "T08:30/T15:00", env = .GlobalEnv,
-  store.to = env, invisible = FALSE)
+    store.to = env, invisible = FALSE)
 }
 \arguments{
   \item{Symbols}{names of xts objects}

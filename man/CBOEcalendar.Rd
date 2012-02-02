@@ -3,11 +3,11 @@
 \alias{CFEcalendar}
 \title{View the CBOE Expiration Calendar}
 \usage{
-  CBOEcalendar(year = format(Sys.Date(), "\%Y"), show =
-  c("pdf", "webpage"))
+  CBOEcalendar(year = format(Sys.Date(), "\%Y"),
+    show = c("pdf", "webpage"))
 
-  CFEcalendar(year = format(Sys.Date(), "\%Y"), show =
-  c("pdf", "webpage"))
+  CFEcalendar(year = format(Sys.Date(), "\%Y"),
+    show = c("pdf", "webpage"))
 }
 \arguments{
   \item{year}{4 digit year of the calendar that you would

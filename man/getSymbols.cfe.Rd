@@ -2,10 +2,10 @@
 \alias{getSymbols.cfe}
 \title{Load Data from the CBOE Futures Exchange website...}
 \usage{
-  getSymbols.cfe(Symbols, Months = NULL, Years = NULL, from
-  = "2004-06-01", to = Sys.Date(), nonzero.close = TRUE,
-  rescale = TRUE, env, return.class = "xts", index.class =
-  "Date", ...)
+  getSymbols.cfe(Symbols, Months = NULL, Years = NULL,
+    from = "2004-06-01", to = Sys.Date(),
+    nonzero.close = TRUE, rescale = TRUE, env,
+    return.class = "xts", index.class = "Date", ...)
 }
 \arguments{
   \item{Symbols}{vector of names of instruments formated

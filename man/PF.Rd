@@ -5,21 +5,21 @@
 \alias{RF}
 \title{Merge Adjusted prices (or returns of adjusted prices) of several symbols}
 \usage{
-  makePriceFrame(Symbols, from = NULL, to = NULL, prefer =
-  NULL, notional = TRUE, na.omit = TRUE, subset = NULL, env
-  = .GlobalEnv, silent)
+  makePriceFrame(Symbols, from = NULL, to = NULL,
+    prefer = NULL, notional = TRUE, na.omit = TRUE,
+    subset = NULL, env = .GlobalEnv, silent)
 
   PF(Symbols, from = NULL, to = NULL, prefer = NULL,
-  notional = TRUE, na.omit = TRUE, subset = NULL, env =
-  .GlobalEnv, silent)
+    notional = TRUE, na.omit = TRUE, subset = NULL,
+    env = .GlobalEnv, silent)
 
   makeReturnFrame(Symbols, ..., from = NULL, to = NULL,
-  prefer = NULL, notional = TRUE, na.omit = TRUE, subset =
-  NULL, env = .GlobalEnv, silent)
+    prefer = NULL, notional = TRUE, na.omit = TRUE,
+    subset = NULL, env = .GlobalEnv, silent)
 
   RF(Symbols, ..., from = NULL, to = NULL, prefer = NULL,
-  notional = TRUE, na.omit = TRUE, subset = NULL, env =
-  .GlobalEnv, silent)
+    notional = TRUE, na.omit = TRUE, subset = NULL,
+    env = .GlobalEnv, silent)
 }
 \arguments{
   \item{Symbols}{character vector of names of xts objects}
