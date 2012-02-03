@@ -95,7 +95,9 @@ getEarnings <- function(Symbol,
     # Convert dollars to numeric
     dSignCols <- grep("\\$", df)
     for(dS in dSignCols) {
-        df[, dS] <- as.numeric(gsub("\\$ ", "", df[, dS]))
+        df[, dS] <- gsub(" ", "", df[, dS])
+        df[, dS] <- gsub("\uA0", "", df[, dS])
+        df[, dS] <- as.numeric(gsub("\\$", "", df[, dS]))
     }
     cn <- make.names(colnames(df))
     #colnames PREV..YEAR.ACTUAL --> PREV.YEAR.ACTUAL

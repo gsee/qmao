@@ -36,4 +36,4 @@ Collate:
     'getEPS.R'
     'gsa.R'
     'adjustIntraday.yahoo.R'
-    'getHistoricEarnings.R'
+    'getEarnings.R'
