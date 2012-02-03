@@ -46,7 +46,7 @@ getHistoricEarnings <- function(Symbol, doFormatTime=TRUE, return.tz='America/Ch
     df <- x[[table.loc]]
     header <- df[1, ]
     df <- df[-1, ]
-    colnames(df) <- header
+    colnames(df) <- make.names(header)
     #format ticker column
     df[, 1] <- gsub("\r\n\t\t\t", "", df[, 1])
     df <- na.omit(df)
