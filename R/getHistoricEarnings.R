@@ -50,9 +50,10 @@ getHistoricEarnings <- function(Symbol, doFormatTime=TRUE, return.tz='America/Ch
     #format ticker column
     df[, 1] <- gsub("\r\n\t\t\t", "", df[, 1])
     df <- na.omit(df)
+    df[df == "n/a"] <- NA
     #format Date/Time column
     # AMC means after mkt close, which I'll interpret to mean 16:01 ET
-    # BMA means before mkt open, which I'll interpret to mean 07:00 ET
+    # BMO means before mkt open, which I'll interpret to mean 07:00 ET
     dt <- df[, grep("DATE/TIME", colnames(df))]
     default.time <- if (any(grepl("AMC", dt))) {
         "AMC"
@@ -68,6 +69,12 @@ getHistoricEarnings <- function(Symbol, doFormatTime=TRUE, return.tz='America/Ch
             default.time=default.time, 
             return.tz=return.tz))
     }
+    # Convert dollars to numeric
+    dSignCols <- grep("\\$", df)
+    for(dS in dSignCols) {
+        df[, dS] <- as.numeric(gsub("\\$ ", "", df[, dS]))
+    }
+    
     df
 }
 
