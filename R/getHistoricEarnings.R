@@ -42,16 +42,16 @@
 #' \code{\link[base]{strftime}} for formats
 #' @examples
 #' \dontrun{
-#' getHistoricEarnings('GOOG')
-#' getHistoricEarnings("GOOG", return.class='data.frame')
-#' getHistoricEarnings("GOOG", return.class='data.frame', doFormatTime=FALSE)
+#' getEarnings('GOOG')
+#' getEarnings("GOOG", return.class='data.frame')
+#' getEarnings("GOOG", return.class='data.frame', doFormatTime=FALSE)
 #' }
 #' @export
-#' @rdname getHistoricEarnings
-getHistoricEarnings <- function(Symbol, 
-                                doFormatTime=TRUE, 
-                                return.tz='America/Chicago',
-                                return.class=c('xts', 'data.frame')) {
+#' @rdname getEarnings
+getEarnings <- function(Symbol, 
+                        doFormatTime=TRUE, 
+                        return.tz='America/Chicago',
+                        return.class=c('xts', 'data.frame')) {
     require(XML)
     return.class <- return.class[[1]]
     if (!return.class %in% c("xts", "data.frame")) 
@@ -59,6 +59,7 @@ getHistoricEarnings <- function(Symbol,
     URL <- paste("http://earnings.com/company.asp?client=cb&ticker=", Symbol, sep="")
     x <- readHTMLTable(URL, stringsAsFactors=FALSE)
     table.loc <- tail(grep("Earnings Releases", x), 1) + 1
+    if (identical(numeric(0), table.loc)) return(NULL)
     df <- x[[table.loc]]
     header <- df[1, ]
     df <- df[-1, ]
@@ -66,9 +67,10 @@ getHistoricEarnings <- function(Symbol,
     #format ticker column
     df[, 1] <- gsub("\r\n\t\t\t", "", df[, 1])
     df <- na.omit(df)
-    df[df == "n/a"] <- NA
+    df[df == "n/a\uA0"] <- NA #on Ubuntu there is a non-break space
+    df[df == "n/a"] <- NA #on Mac there is neither a space nor a non-break space
     #format Date/Time column
-    # AMC means after mkt close, which I'll interpret to mean 16:01 ET
+    # AMC means after mkt close, which I'll interpret to mean 16:15 ET
     # BMO means before mkt open, which I'll interpret to mean 07:00 ET
     dt <- df[, grep("DATE/TIME", colnames(df))]
     default.time <- if (any(grepl("AMC", dt))) {
@@ -105,7 +107,7 @@ getHistoricEarnings <- function(Symbol,
 }
 
 #' @export
-#' @rdname getHistoricEarnings
+#' @rdname getEarnings
 convertEarningsTime <- function(x, 
                                 date.format='%d-%b-%y', 
                                 default.time="AMC",
@@ -152,4 +154,52 @@ convertEarningsTime <- function(x,
     }
 }
 
-
+#' download historic earnings and earnings estimates for a given stock
+#'
+#' THIS FUNCTION HAS BEEN RENAMED; Use \code{\link{getEarnings}} instead. 
+#' 
+#' download historic earnings and earnings estimates for a given stock from
+#' \url{http://earnings.com}. One of the columns of the \code{data.frame} will 
+#' be the Dates/Times of the earnings release.  These Dates/Times may have one 
+#' of a few different formats, most of which are ambiguous.  
+#' \code{convertEarningsTime} will format the Dates/Times in an unambiguously; it
+#' will be called if \code{getHistoricEarnings} is called with 
+#' \code{doFormatTime = TRUE}.
+#'
+#' If one of the earnings Date/Time values contains \dQuote{BMO} or \dQuote{AMC},
+#' it will be substituted with \dQuote{07:00:00} and \dQuote{16:15:00}, 
+#' respectively in New York time.
+#'
+#' @param Symbol character string ticker symbol of stock
+#' @param doFormatTime should the values of the Date/Time be re-formatted? (TRUE)
+#' @param return.tz timezone in which to represent Date/Time of earnings release.
+#'   ignored if \code{doFormatTime} is not \code{TRUE}
+#' @param return.class can be one of \dQuote{xts} or \dQuote{data.frame}.  
+#' @return for \code{getHistoricEarnings}, it depends on \code{return.class};
+#' If it is \dQuote{xts}, an \code{xts} object will be returned that will only 
+#' contain the numeric columns: 
+#' dQuote{EPS.ESTIMATE}, \dQuote{EPS.ACTUAL}, and \dQuote{PREV.YEAR.ACTUAL}.
+#' If \code{return.class} is \dQuote{data.frame}, a \code{data.frame} will be 
+#' returned that, in addition to the columns of the xts, also contain columns 
+#' \dQuote{Symbol}, \dQuote{PERIOD}, \dQuote{EVENT.TITLE}, and \dQuote{TIME}.
+#' 
+#' \code{convertEarningsTime} will return a string representing a date and time.
+#' in the format "%Y-%m-%d %H:%M%:S %Z"
+#' @references \url{http://earnings.com}
+#' @seealso \code{\link{getHoldings}}, \code{\link[quantmod]{getFinancials}},
+#' \code{\link[quantmod]{getDividends}}, \code{\link{get_div}},
+#' \code{\link[quantmod]{getSplits}}, \code{\link{get_spl}},
+#' 
+#' \code{\link[base]{strftime}} for formats
+#' @examples
+#' \dontrun{
+#' getHistoricEarnings('GOOG')
+#' getHistoricEarnings("GOOG", return.class='data.frame')
+#' getHistoricEarnings("GOOG", return.class='data.frame', doFormatTime=FALSE)
+#' }
+getHistoricEarnings <- function(Symbol, 
+                                doFormatTime=TRUE, 
+                                return.tz='America/Chicago',
+                                return.class=c('xts', 'data.frame')) {
+    .Deprecated("getEarnings")
+}
