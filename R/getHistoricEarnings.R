@@ -16,6 +16,7 @@
 #' @param doFormatTime should the values of the Date/Time be re-formatted? (TRUE)
 #' @param return.tz timezone in which to represent Date/Time of earnings release.
 #'   ignored if \code{doFormatTime} is not \code{TRUE}
+#' @param return.class can be one of \dQuote{xts} or \dQuote{data.frame}.  
 #'
 #' @param x character string representing a time or date
 #' @param date.format format of the date
@@ -23,7 +24,14 @@
 #'   stands for After Market Close and will become \dQuote{16:00:00} New York
 #'   time.  \dQuote{BMO} stands for Before Market Open and will become
 #'   \dQuote{07:00:00} New York time.
-#' @return \code{getHistoricEarnings} returns a data.frame.
+#' @return for \code{getHistoricEarnings}, it depends on \code{return.class};
+#' If it is \dQuote{xts}, an \code{xts} object will be returned that will only 
+#' contain the numeric columns: 
+#' dQuote{EPS.ESTIMATE}, \dQuote{EPS.ACTUAL}, and \dQuote{PREV.YEAR.ACTUAL}.
+#' If \code{return.class} is \dQuote{data.frame}, a \code{data.frame} will be 
+#' returned that, in addition to the columns of the xts, also contain columns 
+#' \dQuote{Symbol}, \dQuote{PERIOD}, \dQuote{EVENT.TITLE}, and \dQuote{TIME}.
+#' 
 #' \code{convertEarningsTime} will return a string representing a date and time.
 #' in the format "%Y-%m-%d %H:%M%:S %Z"
 #' @references \url{http://earnings.com}
@@ -35,18 +43,26 @@
 #' @examples
 #' \dontrun{
 #' getHistoricEarnings('GOOG')
+#' getHistoricEarnings("GOOG", return.class='data.frame')
+#' getHistoricEarnings("GOOG", return.class='data.frame', doFormatTime=FALSE)
 #' }
 #' @export
 #' @rdname getHistoricEarnings
-getHistoricEarnings <- function(Symbol, doFormatTime=TRUE, return.tz='America/Chicago') {
+getHistoricEarnings <- function(Symbol, 
+                                doFormatTime=TRUE, 
+                                return.tz='America/Chicago',
+                                return.class=c('xts', 'data.frame')) {
     require(XML)
+    return.class <- return.class[[1]]
+    if (!return.class %in% c("xts", "data.frame")) 
+        stop('return.class must be either "xts" or "data.frame"')
     URL <- paste("http://earnings.com/company.asp?client=cb&ticker=", Symbol, sep="")
     x <- readHTMLTable(URL, stringsAsFactors=FALSE)
     table.loc <- tail(grep("Earnings Releases", x), 1) + 1
     df <- x[[table.loc]]
     header <- df[1, ]
     df <- df[-1, ]
-    colnames(df) <- make.names(header)
+    colnames(df) <- header
     #format ticker column
     df[, 1] <- gsub("\r\n\t\t\t", "", df[, 1])
     df <- na.omit(df)
@@ -60,9 +76,14 @@ getHistoricEarnings <- function(Symbol, doFormatTime=TRUE, return.tz='America/Ch
     } else if (any(grepl("BMO", dt))) {
         "BMO"
     } else "AMC"
+
+    if (!isTRUE(doFormatTime) && return.class == "xts") {
+        warning('doFormatTime argument will be ignored for "xts" return.class')
+        doFormatTime <- TRUE
+    }
     if (isTRUE(doFormatTime)) {
         DTcol <- grep("DATE/TIME", colnames(df))
-        colnames(df)[DTcol] <- paste("TIME(", return.tz, ")", sep="")
+        colnames(df)[DTcol] <- "TIME"
         df[, DTcol] <- do.call(c, 
         lapply(dt, convertEarningsTime, 
             date.format='%d-%b-%y', 
@@ -74,8 +95,13 @@ getHistoricEarnings <- function(Symbol, doFormatTime=TRUE, return.tz='America/Ch
     for(dS in dSignCols) {
         df[, dS] <- as.numeric(gsub("\\$ ", "", df[, dS]))
     }
-    
-    df
+    cn <- make.names(colnames(df))
+    #colnames PREV..YEAR.ACTUAL --> PREV.YEAR.ACTUAL
+    cn <- gsub('..', '.', cn, fixed=TRUE) 
+    colnames(df) <- cn
+    if (return.class == 'data.frame') return(df)
+    if (return.class == 'xts') return(xts(df[, grep("EPS|ACTUAL", cn)], 
+                                          as.POSIXct(df[, "TIME"])))
 }
 
 #' @export
