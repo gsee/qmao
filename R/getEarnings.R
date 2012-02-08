@@ -27,13 +27,13 @@
 #' @return for \code{getHistoricEarnings}, it depends on \code{return.class};
 #' If it is \dQuote{xts}, an \code{xts} object will be returned that will only 
 #' contain the numeric columns: 
-#' dQuote{EPS.ESTIMATE}, \dQuote{EPS.ACTUAL}, and \dQuote{PREV.YEAR.ACTUAL}.
+#' \dQuote{EPS.ESTIMATE}, \dQuote{EPS.ACTUAL}, and \dQuote{PREV.YEAR.ACTUAL}.
 #' If \code{return.class} is \dQuote{data.frame}, a \code{data.frame} will be 
 #' returned that, in addition to the columns of the xts, also contain columns 
 #' \dQuote{Symbol}, \dQuote{PERIOD}, \dQuote{EVENT.TITLE}, and \dQuote{TIME}.
 #' 
 #' \code{convertEarningsTime} will return a string representing a date and time.
-#' in the format "%Y-%m-%d %H:%M%:S %Z"
+#' in the format \dQuote{\%Y-\%m-\%d \%H:\%M\%:S \%Z}
 #' @references \url{http://earnings.com}
 #' @seealso \code{\link{getHoldings}}, \code{\link[quantmod]{getFinancials}},
 #' \code{\link[quantmod]{getDividends}}, \code{\link{get_div}},
@@ -87,10 +87,10 @@ getEarnings <- function(Symbol,
         DTcol <- grep("DATE/TIME", colnames(df))
         colnames(df)[DTcol] <- "TIME"
         df[, DTcol] <- do.call(c, 
-        lapply(dt, convertEarningsTime, 
-            date.format='%d-%b-%y', 
-            default.time=default.time, 
-            return.tz=return.tz))
+            lapply(dt, convertEarningsTime, 
+                date.format='%d-%b-%y', 
+                default.time=default.time, 
+                return.tz=return.tz))
     }
     # Convert dollars to numeric
     dSignCols <- grep("\\$", df)
@@ -104,8 +104,11 @@ getEarnings <- function(Symbol,
     cn <- gsub('..', '.', cn, fixed=TRUE) 
     colnames(df) <- cn
     if (return.class == 'data.frame') return(df)
-    if (return.class == 'xts') return(xts(df[, grep("EPS|ACTUAL", cn)], 
-                                          as.POSIXct(df[, "TIME"])))
+    if (return.class == 'xts') {
+        out <- apply(df[, grep("EPS|ACTUAL", cn)], 2, as.numeric)
+        return(xts(out, as.POSIXct(df[, "TIME"])))
+    }
+    NULL
 }
 
 #' @export

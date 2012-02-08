@@ -37,7 +37,7 @@
   for \code{getHistoricEarnings}, it depends on
   \code{return.class}; If it is \dQuote{xts}, an \code{xts}
   object will be returned that will only contain the
-  numeric columns: dQuote{EPS.ESTIMATE},
+  numeric columns: \dQuote{EPS.ESTIMATE},
   \dQuote{EPS.ACTUAL}, and \dQuote{PREV.YEAR.ACTUAL}. If
   \code{return.class} is \dQuote{data.frame}, a
   \code{data.frame} will be returned that, in addition to
@@ -46,8 +46,8 @@
   and \dQuote{TIME}.
 
   \code{convertEarningsTime} will return a string
-  representing a date and time. in the format "%Y-%m-%d
-  %H:%M%:S %Z"
+  representing a date and time. in the format
+  \dQuote{\%Y-\%m-\%d \%H:\%M\%:S \%Z}
 }
 \description{
   download historic earnings and earnings estimates for a
