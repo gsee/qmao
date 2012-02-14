@@ -94,7 +94,7 @@ function(Symbols, from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, 
     if (is.null(from)) from <- first(index(pframe))
     if (is.null(to)) to <- last(index(pframe))
     pframe <- pframe[paste(from,to,sep="/")]
-    attr(pframe, "prefer") <- sub("\\.", "", gsub(Symbols[[1]], "", colnames(pframe)[[1]]))
+    attr(pframe, "prefer") <- sub("\\.", "", sub(Symbols[[1]], "", colnames(pframe)[[1]]))
     if (!is.null(subset)) attr(pframe, "subset") <- subset
     colnames(pframe) <- Symbols
     pframe
