@@ -66,7 +66,7 @@ getHoldings <-function(symbols, env=.GlobalEnv, auto.assign=TRUE) {
 			    fr <- fr[1:(length(fr[,1])-3),c(1,3)]
 			    fr <- fr[fr$Symbol!='--',] #maybe this is dangerous, but I'm ignoring stuff with Symbol=="--" (e.g. BLACKROCK FDS III)
 			    #colnames(fr) <- c('Symbol','Name',paste(symbol,'Weight',sep='.'))
-			    fr <- data.frame(fr[,2],row.names=fr[,1])			
+			    fr <- data.frame(fr[,2],row.names=gsub(" ", "", fr[,1]))			
 			    colnames(fr) <- paste(symbol,'Weight',sep='.')
                 if (auto.assign) assign(paste(symbol,'h',sep='.'),fr,pos=env)
 			    ishr.out <- c(ishr.out,paste(symbol,'h',sep='.'))
