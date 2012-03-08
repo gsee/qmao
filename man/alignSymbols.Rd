@@ -1,11 +1,11 @@
 \name{alignSymbols}
 \alias{alignSymbols}
-\title{Delete rows that not all symbols have in common}
+\title{Delete rows that not all Symbols have in common}
 \usage{
-  alignSymbols(symbols, env = .GlobalEnv)
+  alignSymbols(Symbols, env = .GlobalEnv)
 }
 \arguments{
-  \item{symbols}{character vector of symbol names which
+  \item{Symbols}{character vector of symbol names which
   correspond to xts objects}
 
   \item{env}{The environment that holds the xts objects}
@@ -14,21 +14,21 @@
   used for its side effect.
 }
 \description{
-  Deletes rows that not all symbols have in common
+  Deletes rows that not all Symbols have in common
 }
 \details{
-  alignSymbols will get symbols from the specified
+  alignSymbols will get Symbols from the specified
   environment (.GlobalEnv by default), merge them together,
   and delete all rows that have any NAs.  Then it will
   \sQuote{unmerge} and assign the cleaned data back to the
-  xts objects named by \code{symbols}.
+  xts objects named by \code{Symbols}.
 }
 \examples{
 \dontrun{
-symbols <- c("SPY","DIA","CORN")
-getSymbols(symbols)
+Symbols <- c("SPY","DIA","CORN")
+getSymbols(Symbols)
 length(Cl(SPY));length(Cl(DIA));length(Cl(CORN))
-alignSymbols(symbols)
+alignSymbols(Symbols)
 length(Cl(SPY));length(Cl(DIA));length(Cl(CORN))
 }
 }
