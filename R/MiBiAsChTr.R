@@ -33,13 +33,13 @@ Mi <- function(x, symbol.name=NULL) {
         }
         mid <- (Bi(FindPrice(Bi(x))) + As(FindPrice(As(x)))) / 2
         if (is.null(symbol.name)) {
-            tmpsym <- strsplit(colnames(Bi(x)[,1]), "\\.")[[1]][1]
+            tmpsym <- strsplit(colnames(FindPrice(Bi(x))), "\\.")[[1]][1]
             if (identical(integer(0), grep("bid|ask", tmpsym, ignore.case=TRUE))) 
                 symbol.name <- tmpsym
             else symbol.name <- NULL
         }
         if (is.null(symbol.name)) { sep="" } else sep="."
-        colnames(mid) <- paste(symbol.name, "Mid.Price", sep=sep)
+        names(mid) <- paste(symbol.name, "Mid.Price", sep=sep)
         return(mid)
     }
     stop("subscript out of bounds: no column name containing \"Mid\"")
