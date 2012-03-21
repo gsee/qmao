@@ -19,7 +19,19 @@ Mi <- function(x, symbol.name=NULL) {
     if (has.Mid(x)) 
         return(x[, grep("Mid", colnames(x), ignore.case = TRUE)])
     if (is.BBO(x)) {
-        mid <- (Bi(x)[,1] + As(x)[,1])/2
+        FindPrice <- function(xx) {
+            if (length(xx) > 1) {
+                xx <- xx[, -grep("qty|quantity|size", colnames(xx), 
+                                 ignore.case=TRUE), drop=FALSE]
+            }
+            if (length(xx) > 1) {
+                if (any(grepl("Price", colnames(xx), ignore.case=TRUE))) {
+                    xx[, grep("Price", colnames(xx), ignore.case=TRUE)[1],
+                       drop=FALSE]
+                } else xx[, 1, drop=FALSE]
+            } else xx
+        }
+        mid <- (Bi(FindPrice(Bi(x))) + As(FindPrice(As(x)))) / 2
         if (is.null(symbol.name)) {
             tmpsym <- strsplit(colnames(Bi(x)[,1]), "\\.")[[1]][1]
             if (identical(integer(0), grep("bid|ask", tmpsym, ignore.case=TRUE))) 
