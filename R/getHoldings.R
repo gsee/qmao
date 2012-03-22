@@ -65,7 +65,7 @@ getHoldings <-function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
 	        ishr.syms <- read.csv(tmp)
 	        ishr.syms <- as.character(ishr.syms$Fund.Name)[-1]
 	        unlink(tmp)
-            if(!is.na(match(symbol,ishr.syms))) {		
+            if(symbol %in% ishr.syms) {
 			    tmp <- tempfile()
 			    download.file(paste('http://us.ishares.com/product_info/fund/excel_holdings.htm?ticker=',symbol,sep=""), destfile=tmp)
 			    fr <- read.csv(tmp, skip=11, stringsAsFactors=FALSE)
@@ -73,7 +73,7 @@ getHoldings <-function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
 			    fr <- fr[1:(length(fr[,1])-3),c(1:3)]
 			    fr <- fr[fr$Symbol!='--',] #maybe this is dangerous, but I'm ignoring stuff with Symbol=="--" (e.g. BLACKROCK FDS III)
 			    #colnames(fr) <- c('Symbol','Name',paste(symbol,'Weight',sep='.'))
-			    fr[, 1] <- gsub(" ", "", fr[, 1])
+			    fr[, 1] <- make.names(gsub(" ", "", fr[, 1]))
                 rowsyms <- fr[, 1]
                 dupes <- character(0)
                 if (any(duplicated(rowsyms))) {
