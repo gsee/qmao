@@ -1,7 +1,7 @@
 Package: qmao
 Type: Package
 Title: Quantmod Add-on
-Version: 1.2.0
+Version: 1.2.1
 Date: 2012-03-22
 Author: Garrett See
 Depends:

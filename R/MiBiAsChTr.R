@@ -21,8 +21,11 @@ Mi <- function(x, symbol.name=NULL) {
     if (is.BBO(x)) {
         FindPrice <- function(xx) {
             if (length(xx) > 1) {
-                xx <- xx[, -grep("qty|quantity|size", colnames(xx), 
-                                 ignore.case=TRUE), drop=FALSE]
+                sz <- grep("qty|quantity|size", colnames(xx), 
+                              ignore.case=TRUE)
+                if(length(sz)) {
+                    xx <- xx[, -sz, drop=FALSE]
+                }
             }
             if (length(xx) > 1) {
                 if (any(grepl("Price", colnames(xx), ignore.case=TRUE))) {
