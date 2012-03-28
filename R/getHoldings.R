@@ -48,7 +48,7 @@ getHoldings <-function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
 		if(!is.na(match(symbol,spdr.syms))) {
 			tmp <- tempfile()
 			download.file(paste("http://www.sectorspdr.com/content/?do=indexComposition&symbol=", 
-								symbol, "&filetype=csv", sep=""), destfil=tmp) 
+								symbol, "&filetype=csv", sep=""), destfile=tmp) 
 			fr <- read.csv(tmp,sep="\t",stringsAsFactors=FALSE)
 			unlink(tmp)
 			fr <- data.frame(fr[, c(4, 2)], row.names=as.character(fr[,3]),
