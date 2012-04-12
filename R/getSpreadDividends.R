@@ -4,7 +4,7 @@
 #' 
 #' Given a spread_id, this will look for dividend data for each of the
 #' constituent legs of the spread in the the env specified.  If dividend data
-#' are not in \code{env} a call will be made to \code{getSymbols} The
+#' are not in \code{env} a call will be made to \code{getDividends} The
 #' memberratio (stored in the spread instrument) will be used to weight the
 #' dividends.  Negative values in \sQuote{memberratio} indicate short
 #' positions.  Dividends on short legs will be negative.
@@ -23,6 +23,8 @@
 #' 
 #' otherwise, an xts object containing dividends with negative values
 #' indicating payments in leiu of dividends.
+#' @seealso \code{\link[quantmod]{getDividends}}, 
+#'   \code{\link[FinancialInstrument]{spread}}
 #' @examples
 #' \dontrun{
 #' s <- define_stocks(c("SPY","DIA"))

@@ -35,6 +35,7 @@ do.call(cbind, lapply(c("GOOG","MSFT","IBM"), getEPS))
 }
 }
 \seealso{
-  \code{\link[quantmod]{getFinancials}}
+  \code{\link{getEarnings}} for historic earnings estimates
+  and actual earnings from earnings.com.
 }
 

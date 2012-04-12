@@ -8,7 +8,8 @@
 #' @param freq Quarterly or Annual (but, only the first letter is used, so "Q" and "A" work also)
 #' @param src Only 'google' is currently supported.
 #' @return an xts object containing historical Diluted Normalized EPS according to google.
-#' @seealso \code{\link[quantmod]{getFinancials}}
+#' @seealso \code{\link{getEarnings}} for historic earnings estimates 
+#'   and actual earnings from earnings.com.
 #' @examples
 #' \dontrun{
 #' getEPS("GOOG") # Quarterly by default

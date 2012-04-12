@@ -6,8 +6,9 @@
 #' @param on panel to add vertical line on
 #' @param col color of the line
 #' @return used for its side effect.
-#' @author Garrett See
 #' @seealso chartSeries, addTA
+#' @references 
+#' \url{https://stat.ethz.ch/pipermail/r-sig-finance/2009q2/004018.html}
 #' @examples
 #' \dontrun{
 #' getSymbols('SPY',adjust=TRUE)

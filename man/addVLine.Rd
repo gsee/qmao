@@ -24,8 +24,8 @@ chartSeries(SPY)
 addVLine(index(SPY['2011-05-20::2011-05-25']))
 }
 }
-\author{
-  Garrett See
+\references{
+  \url{https://stat.ethz.ch/pipermail/r-sig-finance/2009q2/004018.html}
 }
 \seealso{
   chartSeries, addTA
