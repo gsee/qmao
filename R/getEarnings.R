@@ -202,6 +202,7 @@ convertEarningsTime <- function(x,
 #' getHistoricEarnings("GOOG", return.class='data.frame')
 #' getHistoricEarnings("GOOG", return.class='data.frame', doFormatTime=FALSE)
 #' }
+#' @rdname getHistoricEarnings-deprecated
 getHistoricEarnings <- function(Symbol, 
                                 doFormatTime=TRUE, 
                                 return.tz='America/Chicago',
