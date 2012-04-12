@@ -4,8 +4,8 @@
 #' \url{http://earnings.com}. One of the columns of the \code{data.frame} will 
 #' be the Dates/Times of the earnings release.  These Dates/Times may have one 
 #' of a few different formats, most of which are ambiguous.  
-#' \code{convertEarningsTime} will format the Dates/Times in an unambiguously; it
-#' will be called if \code{getHistoricEarnings} is called with 
+#' \code{convertEarningsTime} will put the Dates/Times in an unambiguous format; 
+#' it will be called if \code{getHistoricEarnings} is called with 
 #' \code{doFormatTime = TRUE}.
 #'
 #' If one of the earnings Date/Time values contains \dQuote{BMO} or \dQuote{AMC},

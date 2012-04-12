@@ -55,8 +55,8 @@
   columns of the \code{data.frame} will be the Dates/Times
   of the earnings release.  These Dates/Times may have one
   of a few different formats, most of which are ambiguous.
-  \code{convertEarningsTime} will format the Dates/Times in
-  an unambiguously; it will be called if
+  \code{convertEarningsTime} will put the Dates/Times in an
+  unambiguous format; it will be called if
   \code{getHistoricEarnings} is called with
   \code{doFormatTime = TRUE}.
 }
