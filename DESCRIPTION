@@ -1,7 +1,7 @@
 Package: qmao
 Type: Package
 Title: Quantmod Add-on
-Version: 1.2.1
+Version: 1.2.2
 Date: 2012-03-22
 Author: Garrett See
 Depends:
@@ -37,3 +37,4 @@ Collate:
     'gsa.R'
     'adjustIntraday.yahoo.R'
     'getEarnings.R'
+    'gaa.R'

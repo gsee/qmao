@@ -11,7 +11,7 @@
 #' @param env environment where data is stored (.GlobalEnv)
 #' @param store.to environment in which to store the subsetted data. By default it is the same as \code{env}
 #' @param invisible TRUE/FALSE. If true, nothing is returned, otherwise, the name of symbols that were subset will be returned
-#' @seealso \code{\link{alignSymbols}}, \code{\link{PF}}
+#' @seealso \code{\link{gaa}}, \code{\link{alignSymbols}}, \code{\link{PF}}
 #' @author Garrett See
 #' @examples
 #' \dontrun{

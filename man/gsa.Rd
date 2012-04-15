@@ -41,6 +41,7 @@ tail(SPY)
   Garrett See
 }
 \seealso{
-  \code{\link{alignSymbols}}, \code{\link{PF}}
+  \code{\link{gaa}}, \code{\link{alignSymbols}},
+  \code{\link{PF}}
 }
 
