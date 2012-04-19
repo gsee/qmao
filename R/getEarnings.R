@@ -24,7 +24,7 @@
 #'   stands for After Market Close and will become \dQuote{16:00:00} New York
 #'   time.  \dQuote{BMO} stands for Before Market Open and will become
 #'   \dQuote{07:00:00} New York time.
-#' @return for \code{getHistoricEarnings}, it depends on \code{return.class};
+#' @return for \code{getEarnings}, it depends on \code{return.class};
 #' If it is \dQuote{xts}, an \code{xts} object will be returned that will only 
 #' contain the numeric columns: 
 #' \dQuote{EPS.ESTIMATE}, \dQuote{EPS.ACTUAL}, and \dQuote{PREV.YEAR.ACTUAL}.

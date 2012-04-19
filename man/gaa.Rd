@@ -43,8 +43,8 @@ head(SPY)
 gaa("SPY", adjustOHLC, symbol.name="SPY")
 head(SPY)
 
-## Need to loop for functions that use deparse(substitute(...)) if calling
-## with more than 1 symbol
+## Need to loop for functions like adjustOHLC that use
+## deparse(substitute(...)) if calling with more than 1 symbol
 sapply(s[2:3], function(x) gaa(x, adjustOHLC, symbol.name=x))
 
 ## Clean up

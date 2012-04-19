@@ -34,7 +34,7 @@
   become \dQuote{07:00:00} New York time.}
 }
 \value{
-  for \code{getHistoricEarnings}, it depends on
+  for \code{getEarnings}, it depends on
   \code{return.class}; If it is \dQuote{xts}, an \code{xts}
   object will be returned that will only contain the
   numeric columns: \dQuote{EPS.ESTIMATE},
