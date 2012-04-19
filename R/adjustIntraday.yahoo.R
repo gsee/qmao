@@ -10,26 +10,30 @@
 #' have dividend data in a slot named 
 #' \dQuote{div}, the data will be downloaded
 #' and put there.
-#' Data should be in an xts object with columns:
-#' \sQuote{Bid}, \sQuote{Ask}, \sQuote{Trade}, \sQuote{Mid}, \sQuote{Volume}
+#' Data should be in an xts object.  If there is a Volume column, it will be
+#' divided by the adjustmet ratio; all other columns will be multiplied by it.
 #' @param Symbols character name of xts object
 #' @param adjustVolume if \code{TRUE} (default) Volume will be divided by the adjustment ratio
 #' @param env the environment where \code{x} is stored
 #' @param auto.assign assign the adjusted data in the environment named \code{store.to}?
 #' @param store.to environment in which to store the adjusted data (if \code{auto.assign=TRUE})
 #' @param verbose cat progress info to screen?
-#' @return if \code{auto.assign=TRUE} (default) the name of the xts object is returned.  Otherwise, the adjusted
-#' xts object is returned.
+#' @return if \code{auto.assign=TRUE} (default) the name of the xts object is 
+#' returned.  Otherwise, the adjusted xts object is returned.  The Volume
+#' column (if there is one) will be moved to become the last column
 #' @seealso \code{\link{adjustBAM}}
 #' @author gsee
-#' @note Currently, adjustBAM will adjust OHLC or BAM data using addition/subtraction of cash flows.  Also, it
-#' requires that there be a pre-calculated column with Adjusted prices.  On the otherhand, adjustIntraday.yahoo 
-#' will only adjust BATM data, and it will adjust it by multiplying the data by an adjustment ratio.  The adjustment
-#' ratio does not account for splits.  adjustIntraday.yahoo does not require a pre-calculated Adjusted column.
-#' I plan to make these functions more similar, and to make the names of the functions more 
-#' meaningful/representative of what they actually do.
+#' @note Currently, adjustBAM will adjust OHLC or BAM data using 
+#' addition/subtraction of cash flows.  Also, it requires that there be a 
+#' pre-calculated column with Adjusted prices.  On the otherhand, 
+#' adjustIntraday.yahoo will multiply the data by an adjustment ratio.  
+#' Currently, the adjustment ratio does not account for splits.  
+#' adjustIntraday.yahoo does not require a pre-calculated Adjusted column.
+#' I plan to make these functions more similar, and to make the names of the 
+#' functions more meaningful/representative of what they actually do.
 #' @export
-adjustIntraday.yahoo <- function(Symbols, adjustVolume=TRUE, env=.GlobalEnv, auto.assign=FALSE, store.to=env, verbose=TRUE) {
+adjustIntraday.yahoo <- function(Symbols, adjustVolume=TRUE, env=.GlobalEnv, 
+                                 auto.assign=FALSE, store.to=env, verbose=TRUE) {
     if (auto.assign) {
         if (!is.environment(store.to)) stop(store.to, " is not an environment") 
     } else if (length(Symbols) > 1) stop("auto.assign must be TRUE if length(Symbols) > 1.")
@@ -50,16 +54,29 @@ adjustIntraday.yahoo <- function(Symbols, adjustVolume=TRUE, env=.GlobalEnv, aut
     #    spl <- get_spl(sym)
         if (is.null(div)) div <- NA
     #    if (is.null(spl)) spl <- NA
-        cls <- to.daily(Mi(symdata),OHLC=FALSE)
+        cls <- if (!has.Mid(symdata) && !(has.Bid(symdata) && has.Ask(symdata))) {
+            if (has.Cl(symdata)) {
+                Cl(symdata)
+            } else if (has.Trade(symdata)) {
+                Tr(symdata)
+            } else if (NCOL(symdata) == 1) {
+                symdata
+            } else stop("data should have a Mid, Close, Trade column, or only have 1 column.")
+        } else Mi(symdata)
+        cls <- to.daily(cls, OHLC=FALSE)
         index(cls) <- as.Date(index(cls))
         colnames(cls) <- gsub('Mid','Close',colnames(cls),ignore.case=TRUE)
-        drat <- adjRatios(dividends=div, close=cls)
+        drat <- adjRatios(dividends=div, close=cls) #, splits=spl
         drat <- drat[, 1] * drat[, 2]
-        idrat <- cbind(Mi(symdata), drat) 
+        idrat <- cbind(symdata[, 1], drat) 
         idrat[,2] <- na.locf(idrat[,2])
         idrat <- as.numeric(idrat[!is.na(idrat[,1])][,2]) #intraday ratio
-        #Bid Ask Trade Mid are multiplied by ratio, Volume is divided by it
-        x <- cbind(coredata(symdata[,1:4]) * idrat, coredata(symdata[,5]) / idrat)
+
+        # muliply prices by ratio; divide Volume by ratio (if it has Volume)
+        x <- if (has.Vo(symdata)) {
+            cbind(coredata(symdata[, -has.Vo(symdata, which=TRUE)]) * idrat, 
+                  coredata(Vo(symdata)) / idrat)
+        } else coredata(symdata) * idrat
         xcoredata(x) <- xcoredata(symdata)
         attr(x, 'adj') <- TRUE
         if (auto.assign) {
