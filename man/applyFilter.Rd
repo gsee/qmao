@@ -2,13 +2,17 @@
 \alias{applyFilter}
 \title{Filter out bad prices}
 \usage{
-  applyFilter(BAM, filter = 1e-04)
+  applyFilter(BAM, filter = 1e-04, verbose = TRUE)
 }
 \arguments{
   \item{BAM}{An xts object that has Bid, Ask, and}
 
   \item{filter}{a very small number that is the percentage
   of data to delete}
+
+  \item{verbose}{TRUE/FALSE. If TRUE, the number of rows
+  that were removed will be printed to the standard output
+  connection via \code{\link{cat}}}
 }
 \value{
   Same as BAM only with fewer rows

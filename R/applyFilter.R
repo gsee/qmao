@@ -8,6 +8,8 @@
 #' 
 #' @param BAM An xts object that has Bid, Ask, and
 #' @param filter a very small number that is the percentage of data to delete
+#' @param verbose TRUE/FALSE. If TRUE, the number of rows that were removed will
+#'   be printed to the standard output connection via \code{\link{cat}}
 #' @return Same as BAM only with fewer rows
 #' @note If applyFilter is called with a filter value of 0, it may still filter
 #' the row with the widest Bid-Ask spread.
@@ -34,14 +36,18 @@
 #' }
 #' #@export
 applyFilter <-
-function(BAM,filter=0.0001) {
-    if (has.Ad(BAM)) tmp <- adjustBAM(BAM)[,1:2]
-    else tmp <- BAM[,1:2]
-    #TODO: use Bid, and Ask functions instead of requiring them to 
-    #be in columns 1 and 2.	
+function(BAM, filter=0.0001, verbose=TRUE) {
+    if (!has.Bid(BAM) || !has.Ask(BAM)) stop('BAM must have Bid and Ask')
+    tmp <- BAM(BAM)[, 1:2]
     tmp.bas <- tmp[,2]-tmp[,1]
 	tmp.q <- as.numeric(quantile(tmp.bas,prob=(1-filter-0.00000000001)))
 	tmp <- tmp[tmp[,2]-tmp[,1] <= tmp.q]
+    if (isTRUE(verbose)) {
+        removed <- NROW(BAM) - NROW(tmp)
+        cat(paste0(removed, " rows removed (", 
+                   sprintf("%.2f", removed / NROW(BAM) * 100),  "%); ", 
+                   NROW(tmp), " rows remain.\n"))
+    }
 	BAM[index(tmp)]
 }
 
