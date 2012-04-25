@@ -16,7 +16,8 @@
 #' will be added to the returned object.  Also, since rownames cannot be 
 #' duplicated, they will be made unique with \code{\link{make.unique}}
 #' 
-#' @param Symbols chr Symbols of ETFs
+#' @param Symbols chr Symbols of ETFs (if not supplied the Symbols of the nine 
+#'   Sector SPDRs will be used)
 #' @param env environment to store the holdings data in
 #' @param auto.assign assign data?
 #' @return An object classed as \dQuote{weights} will be created that is a 
@@ -41,7 +42,7 @@
 #' @export
 getHoldings <-function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
 	spdr.syms <- c('XLY','XLP','XLE','XLF','XLV','XLI','XLB','XLK','XLU')
-	if (missing(Symbols)) Symbols <- c(ishr.syms,spdr.syms)
+	if (missing(Symbols)) Symbols <- spdr.syms
 	ishr.out <- spdr.out <- NULL
     if (length(Symbols) > 1 && !auto.assign) stop('auto.assign must be TRUE for more than 1 symbol.')
 	for (symbol in Symbols) {

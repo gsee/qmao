@@ -6,7 +6,8 @@
     auto.assign = TRUE)
 }
 \arguments{
-  \item{Symbols}{chr Symbols of ETFs}
+  \item{Symbols}{chr Symbols of ETFs (if not supplied the
+  Symbols of the nine Sector SPDRs will be used)}
 
   \item{env}{environment to store the holdings data in}
 
