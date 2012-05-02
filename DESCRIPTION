@@ -1,7 +1,7 @@
 Package: qmao
 Type: Package
 Title: Quantmod Add-on
-Version: 1.2.3
+Version: 1.2.4
 Date: 2012-03-22
 Author: Garrett See
 Depends:
@@ -9,7 +9,8 @@ Depends:
     quantmod,
     FinancialInstrument (>= 0.10.0)
 Suggests:
-    XML
+    XML,
+    timeDate
 Maintainer: Garrett See <gsee000@gmail.com>
 Description: some quantmod-like functions.
 License: GPL-3
@@ -38,3 +39,6 @@ Collate:
     'adjustIntraday.yahoo.R'
     'getEarnings.R'
     'gaa.R'
+    'AddCumDiv.R'
+    'TimeOfDaySubset.R'
+    'getHoldingsHistory.R'
