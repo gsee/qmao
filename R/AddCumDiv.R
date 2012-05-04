@@ -61,13 +61,6 @@ AddCumDiv <- function(x, name, env=.GlobalEnv) {
         #have a timestamp at "midnight"
     }
     x.cd <- cumdiv(x, name)
-    # set a flag so that if this function is called 
-    # again, it will not try to adjust something
-    # that has already been adjusted.
-    attr(x, 'adj') <- TRUE 
-    attr(x, "cumdiv") <- if (any(x.cd > 0)) {
-        xts(x.cd[x.cd > 0], index(x.cd[x.cd > 0]))
-    } else 0
     # Only add dividends to Open, High, Low, Close, Bid.Price, Ask.Price,
     # Trade.Price, Mid.Price   
 
@@ -76,5 +69,12 @@ AddCumDiv <- function(x, name, env=.GlobalEnv) {
     #add cumulative divs to prices; don't change non-prices
     # we'll get a warning if cn is all columns, or no columns; suppress it
     out <- suppressWarnings(cbind(sweep(x[, cn], 1, x.cd, "+"), x[, -cn]))
+    # set a flag so that if this function is called 
+    # again, it will not try to adjust something
+    # that has already been adjusted.
+    attr(out, 'adj') <- TRUE 
+    attr(out, "cumdiv") <- if (any(x.cd > 0)) {
+        xts(x.cd[x.cd > 0], index(x.cd[x.cd > 0]))
+    } else 0
     out[, colnames(x)] # put back in original order
 }
