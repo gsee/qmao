@@ -1,6 +1,6 @@
 #' Subset by time-of-day
 #' 
-#' If the first time in the string is later in the day than the first time,
+#' If the first time in the string is later in the day than the second time,
 #' the data between those times will be removed.  Otherwise, \code{x[timespan]}
 #' will be returned.
 #' @param x xts data object
