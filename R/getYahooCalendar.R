@@ -5,9 +5,10 @@
 #' time period between those Dates, and merge them together into a 
 #' \code{data.frame}.
 #'
-#' These functions take a function is designed to only download a caledar over
-#' a single timeperiod.  They then apply that function over as many timeperiods
-#' as necessary to create a complete calendar from \code{from} to \code{to}.
+#' These functions take a function that is designed to only download a calendar 
+#' over a single timeperiod.  They then apply that function over as many 
+#' timeperiods as necessary to create a complete calendar from \code{from} to 
+#' \code{to}.
 #' 
 #' Currently, 
 #' \code{\link{.getEarningsCalendar}} is used by \code{getYahooCalendarByDay}, 
