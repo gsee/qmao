@@ -20,9 +20,12 @@
 }
 \value{
   a data.frame containing the economic calendar for the
-  week specified by \code{YW}. It will have columns
-  \item{Time}{POSIXct} object with \code{America/New_York}
-  time zone \item{Statistic}{Description of the data being
+  week specified by \code{YW}, or for all weeks between and
+  including \code{from} and \code{to}. It will have
+  columns:
+
+  \item{Time}{POSIXct object with \code{America/New_York}
+  time zone} \item{Statistic}{Description of the data being
   released} \item{For}{non-standard character string
   indicating the time period over which the
   \code{Statistic} was measured. Could be things like Mar,
