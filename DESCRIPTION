@@ -1,8 +1,8 @@
 Package: qmao
 Type: Package
 Title: Quantmod Add-on
-Version: 1.2.4
-Date: 2012-03-22
+Version: 1.2.5
+Date: 2012-06-24
 Author: Garrett See
 Depends:
     xts,
@@ -42,3 +42,4 @@ Collate:
     'AddCumDiv.R'
     'TimeOfDaySubset.R'
     'getHoldingsHistory.R'
+    'getYahooCalendar.R'
