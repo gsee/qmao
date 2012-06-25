@@ -1,7 +1,7 @@
 Package: qmao
 Type: Package
 Title: Quantmod Add-on
-Version: 1.2.5
+Version: 1.2.6
 Date: 2012-06-24
 Author: Garrett See
 Depends:
@@ -10,6 +10,7 @@ Depends:
     FinancialInstrument (>= 0.10.0)
 Suggests:
     XML,
+    RCurl,
     timeDate
 Maintainer: Garrett See <gsee000@gmail.com>
 Description: some quantmod-like functions.
@@ -43,3 +44,10 @@ Collate:
     'TimeOfDaySubset.R'
     'getHoldingsHistory.R'
     'getYahooCalendar.R'
+    'ExcludeDates.R'
+    'ExcludeTimes.R'
+    'getHoldings.powershares.R'
+    'getHoldings.vaneck.R'
+    'getSymbols.pos.R'
+    'MakeStrictlyRegular.R'
+    'do.call.rbind.R'

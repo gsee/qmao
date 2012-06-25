@@ -12,6 +12,7 @@
 #'   between the last and first time if the the last time comes earlier in the
 #'   day than the first time.
 #' @author Garrett See
+#' @seealso \code{\link{ExcludeTimes}}
 #' @examples
 #' x <- xts(1:10080, Sys.time() + 60 * 1:10080)
 #' NROW(aggregate(x, format(index(x), "%H"), length)) # number of hours that have data

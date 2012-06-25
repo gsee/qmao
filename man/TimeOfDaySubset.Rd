@@ -34,4 +34,7 @@ NROW(aggregate(x2, format(index(x2), "\%H"), length))
 \author{
   Garrett See
 }
+\seealso{
+  \code{\link{ExcludeTimes}}
+}
 
