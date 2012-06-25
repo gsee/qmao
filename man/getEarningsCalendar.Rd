@@ -27,8 +27,8 @@
 }
 \details{
   \code{.getEarningsCalendar} will usually be called by
-  \code{\link{getYahooCalendarByDay}}, but it can also be
-  called directly.
+  \code{\link{getCalendarByDay}}, but it can also be called
+  directly.
 
   \code{getEarningsCalendar} is a wrapper that creates a
   sequence of dates between \code{from} and \code{to}, and
@@ -60,6 +60,6 @@ getEarningsCalendar("2012-01-04") # same as .getEarningsCalendar('2012-01-04')
 }
 \seealso{
   \code{\link{getEconomicCalendar}},
-  \code{\link{getYahooCalendarByDay}}
+  \code{\link{getCalendarByDay}}
 }
 

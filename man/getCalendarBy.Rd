@@ -1,14 +1,14 @@
-\name{getYahooCalendarByDay}
-\alias{getYahooCalendarByDay}
-\alias{getYahooCalendarByMonth}
-\alias{getYahooCalendarByWeek}
+\name{getCalendarByDay}
+\alias{getCalendarByDay}
+\alias{getCalendarByMonth}
+\alias{getCalendarByWeek}
 \title{Get a calendar over more than one time period from yahoo's website}
 \usage{
-  getYahooCalendarByDay(FUN, from, to)
+  getCalendarByDay(FUN, from, to)
 
-  getYahooCalendarByWeek(FUN, from, to)
+  getCalendarByWeek(FUN, from, to)
 
-  getYahooCalendarByMonth(FUN, from, to)
+  getCalendarByMonth(FUN, from, to)
 }
 \arguments{
   \item{FUN}{a function to be applied to all time periods
@@ -30,26 +30,27 @@
   to create a complete calendar from \code{from} to
   \code{to}.
 
-  Currently, \code{\link{.getEarningsCalendar}} is used by
-  \code{getYahooCalendarByDay},
-  \code{\link{.getEconomicCalendar}} is used by
-  \code{getYahooCalendarByWeek}, and
+  Currently, \code{\link{.getEarningsCalendar}} and
+  \code{\link{.getEconomicCalendarBriefing}} are used by
+  \code{getCalendarByDay},
+  \code{\link{.getEconomicCalendarYahoo}} is used by
+  \code{getCalendarByWeek}, and
   \code{\link{.getMergersCalendar}} is used by
-  \code{getYahooCalendarsByMonth}
+  \code{getCalendarsByMonth}
 
   Hopefully new ones will be written soon; Splits are in
-  the works (which will use \code{getYahooCalendarByMonth}
-  as well as Earnings Surprises (which will use
-  getYahooCalendarByDay.)
+  the works (which will use \code{getCalendarByMonth} as
+  well as Earnings Surprises (which will use
+  getCalendarByDay.)
 }
 \note{
   ALPHA CODE: Subject to change!
 }
 \examples{
 \dontrun{
-getYahooCalendarByDay('.getEconomicCalendar')
-getYahooCalendarByWeek('.getEarningsCalendar')
-getYahooCalendarByMonth('.getMergersCalendar', '2012-06-01')
+getCalendarByDay('.getEconomicCalendar')
+getCalendarByWeek('.getEarningsCalendar')
+getCalendarByMonth('.getMergersCalendar', '2012-06-01')
 }
 }
 \author{

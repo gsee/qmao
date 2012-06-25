@@ -11,14 +11,15 @@
 #' \code{to}.
 #' 
 #' Currently, 
-#' \code{\link{.getEarningsCalendar}} is used by \code{getYahooCalendarByDay}, 
-#' \code{\link{.getEconomicCalendar}} is used by \code{getYahooCalendarByWeek},
-#' and 
-#' \code{\link{.getMergersCalendar}} is used by \code{getYahooCalendarsByMonth}
+#' \code{\link{.getEarningsCalendar}} and 
+#' \code{\link{.getEconomicCalendarBriefing}} are used by 
+#' \code{getCalendarByDay}, \code{\link{.getEconomicCalendarYahoo}}  is used by 
+#' \code{getCalendarByWeek}, and 
+#' \code{\link{.getMergersCalendar}} is used by \code{getCalendarsByMonth}
 #' 
 #' Hopefully new ones will be written soon; Splits are in the works (which will
-#' use \code{getYahooCalendarByMonth} as well as 
-#' Earnings Surprises (which will use getYahooCalendarByDay.)
+#' use \code{getCalendarByMonth} as well as 
+#' Earnings Surprises (which will use getCalendarByDay.)
 #'
 #' @param FUN a function to be applied to all time periods between \code{from} 
 #'   and \code{to}.
@@ -33,12 +34,12 @@
 #' @seealso \code{\link{getEconomicCalendar}}, \code{\link{getEarningsCalendar}}
 #' @examples
 #' \dontrun{
-#' getYahooCalendarByDay('.getEconomicCalendar')
-#' getYahooCalendarByWeek('.getEarningsCalendar')
-#' getYahooCalendarByMonth('.getMergersCalendar', '2012-06-01')
+#' getCalendarByDay('.getEconomicCalendar')
+#' getCalendarByWeek('.getEarningsCalendar')
+#' getCalendarByMonth('.getMergersCalendar', '2012-06-01')
 #' }
-#' @rdname getYahooCalendar
-getYahooCalendarByDay <- function(FUN, from, to) {
+#' @rdname getCalendarBy
+getCalendarByDay <- function(FUN, from, to) {
   FUN <- match.fun(FUN)
   if (missing(from) && missing(to)) {
     return(FUN())
@@ -55,8 +56,8 @@ getYahooCalendarByDay <- function(FUN, from, to) {
   }
 }
 
-#' @rdname getYahooCalendar
-getYahooCalendarByWeek <- function(FUN, from, to) {
+#' @rdname getCalendarBy
+getCalendarByWeek <- function(FUN, from, to) {
   FUN <- match.fun(FUN)
   if (missing(from) && missing(to)) {
     #YW <- format(Sys.Date(), "%Y%W")
@@ -78,8 +79,8 @@ getYahooCalendarByWeek <- function(FUN, from, to) {
   do.call(rbind, out)
 }
 
-#' @rdname getYahooCalendar
-getYahooCalendarByMonth <- function(FUN, from, to) {
+#' @rdname getCalendarBy
+getCalendarByMonth <- function(FUN, from, to) {
   FUN <- match.fun(FUN)
   if (missing(from) && missing(to)) {
     #YW <- format(Sys.Date(), "%Y%W")
@@ -99,36 +100,56 @@ getYahooCalendarByMonth <- function(FUN, from, to) {
 
 #===============================================================================
 
-#' Get the Economic Calender from yahoo.
+#' Get the Economic Calender from Briefing.com or Yahoo.
 #' 
-#' Download the Briefing.com economic calendar via yahoo's website, and create 
-#' a data.frame containing information about previous and scheduled 
+#' Download the Briefing.com economic calendar either directly from the 
+#' briefing.com website, or via yahoo's website, and create 
+#' a data.frame containing information about previous and/or scheduled 
 #' realeases of economic economic indicators. The returned \code{data.frame} 
 #' will have a \code{Time} column that contains an intraday timestamp with 
 #' a time zone of \code{America/New_York}.
 #' 
-#' \code{.getEconomicCalendar} will retrieve the Economic Calendar from Yahoo
-#' for a single week.  This function is intended to be called by 
-#' \code{getYahooCalendar}, but it can also be called directly.
+#' \code{.getEconomicCalendarYahoo} will retrieve the Economic Calendar from 
+#' Yahoo for a single week.  Use this function if you need to get the economic
+#' calendar of scheduled releases (i.e. have not yet occurred).  The time of
+#' day is not always correct for historic releases.  Therefore, if you are
+#' getting Dates from the past, it is recommended that you use 
+#' \code{.getEconomicCalendarBriefing} or \code{getEconomicCalendarBriefing}
 #' 
-#' \code{getEconomicCalendar} is a wrapper that accepts both a \code{from} and 
-#' \code{to} argument.  It will use \code{\link{getYahooCalendarByWeek}} to 
-#' make repeated calls to \code{.getEconomicCalendar} allowing for the retrieval 
-#' of an Economic Calendar over a much longer timespan.
+#' \code{.getEconomicCalendarBriefing} will retrieve the Economic Calendar from
+#' Briefing.com for a single day.  This function does not support Dates that are
+#' in the future, but is more reliable for past Dates than the data obtained
+#' via yahoo. (Briefing provides the data to yahoo, so I'm not sure why there
+#' are discrepancies.)
+#'
+#' \code{getEconomicCalendarYahoo} is a wrapper that accepts both a \code{from} 
+#' and \code{to} argument.  It will use \code{\link{getCalendarByWeek}} to 
+#' make repeated calls to \code{.getEconomicCalendarYahoo} allowing for the 
+#' retrieval of an Economic Calendar over a much longer timespan.
 #' 
-#' \code{from} and \code{to} are used to pick the first and last \emph{week} to
+#' for \code{getEconomicCalendarBriefing}, \code{from} and \code{to} are the 
+#' first and last dates that should be included in the returned 
+#' \code{data.frame}.  However, for \code{getEconomicCalendarYahoo}, \code{from} 
+#' and \code{to} are used to pick the first and last \emph{week} to
 #' download.  If \code{from} is a Date that is a Wednesday, the first data will
 #' be from previous Monday.  Likewise, if \code{to} is a Date that is a 
 #' Wednesday, the last data will be from the Friday of that week.
+#'
+#' \code{getEconomicCalendar} is a wrapper that will call 
+#' \code{getEconomicCalendarYahoo} if any of the requested Dates occur in the 
+#' future; otherwise, it will call \code{getEconomicCalendarBriefing}.
 #' 
-#' @param YW a six character string with the first 4 characters representing the
-#'   year and the last 2 characters representing the week of the year. For
-#'   example, \dQuote{201217} would be the 17th week of 2012.
+#' @param YW Used with \code{getEconomicCalendarYahoo}, a six character string 
+#'   with the first 4 characters representing the year and the last 2 characters 
+#'   representing the week of the year. For example, \dQuote{201217} would be 
+#'   the 17th week of 2012.
+#' @param Date used with \code{getEconomicCalendarBriefing}, a Date for which
+#'   to retrieve the Economic Calendar.
 #' @param from Date that is in the earliest week to retrieve.
 #' @param to Date that is in the last week to retrieve.
-#' @return a data.frame containing the economic calendar for the week
-#'   specified by \code{YW}, or for all weeks between and including \code{from} 
-#'   and \code{to}. It will have columns:
+#' @return a data.frame containing the economic calendar for the time period
+#'   specified by \code{YW} or \code{Date}, or for all time periods between and 
+#'   including \code{from} and \code{to}. It will have columns:
 #'
 #'   \item{Time}{POSIXct object with \code{America/New_York} time zone}
 #'   \item{Statistic}{Description of the data being released}
@@ -144,18 +165,27 @@ getYahooCalendarByMonth <- function(FUN, from, to) {
 #' @references \url{http://biz.yahoo.com/c/e.html}
 #' @note ALPHA CODE!!! Subject to change.
 #' @seealso \code{\link{getEarningsCalendar}}, 
-#'   \code{\link{getYahooCalendarByWeek}}
+#'   \code{\link{getCalendarByWeek}}
 #' @examples
 #' \dontrun{
-#' .getEconomicCalendar()
-#' .getEconomicCalendar(201117)
-#' .getEconomicCalendar("201117") #same
-#' getEconomicCalendar(from='2012-06-04', to='2012-06-10') #only goes through Friday 2012-06-08
-#' getEconomicCalendar(from='2012-06-04', to='2012-06-11') #goes through Friday 2012-06-15
+#' .getEconomicCalendarBriefing()
+#' .getEconomicCalendarBriefing('2012-06-01')
+#'
+#' .getEconomicCalendarYahoo()
+#' .getEconomicCalendarYahoo(201117)
+#' .getEconomicCalendarYahoo("201117") #same
+#'
+#' getEconomicCalendarYahoo(from='2012-06-04', to='2012-06-10') #only goes through Friday 2012-06-08
+#' getEconomicCalendarYahoo(from='2012-06-04', to='2012-06-11') #goes through Friday 2012-06-15
+#'
+#' getEconomicCalendarBriefing(from='2012-06-04', to='2012-06-12') #only goes to 'to' Date
+#'
+#' getEconomicCalendar(from=Sys.Date()-5, to=Sys.Date()) #uses Briefing.com because it's Dates from past
+#' getEconomicCalendar(from=Sys.Date(), to=Sys.Date() + 5) #uses Yahoo because it's Dates from future
 #' }
 #' @export
 #' @rdname getEconomicCalendar
-.getEconomicCalendar <- function(YW=format(Sys.Date(), "%Y%W")) {
+.getEconomicCalendarYahoo <- function(YW=format(Sys.Date(), "%Y%W")) {
   require(XML)
   stopifnot(length(YW) == 1)
   if (is.timeBased(YW) || nchar(YW) == 10) {
@@ -181,8 +211,68 @@ getYahooCalendarByMonth <- function(FUN, from, to) {
 
 #' @export
 #' @rdname getEconomicCalendar
+.getEconomicCalendarBriefing <- function(Date=Sys.Date()) {
+  require("XML")
+  Date <- as.Date(Date)
+  Y <- format(Date, "%Y")
+  if (Date > Sys.Date()) {
+    stop(paste0(".getEconomicCalendarBriefing does not support Dates from the",
+                " future. Use .getEconomicCalendarYahoo instead."))
+  }
+  rt <- try(readHTMLTable(paste0("http://briefing.com/investor/calendars/economic/",
+                                 format(Date, "%Y/%m/%d")), 
+                          stringsAsFactors=FALSE), silent=TRUE)
+  if (inherits(rt, 'try-error')) { return(NULL) }
+  dat <- rt[[tail(grep("Release", rt), 1)]]
+  #dat <- rt[[which.max(sapply(rt, nrow))]]
+  dat <- dat[-1, ]
+  if (NROW(dat) == 0) { return(NULL) }
+  cal <- data.frame(Time=as.POSIXct(paste(Y, dat[, 1], dat[, 2]), 
+                                    format="%Y %b %d %H:%M", 
+                                    tz='America/New_York'), 
+                    dat[, -c(1, 2)])
+  colnames(cal) <- c("Time", "Statistic", "For", "Actual", "Briefing.Forecast", 
+                     "Market.Expects", "Prior", "Revised.From")
+  cal
+}
+
+#' @export
+#' @rdname getEconomicCalendar
+getEconomicCalendarYahoo <- function(from, to) {
+  getCalendarByWeek(".getEconomicCalendarYahoo", from, to)
+}
+
+#' @export
+#' @rdname getEconomicCalendar
+getEconomicCalendarBriefing <- function(from, to) {
+  if (missing(from) && missing(to)) {
+    return(getCalendarByDay(".getEconomicCalendarBriefing"))
+  } else {
+    if(missing(to)) { to <- from }
+    if (missing(from)) { from <- to }
+  }
+  to <- as.Date(to)
+  if (to > Sys.Date()) { 
+    stop(paste0("'getEconomicCalendarBriefing' does not support Dates from",
+                " the future. Use 'getEconomicCalendarYahoo' instead."))
+  }
+  getCalendarByDay(".getEconomicCalendarBriefing", from=from, to=to)
+}
+
+#' @export
+#' @rdname getEconomicCalendar
 getEconomicCalendar <- function(from, to) {
-  getYahooCalendarByWeek(".getEconomicCalendar", from=from, to=to)
+  if (missing(from) && missing(to)) {
+    return(getCalendarByDay(".getEconomicCalendarYahoo"))
+  }
+  if (missing(to)) { to <- from }
+  if (missing(from)) { from <- to }
+  from <- as.Date(from)
+  to <- as.Date(to)
+  # if both dates are in the past, use Briefing, otherwise, use Yahoo
+  if (from <= to && to < Sys.Date()) { 
+    return(getEconomicCalendarBriefing(from=from, to=to))
+  } else return(getEconomicCalendarYahoo(from=from, to=to))
 }
 
 
@@ -191,7 +281,7 @@ getEconomicCalendar <- function(from, to) {
 #' Get a data.frame of all the stocks that announce(d) earnings on a given Date.
 #' 
 #' \code{.getEarningsCalendar} will usually be called by 
-#' \code{\link{getYahooCalendarByDay}}, but it can also be called directly.
+#' \code{\link{getCalendarByDay}}, but it can also be called directly.
 #' 
 #' \code{getEarningsCalendar} is a wrapper that creates a sequence of dates 
 #' between \code{from} and \code{to}, and then applies 
@@ -207,7 +297,7 @@ getEconomicCalendar <- function(from, to) {
 #' @references \url{http://biz.yahoo.com/research/earncal/today.html}
 #' @note ALPHA CODE!!! Subject to change.
 #' @seealso \code{\link{getEconomicCalendar}}, 
-#'   \code{\link{getYahooCalendarByDay}}
+#'   \code{\link{getCalendarByDay}}
 #' @examples
 #' \dontrun{
 #' ## fetch the Earnings Calendar from yahoo for today
@@ -241,9 +331,8 @@ getEconomicCalendar <- function(from, to) {
 #' @export
 #' @rdname getEarningsCalendar
 getEarningsCalendar <- function(from, to) {
-  getYahooCalendarByDay(".getEarningsCalendar", from=from, to=to)
+  getCalendarByDay(".getEarningsCalendar", from=from, to=to)
 }
-
 
 
 #' Get Calendar of Mergers
@@ -251,7 +340,7 @@ getEarningsCalendar <- function(from, to) {
 #' Create a \code{data.frame} from yahoo's calender of mergers
 #' 
 #' \code{.getMergersCalendar} will usually be called by 
-#' \code{\link{getYahooCalendarByMonth}}, but can also be called directly.  It 
+#' \code{\link{getCalendarByMonth}}, but can also be called directly.  It 
 #' is used to get the Mergers Calendar for a single month
 #' 
 #' \code{getMergersCalendar} is a wrapper to get the Mergers Calendar over 
@@ -267,7 +356,7 @@ getEarningsCalendar <- function(from, to) {
 #' @note ALPHA CODE!!! Subject to change.
 #' @seealso \code{\link{getEconomicCalendar}}, 
 #' \code{\link{getEarningsCalendar}},
-#' \code{\link{getYahooCalendarByMonth}}
+#' \code{\link{getCalendarByMonth}}
 #' @examples
 #' \dontrun{
 #' .getMergersCalendar("201202")
@@ -304,7 +393,7 @@ getEarningsCalendar <- function(from, to) {
 #' @export
 #' @rdname getMergersCalendar
 getMergersCalendar <- function(from, to) {
-  getYahooCalendarByMonth(".getMergersCalendar", from=from, to=to)
+  getCalendarByMonth(".getMergersCalendar", from=from, to=to)
 }
 
 

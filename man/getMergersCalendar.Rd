@@ -28,9 +28,9 @@
 }
 \details{
   \code{.getMergersCalendar} will usually be called by
-  \code{\link{getYahooCalendarByMonth}}, but can also be
-  called directly.  It is used to get the Mergers Calendar
-  for a single month
+  \code{\link{getCalendarByMonth}}, but can also be called
+  directly.  It is used to get the Mergers Calendar for a
+  single month
 
   \code{getMergersCalendar} is a wrapper to get the Mergers
   Calendar over many months.
@@ -52,6 +52,6 @@
 \seealso{
   \code{\link{getEconomicCalendar}},
   \code{\link{getEarningsCalendar}},
-  \code{\link{getYahooCalendarByMonth}}
+  \code{\link{getCalendarByMonth}}
 }
 
