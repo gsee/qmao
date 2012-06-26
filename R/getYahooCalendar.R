@@ -180,7 +180,7 @@ getCalendarByMonth <- function(FUN, from, to) {
 #'
 #' getEconomicCalendarBriefing(from='2012-06-04', to='2012-06-12') #only goes to 'to' Date
 #'
-#' getEconomicCalendar(from=Sys.Date()-5, to=Sys.Date()) #uses Briefing.com because it's Dates from past
+#' getEconomicCalendar(from=Sys.Date()-5, to=Sys.Date() - 1) #uses Briefing.com because it's Dates from past
 #' getEconomicCalendar(from=Sys.Date(), to=Sys.Date() + 5) #uses Yahoo because it's Dates from future
 #' }
 #' @export
