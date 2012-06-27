@@ -71,18 +71,24 @@ getHoldings <-function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
 			    download.file(paste('http://us.ishares.com/product_info/fund/excel_holdings.htm?ticker=',symbol,sep=""), destfile=tmp)
 			    fr <- read.csv(tmp, skip=11, stringsAsFactors=FALSE)
 			    unlink(tmp)
-			    fr <- fr[1:(length(fr[,1])-3),c(1:3)]
-			    fr <- fr[fr$Symbol!='--',] #maybe this is dangerous, but I'm ignoring stuff with Symbol=="--" (e.g. BLACKROCK FDS III)
+			    fr <- fr[1:(length(fr[,1])-3), ]
+			    #fr <- fr[fr$Symbol!='--',] #maybe this is dangerous, but I'm ignoring stuff with Symbol=="--" (e.g. BLACKROCK FDS III)
 			    #colnames(fr) <- c('Symbol','Name',paste(symbol,'Weight',sep='.'))
-			    fr[, 1] <- make.names(gsub(" ", "", fr[, 1]))
-                rowsyms <- fr[, 1]
+                fr[, 1] <- gsub(" ", "", fr[, 1])
                 dupes <- character(0)
-                if (any(duplicated(rowsyms))) {
-                    dupes <- rowsyms[duplicated(rowsyms)]
+                if (any(duplicated(fr[, 1]))) {
+                    dupes <- fr[, 1][duplicated(fr[, 1])]
                     warning(paste("Some Symbols duplicated:", paste(dupes, collapse=" ")))
                 }
-                fr <- data.frame(fr[, 3:2], row.names=make.unique(rowsyms))
-			    colnames(fr) <- c(paste(symbol,'Weight',sep='.'), "Name")
+			    rownames(fr) <- make.names(fr[, 1], unique=TRUE)
+                wcol <- grep("X..Net.Assets", colnames(fr))
+                if (wcol != 3) { 
+                    warning(paste0("The format of the spreadsheet has changed",
+                                   " since this function was written!")) 
+                }
+                fr[, 1] <- fr[, wcol]
+			    colnames(fr)[1] <- paste(symbol,'Weight',sep='.')
+                fr <- fr[, -wcol]
                 if (length(dupes) > 0) attr(fr, "duplicates") <- dupes
                 class(fr) <- c("weights", "data.frame")
                 if (auto.assign) assign(paste(symbol,'h',sep='.'),fr,pos=env)
@@ -94,4 +100,40 @@ getHoldings <-function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
     	paste(c(ishr.out,spdr.out))
     } else fr
 }
+
+## get/check the column names of all iShares
+#cout <- lapply(ishr.syms, function(.x) {
+#    out <- try({
+#        tmp <- tempfile()
+#        download.file(paste('http://us.ishares.com/product_info/fund/excel_holdings.htm?ticker=',.x,sep=""), destfile=tmp)
+#        fr <- read.csv(tmp, skip=11, stringsAsFactors=FALSE)
+#        unlink(tmp)
+#        colnames(fr)
+#    })
+#    if (!inherits(out, 'try-error')) out
+#})
+#unique(cout)
+#[[1]]
+# [1] "CUSIP"              "Name"               "X..Net.Assets"      "Market.Value"       "Maturity"          
+# [6] "Effective.Duration" "Coupon"             "Yield.to.Maturity"  "Yield.to.Worst"     "Sector"            
+#[11] "Market.Price"       "Par.Value"          "Next.Call.Date"     "Next.Call.Price"   
+#
+#[[2]]
+# [1] "Symbol"        "Name"          "X..Net.Assets" "Market.Value"  "ISIN"          "Sedol"         "Market"       
+# [8] "Sector"        "Exchange.Rate" "Market.Price"  "Shares.Held"  
+#
+#[[3]]
+# [1] "ISIN"               "Name"               "X..Net.Assets"      "Market.Value"       "Maturity"          
+# [6] "Effective.Duration" "Coupon"             "Yield.to.Maturity"  "Yield.to.Worst"     "Sector"            
+#[11] "Market.Price"       "Par.Value"          "Next.Call.Date"     "Next.Call.Price"   
+#
+#[[4]]
+# [1] "ISIN"                   "Name"                   "X..Net.Assets"          "Market.Value"          
+# [5] "Maturity"               "Real.Yield.Duration"    "Coupon"                 "Real.Yield.To.Maturity"
+# [9] "Yield.to.Worst"         "Sector"                 "Market.Price"           "Par.Value"             
+#[13] "Next.Call.Date"         "Next.Call.Price"       
+#
+#[[5]]
+# [1] "HoldingsSymbol" "Name"           "X..Net.Assets"  "Market.Value"   "ISIN"           "Sedol"         
+# [7] "Market"         "Sector"         "Exchange.Rate"  "Market.Price"   "Shares.Held"   
 
