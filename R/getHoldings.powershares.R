@@ -69,7 +69,7 @@ dlPowerShares <- function(base.url = "http://www.invescopowershares.com/products
 #' @author Garrett See with help from ttmaccer at 
 #'   \url{http://stackoverflow.com/a/11004901}
 #' @references \url{http://www.invescopowershares.com}
-#' @seealso \code{\link{etHoldings}}, 
+#' @seealso \code{\link{getHoldings}}, 
 #'   \code{qmao:::getHoldings.iShares.AsOf}
 #'   \code{\link{getHoldings.SPDR}}
 #'   \code{\link{getHoldings.vaneck}}

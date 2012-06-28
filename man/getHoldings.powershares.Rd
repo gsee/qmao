@@ -68,7 +68,7 @@ head(QQQ.h); head(PGX.h)
   \url{http://www.invescopowershares.com}
 }
 \seealso{
-  \code{\link{etHoldings}},
+  \code{\link{getHoldings}},
   \code{qmao:::getHoldings.iShares.AsOf}
   \code{\link{getHoldings.SPDR}}
   \code{\link{getHoldings.vaneck}}
