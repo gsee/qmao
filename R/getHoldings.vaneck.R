@@ -2,7 +2,10 @@
 #'
 #' Download the names and weights of Van Eck ETFs (Market Vector ETFs)
 #'
-#' @param Symbols character vector of Van Eck ETF ticker symbols. 
+#' @param Symbols character vector of Van Eck ETF ticker symbols. Presently,
+#'   if \code{Symbols} is \code{missing}, all the Market Vectors Symbols found
+#'   using \code{\link{read.masterDATA}} will be used.  However, in the future
+#'   this may change to require that \code{Symbols} is not \code{missing}
 #' @param env environment in which to store holdings data
 #' @param auto.assign TRUE/FALSE. If TRUE, the holdings data will be stored in 
 #'   an object that has a name that is he Symbol appended with \dQuote{.h}
@@ -22,7 +25,12 @@
 #' @export
 getHoldings.vaneck <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
     require("XML")
-    if (length(Symbols) == 0L) return(NULL)
+    if (missing(Symbols)) {
+        etfs <- read.masterDATA()
+        etfs[, 1] <- sapply(strsplit(etfs[, 1], " "), "[", 1)
+        Symbols <- etfs[etfs[["Name"]] == "Market", "Symbol"] #Market Vectors
+    }
+    if (length(Symbols) == 0L) { return(NULL) }
     hlist <- lapply(Symbols, function(Symbol) {
         if (length(Symbols) > 1) {
             message(paste("Getting holdings for", Symbol))
@@ -30,7 +38,7 @@ getHoldings.vaneck <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
 
         tmp <- tempfile()
         download.file(paste0("http://www.vaneck.com/FundHoldings.aspx?ticker=", 
-                             Symbol), destfile=tmp)
+                             Symbol), destfile=tmp, quiet=TRUE)
         tbl <- try(readHTMLTable(tmp, skip.rows=1, header=TRUE, 
                     stringsAsFactors=FALSE)[[1L]], silent=TRUE)
         unlink(tmp)
@@ -38,6 +46,9 @@ getHoldings.vaneck <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
         if (tbl[1, 1] == "Number") {
             colnames(tbl) <- paste(tbl[1, ])
             tbl <- tbl[-1, ]
+        }
+        if (!any(grepl("WEIGHT|% of net assets", colnames(tbl)))) {
+            tbl$WEIGHT <- NA
         }
         out <- data.frame(as.numeric(gsub("%", "", 
                           tbl[, grep("WEIGHT|% of net assets", colnames(tbl))])),
@@ -61,7 +72,9 @@ getHoldings.vaneck <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
                 x
             }
         }))
-        return(paste(sout, "h", sep="."))
+        if (length(sout) > 0){
+            return(paste(sout, "h", sep="."))
+        } else return(NULL)
     }
     if (length(hlist) > 1) { 
         return(hlist)

@@ -7,7 +7,11 @@
 }
 \arguments{
   \item{Symbols}{character vector of Van Eck ETF ticker
-  symbols.}
+  symbols. Presently, if \code{Symbols} is \code{missing},
+  all the Market Vectors Symbols found using
+  \code{\link{read.masterDATA}} will be used.  However, in
+  the future this may change to require that \code{Symbols}
+  is not \code{missing}}
 
   \item{env}{environment in which to store holdings data}
 

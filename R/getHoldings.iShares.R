@@ -31,7 +31,7 @@
 getHoldings.iShares <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
   tmp <- tempfile()
   download.file("http://us.ishares.com/product_info/fund/excel_profile.htm",
-                destfile=tmp)
+                destfile=tmp, quiet=TRUE)
   ishr.syms <- as.character(read.csv(tmp, stringsAsFactors=FALSE, 
                                      header=FALSE, skip=3)[, 2])
   unlink(tmp)
@@ -45,7 +45,7 @@ getHoldings.iShares <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
     lnk <- paste0('http://us.ishares.com/product_info/fund/excel_holdings.htm?',
                   'ticker=', symbol, sep="")
     tmp <- tempfile()
-    download.file(lnk, destfile=tmp)
+    download.file(lnk, destfile=tmp, quiet=TRUE)
     fr <- try(read.csv(tmp, skip=11, stringsAsFactors=FALSE), silent=TRUE)
     if (inherits(fr, 'try-error')) {
       fr <- try(read.csv(tmp, skip=16, stringsAsFactors=FALSE, header=FALSE), 

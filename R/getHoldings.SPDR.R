@@ -74,7 +74,7 @@ getHoldings.SPDR <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
     lnk <- paste0("https://www.spdrs.com/site-content/csv/", symbol, 
                   "_All_Holdings.csv?fund=", symbol, "&docname=All+Holdings")
     tmp <- tempfile()
-    download.file(lnk, destfile=tmp, method='curl')
+    download.file(lnk, destfile=tmp, method='curl', quiet=TRUE)
     fr <- read.csv(tmp, skip=3)
     unlink(tmp)
     if (length(colnames(fr)) == 1L) return(NULL) # HTTP.404..Page.Not.Found
@@ -94,7 +94,9 @@ getHoldings.SPDR <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
     lapply(Symbols, function(x) {
       assign(paste(x, "h", sep="."), hlist[[x]], pos=env)
     })
-    return(paste(Symbols, "h", sep="."))
+    if (length(Symbols) > 0) {
+      return(paste(Symbols, "h", sep="."))
+    } else (return(NULL))
   }
   if (length(hlist) > 1) {
     return(hlist)
@@ -158,7 +160,7 @@ getHoldings.selectSPDR <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
     lnk <- paste0("http://www.sectorspdr.com/content/?do=indexComposition&",
                   "symbol=", symbol, "&filetype=csv")
     tmp <- tempfile()
-    download.file(lnk, destfile=tmp) 
+    download.file(lnk, destfile=tmp, quiet=TRUE) 
     fr <- read.csv(tmp,sep="\t",stringsAsFactors=FALSE)
     unlink(tmp)
     if (NROW(fr) == 0) { return(NULL) }
@@ -176,7 +178,9 @@ getHoldings.selectSPDR <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
         x
       }
     }))
-    return(paste(sout, "h", sep = "."))
+    if (length(sout) > 0) {
+      return(paste(sout, "h", sep = "."))
+    } else return(NULL)
   }
   if (length(hlist) > 1) {
     return(hlist)

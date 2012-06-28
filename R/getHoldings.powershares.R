@@ -133,7 +133,9 @@ getHoldings.powershares <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
                 x
             }
         }))
-        return(paste(sout, "h", sep="."))
+        if (length(sout) > 0) {
+            return(paste(sout, "h", sep="."))
+        } else return(NULL)
     }
     if (length(hlist) > 1) {
         return(hlist)

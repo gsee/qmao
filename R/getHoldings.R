@@ -1,3 +1,26 @@
+#' Read masterDATA csv
+#'
+#' read the Name and ticker Symbol of most ETFs from
+#' \href{http://www.masterdata.com/helpfiles/ETF_List_Downloads/AllTypes.csv}{this csv} 
+#' at \href{http://www.masterdata.com/HelpFiles/ETF_List.htm}{masterdata.com}.
+#'
+#' This is used by \code{\link{getHoldings}} to determine how to find the 
+#' holdings of an ETF.  It is also used by \code{\link{getHoldings.vaneck}} to
+#' create a list of Van Eck (Market Vectors) Symbols to use.
+#' @return a \code{data.frame} with a column for \sQuote{Name} and \code{Symbol}
+#' @author Garrett See
+#' @examples
+#' \dontrun{
+#' (etfs <- read.masterDATA())
+#' }
+read.masterDATA <- function() {
+    etfs <- read.csv(paste0("http://www.masterdata.com/helpfiles/",
+                            "ETF_List_Downloads/AllTypes.csv"), 
+                     stringsAsFactors = FALSE)[, 1:2]
+    #etfs[, 1] <- gsub("\xae", "", etfs[, 1])
+    etfs[, 1] <- gsub("[^A-Za-z0-9 -]", "", etfs[, 1])
+    etfs
+}
 
 #' Get the holdings of an ETF
 #' 
@@ -60,10 +83,7 @@ getHoldings <-function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
     if (length(Symbols) > 1 && !auto.assign) {
         stop('auto.assign must be TRUE for more than 1 symbol.')
     }
-    etfs <- read.csv(paste0("http://www.masterdata.com/helpfiles/",
-                            "ETF_List_Downloads/AllTypes.csv"), 
-                     stringsAsFactors = FALSE)[, 1:2]
-    etfs[, 1] <- gsub("\xae", "", etfs[, 1])
+    etfs <- read.masterDATA()
     etfs[, 1] <- sapply(strsplit(etfs[, 1], " "), "[", 1)
     msym <- etfs[etfs$Symbol %in% Symbols, ]
     spl.m <- split(msym, msym$Name)
