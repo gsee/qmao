@@ -1,8 +1,8 @@
 \name{makePriceFrame}
-\alias{makePriceFrame}
-\alias{makeReturnFrame}
 \alias{PF}
 \alias{RF}
+\alias{makePriceFrame}
+\alias{makeReturnFrame}
 \title{Merge Adjusted prices (or returns of adjusted prices) of several symbols}
 \usage{
   makePriceFrame(Symbols, from = NULL, to = NULL,

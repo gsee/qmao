@@ -18,7 +18,7 @@
   if \code{auto.assign} is TRUE, holdings will be assigned
   as the ETF symbols appended with \dQuote{.h}, and the
   names of those objects will be returned. Otherwise, if
-  \code{Symbols} is only one symbol, its' holdings will be
+  \code{Symbols} is only one symbol, its holdings will be
   returned.  If \code{Symbols} is of length greater than
   one, a list will be returned where each element is the
   holdings of a different ETF.

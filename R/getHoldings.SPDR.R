@@ -1,0 +1,165 @@
+
+#' Get names and weights of the holdings of SPDR ETFs
+#'
+#' On Non-Unix-alike platforms, this will call 
+#' \code{\link{getHoldings.selectSPDR}} which is platform independent 
+#' (but only works for the 9 Select Sector SPDRs).
+#'
+#' @param Symbols character vector of SPDR ETF symbols
+#' @param env where to store holdings (only used if \code{auto.assign} is 
+#'   \code{TRUE}
+#' @param auto.assign should the results be assigned in \code{env}?
+#' @return if \code{auto.assign} is TRUE, holdings will be assigned as 
+#'   the ETF symbols appended with \dQuote{.h}, and the names of those objects
+#'   will be returned. Otherwise, if \code{Symbols} is only one symbol, its
+#'   holdings will be returned.  If \code{Symbols} is of length greater than
+#'   one, a list will be returned where each element is the holdings of a
+#'   different ETF.  If there are no holdings found for a Symbol (most likely 
+#'   because it is not a SPDR ETF), and \code{auto.assign} is TRUE, nothing will
+#'   be assigned for that Symbol, but if \code{auto.assign} is FALSE, the 
+#'   returned list will have \code{NULL} for the element corresponding to that
+#'   Symbol.
+#' @author Garrett See
+#' @note this uses \code{download.file} with \code{method="curl"} which is not
+#'   supported on Windows.
+#' @seealso \code{\link{getHoldings}}, 
+#'   \code{\link{getHoldings.iShares}}, \code{\link{getHoldings.selectSPDR}},
+#'   \code{\link{getHoldings.vaneck}}, \code{\link{getHoldings.powershares}}
+#' @references \url{https://www.spdrs.com/}
+#' @examples
+#' \dontrun{
+#' getHoldings.SPDR("SPY")
+#' SPY.h
+#' }
+#' @export
+getHoldings.SPDR <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
+  if (.Platform[["OS.type"]] != "unix") {
+    return(getHoldings.selectSPDR(Symbols, env=env, auto.assign=auto.assign))
+  }
+  stopifnot(require("RCurl"))
+  s <- sapply(strsplit(strsplit(getURL("https://www.spdrs.com/product/"), 
+                                "ticker=")[[1L]], "\">"), "[", 1L)[-1L]
+  Symbols <- Symbols[Symbols %in% s]
+  if (length(Symbols) == 0L) { return(NULL) }
+  hlist <- lapply(Symbols, function(symbol) {
+    if (length(Symbols) > 1) {
+        message(paste("Getting holdings for", symbol))
+    }
+
+    lnk <- paste0("https://www.spdrs.com/site-content/csv/", symbol, 
+                  "_All_Holdings.csv?fund=", symbol, "&docname=All+Holdings&",
+                  "onyx_code1=1286&onyx_code2=1521")
+    lnk <- paste0("https://www.spdrs.com/site-content/csv/", symbol, 
+                  "_All_Holdings.csv?fund=", symbol, "&docname=All+Holdings")
+    tmp <- tempfile()
+    download.file(lnk, destfile=tmp, method='curl')
+    fr <- read.csv(tmp, skip=3)
+    unlink(tmp)
+    if (length(colnames(fr)) == 1L) return(NULL) # HTTP.404..Page.Not.Found
+    tcol <- grep("ticker", colnames(fr), ignore.case=TRUE)
+    rownames(fr) <- make.names(fr[, tcol], unique=TRUE) 
+    fr <- fr[, -tcol]
+    wcol <- grep("weight", colnames(fr), ignore.case=TRUE)
+    if (length(wcol) > 0L) { 
+        colnames(fr)[wcol] <- paste(symbol, "Weight", sep=".") 
+    }
+    out <- fr[, unique(c(wcol, seq_len(NCOL(fr))))]
+    class(out) <- c("weights", "data.frame")
+    out
+  })
+  names(hlist) <- Symbols
+  if (isTRUE(auto.assign)) {
+    lapply(Symbols, function(x) {
+      assign(paste(x, "h", sep="."), hlist[[x]], pos=env)
+    })
+    return(paste(Symbols, "h", sep="."))
+  }
+  if (length(hlist) > 1) {
+    return(hlist)
+  } else return(hlist[[1L]])
+}
+## For a list of all SPDR tickers, uncomment and run this
+#library(RCurl)
+#u <- getURL("https://www.spdrs.com/product/")
+#U <- strsplit(strsplit(u, "ticker=")[[1L]], "\">")
+#(s <- sapply(U, "[", 1L)[-1L])
+#===============================================================================
+
+
+#' Get names and weights of the holdings of Select Sector SPDR ETFs
+#'
+#' This function only works with the 9 Select Sector SPDRs: \sQuote{XLY},
+#' \sQuote{XLP}, \sQuote{XLE}, \sQuote{XLF}, \sQuote{XLV}, \sQuote{XLI}, 
+#' \sQuote{XLB}, \sQuote{XLK}, \sQuote{XLU}.  
+#'
+#' @param Symbols character vector of Select Sector SPDR ETF symbols.  If not
+#'   provided, all 9 will be used.
+#' @param env where to store holdings (only used if \code{auto.assign} is 
+#'   \code{TRUE}
+#' @param auto.assign should the results be assigned in \code{env}?
+#' @return For each of the \code{Symbols}, an object 
+#'   classed as \dQuote{weights}.  If \code{auto.assign} is TRUE, holdings will 
+#'   be assigned as the ETF symbols appended with \dQuote{.h}, and the names of 
+#'   those objects will be returned. Otherwise, if \code{Symbols} is only one 
+#'   symbol, its holdings will be returned.  If \code{Symbols} is of length 
+#'   greater than one, a list will be returned where each element is the 
+#'   holdings of a different ETF.  If there are no holdings found for a Symbol 
+#'   (most likely because it is not a SPDR ETF), and \code{auto.assign} is TRUE, 
+#'   nothing will be assigned for that Symbol, but if \code{auto.assign} is 
+#'   FALSE, the returned list will have \code{NULL} for the element 
+#'   corresponding to that Symbol.
+#' @author Garrett See
+#' @note On non-Unix-like platforms, this function is called by 
+#' \code{\link{getHoldings}} since this works cross-platform but 
+#' \code{\link{getHoldings.SPDR}} does not.
+#' @seealso \code{\link{getHoldings}}, \code{\link{getHoldings.SPDR}},
+#'   \code{\link{getHoldings.iShares}}, \code{qmao:::getHoldings.iShares.AsOf}
+#'   \code{\link{getHoldings.vaneck}}, \code{\link{getHoldings.powershares}}
+#'   #' @references \href{www.sectorspdr.com}{Sector SPDR website}
+#' @examples
+#' \dontrun{
+#' getHoldings.selectSPDR("XLE")
+#' XLE.h
+#' getHoldings.selectSPDR(auto.assign=FALSE) #list of all of them
+#' }
+#' @export
+getHoldings.selectSPDR <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
+  ssspdrs <- c("XLY", "XLP", "XLE", "XLF", "XLV", "XLI", "XLB", "XLK", "XLU")
+  if (missing(Symbols)) { Symbols <- ssspdrs }
+  Symbols <- Symbols[Symbols %in% ssspdrs]
+  if (length(Symbols) == 0L) { return(NULL) }
+  hlist <- lapply(Symbols, function(symbol) {
+    if (length(Symbols) > 1) {
+        message(paste("Getting holdings for", symbol))
+    }
+
+    lnk <- paste0("http://www.sectorspdr.com/content/?do=indexComposition&",
+                  "symbol=", symbol, "&filetype=csv")
+    tmp <- tempfile()
+    download.file(lnk, destfile=tmp) 
+    fr <- read.csv(tmp,sep="\t",stringsAsFactors=FALSE)
+    unlink(tmp)
+    if (NROW(fr) == 0) { return(NULL) }
+    fr <- data.frame(fr[, c(4, 2)], row.names=as.character(fr[,3]),
+                     stringsAsFactors=FALSE)
+    colnames(fr) <- c(paste(symbol,'Weight',sep='.'), "Name")
+    class(fr) <- c("weights", "data.frame")
+    fr
+  })
+  names(hlist) <- Symbols
+  if (isTRUE(auto.assign)) {
+    sout <- do.call(c, lapply(Symbols, function(x) {
+      if (!is.null(hlist[[x]])) {
+        assign(paste(x, "h", sep = "."), hlist[[x]], pos = env)
+        x
+      }
+    }))
+    return(paste(sout, "h", sep = "."))
+  }
+  if (length(hlist) > 1) {
+    return(hlist)
+  } else return(hlist[[1L]])
+}
+
+
+

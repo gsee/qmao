@@ -1,13 +1,15 @@
 \name{getHoldings}
 \alias{getHoldings}
-\title{get the holdings of an ETF}
+\title{Get the holdings of an ETF}
 \usage{
   getHoldings(Symbols, env = .GlobalEnv,
     auto.assign = TRUE)
 }
 \arguments{
-  \item{Symbols}{chr Symbols of ETFs (if not supplied the
-  Symbols of the nine Sector SPDRs will be used)}
+  \item{Symbols}{chr Symbols of ETFs.  Presently, if not
+  supplied the Symbols of the nine Sector SPDRs will be
+  used.  However, in the future it may be changed to
+  require that \code{Symbols} be provided by the user.}
 
   \item{env}{environment to store the holdings data in}
 
@@ -20,12 +22,35 @@
   will be assigned in \code{env} with names that are
   \code{Symbols} appended with \dQuote{.h}.  Otherwise, the
   \dQuote{weights} will be returned and not stored.
+  Returned objects may have more columns depending on which
+  \code{getHoldings.*} \dQuote{method} is used.
 }
 \description{
-  get the holdings of an iShares or Sector SPDR ETF.
+  Get the names and weights of ETF holdings.
 }
 \details{
-  Only iShares and the 8 Sector SPDR ETFs are supported.
+  This function acts like a generic function.  There are
+  other functions, such as
+  \code{\link{getHoldings.iShares}} and
+  \code{\link{getHoldings.selectSPDR}} that act like
+  \dQuote{methods}.
+
+  \code{getHoldings} looks up the \code{Symbols} in
+  \href{http://www.masterdata.com/helpfiles/ETF_List_Downloads/AllTypes.csv}{this
+  csv} from
+  \href{http://www.masterdata.com/HelpFiles/ETF_List.htm}{masterdata.com}.
+  It uses the \code{Name} field to determine which
+  \code{getHoldings.*} function to call.
+
+  Different \code{getHoldings.*} \dQuote{methods} will
+  return different columns, but all of them should have the
+  Ticker Symbol or some other identifier as the
+  \code{rownames}, the first column should be
+  \code{Weights} (0-100), and the second column should be
+  \code{Name} (a description of the security).  Also, the
+  returned holdings data will be a \code{data.frame} with
+  class \code{weights}, or a \code{list} of \code{weights}
+  classed objects.
 
   Some iShares ETFs have more than one holding listed with
   the same Symbol. In the case that Symbols are duplicated,
@@ -34,25 +59,27 @@
   duplicated, they will be made unique with
   \code{\link{make.unique}}
 }
-\note{
-  This should get SPDR data from a csv that can be
-  downloaded at https://www.spdrs.com/product. Could also
-  be updated to return more info than just weights and
-  Symbols.
-}
 \examples{
 \dontrun{
-getHoldings('XLF')
-getHoldings('IVE')
-XLF.h
+getHoldings('XLB', auto.assign=FALSE) #getHoldings.SPDR or .selectSPDR depending on OS
+getHoldings('IVE') #getHoldings.iShares
 IVE.h
+getHoldings(c("QQQ", "GDX")) #.powershares and .vaneck (Market Vectors)
+getHoldings(c("XLY", "IVE", "QQQ", "GDX", "OIH", "XLU"))
 }
 }
 \author{
   Garrett See
 }
 \references{
-  Sector SPDRs \url{www.sectorspdr.com} iShares
-  \url{www.ishares.com}
+  \href{http://www.masterdata.com/HelpFiles/ETF_List.htm}{masterdata.com},
+}
+\seealso{
+  \code{\link{getHoldings.SPDR}},
+  \code{\link{getHoldings.selectSPDR}},
+  \code{\link{getHoldings.iShares}},
+  \code{qmao:::getHoldings.iShares.AsOf},
+  \code{\link{getHoldings.vaneck}},
+  \code{\link{getHoldings.powershares}}
 }
 

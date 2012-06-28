@@ -59,7 +59,7 @@ dlPowerShares <- function(base.url = "http://www.invescopowershares.com/products
 #' @param auto.assign should the results be assigned in \code{env}?
 #' @return if \code{auto.assign} is TRUE, holdings will be assigned as 
 #'   the ETF symbols appended with \dQuote{.h}, and the names of those objects
-#'   will be returned. Otherwise, if \code{Symbols} is only one symbol, its'
+#'   will be returned. Otherwise, if \code{Symbols} is only one symbol, its
 #'   holdings will be returned.  If \code{Symbols} is of length greater than
 #'   one, a list will be returned where each element is the holdings of a
 #'   different ETF.
@@ -83,10 +83,11 @@ getHoldings.powershares <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
     if (missing(Symbols)) {
         Symbols <- ps.syms
     } else Symbols <- Symbols[Symbols %in% ps.syms]
-    if (length(Symbols) == 0) {
-        stop("Symbols do not appear to be PowerShares")
-    }
-    hlist <- lapply(Symbols, function(Symbol) {        
+    if (length(Symbols) == 0L) { return(NULL) }
+    hlist <- lapply(Symbols, function(Symbol) {
+        if (length(Symbols) > 1) {
+            message(paste("Getting holdings for", Symbol))
+        }
         dat <- dlPowerShares(
             event.target=paste0("ctl00$MainPageLeft$MainPageContent$", 
                                 "ExportHoldings1$LinkButton1"),
@@ -113,17 +114,23 @@ getHoldings.powershares <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
         omit <- grep("ticker", names(out), ignore.case=TRUE) 
         omit <- omit[omit > 2]
         if (length(omit) > 0) {
-            out[, -omit]
-        } else out
+            out <- out[, -omit]
+        }
+        class(out) <- c("weights", "data.frame")
+        out
     })
+    names(hlist) <- Symbols
     if (isTRUE(auto.assign)) {
-        lapply(seq_along(Symbols), function(i) {
-            assign(paste(Symbols[i], "h", sep="."), hlist[[i]], pos=env)
-        })
-        return(paste(Symbols, "h", sep="."))
+        sout <- do.call(c, lapply(Symbols, function(x) {
+            if (!is.null(hlist[[x]])) {
+                assign(paste(x, "h", sep="."), hlist[[x]], pos=env)
+                x
+            }
+        }))
+        return(paste(sout, "h", sep="."))
     }
-    if (length(hlist) > 1) return(hlist)
-    hlist[[1]]
+    if (length(hlist) > 1) {
+        return(hlist)
+    } else return(hlist[[1]])
 }
-
 

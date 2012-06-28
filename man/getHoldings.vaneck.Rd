@@ -1,6 +1,6 @@
 \name{getHoldings.vaneck}
 \alias{getHoldings.vaneck}
-\title{get the holdings of a Van Eck ETF}
+\title{Get the holdings of a Van Eck ETF}
 \usage{
   getHoldings.vaneck(Symbols, env = .GlobalEnv,
     auto.assign = TRUE)
@@ -17,23 +17,16 @@
 }
 \value{
   either the names of the objects that contain the holdings
-  if called with \code{auto.assign=TRUE}, or the holdings
-  data.  The returned data is a data.frame with Weights
-  (0-100) in the first column, and the names of the stocks
-  in the second column. The rownames are the the ticker
-  symbols.
+  if called with \code{auto.assign=TRUE}, or a list of the
+  holdings data.  The returned data will be in objects
+  classed as \code{weights} that are data.frames with
+  Weights (0-100) in the first column, and the Names of the
+  stocks in the second column. The rownames are the the
+  ticker symbols.
 }
 \description{
-  get the holdings of a Van Eck ETF
-}
-\note{
-  This should become part of \code{getHoldings} (or
-  getHoldings should become \dQuote{generic}).
-
-  Internally, this uses \code{\link[XML]{readHTMLTable}} to
-  read an Excel spreadsheet because \code{readHTMLTable} is
-  incredibly easy to implement. However, it is a little bit
-  slow.
+  Download the names and weights of Van Eck ETFs (Market
+  Vector ETFs)
 }
 \examples{
 \dontrun{
@@ -47,6 +40,9 @@ getHoldings.vaneck("GDX")
   \url{http://www.vaneck.com/}
 }
 \seealso{
-  \code{\link{getHoldings}}
+  \code{\link{getHoldings}},
+  \code{\link{getHoldings.SPDR}},
+  \code{\link{getHoldings.iShares}},
+  \code{\link{getHoldings.powershares}}
 }
 

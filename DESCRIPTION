@@ -1,7 +1,7 @@
 Package: qmao
 Type: Package
 Title: Quantmod Add-on
-Version: 1.2.7
+Version: 1.2.8
 Date: 2012-06-24
 Author: Garrett See
 Depends:
@@ -51,3 +51,5 @@ Collate:
     'getSymbols.pos.R'
     'MakeStrictlyRegular.R'
     'do.call.rbind.R'
+    'getHoldings.iShares.R'
+    'getHoldings.SPDR.R'
