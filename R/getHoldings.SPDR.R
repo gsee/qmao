@@ -1,4 +1,21 @@
 
+#' Get the ticker symbols of all SPDR ETFs
+#' 
+#' Get a character vector of the ticker symbols of all SPDR ETFs.
+#' @return a character vector of the ticker symbols of all SPDR ETFs.
+#' @references \url{https://www.spdrs.com/product}
+#' @author Garrett See
+#' @seealso getHoldings.SPDR
+#' @examples
+#' \dontrun{
+#' SPDRSymbols()
+#' }
+SPDRSymbols <- function() {
+    stopifnot(require("RCurl"))
+    sapply(strsplit(strsplit(getURL("https://www.spdrs.com/product/"), 
+                                "ticker=")[[1L]], "\">"), "[", 1L)[-1L]
+}
+
 #' Get names and weights of the holdings of SPDR ETFs
 #'
 #' On Non-Unix-alike platforms, this will call 
@@ -8,7 +25,10 @@
 #' This function is usually called by \code{\link{getHoldings}}, but it can also
 #' be called directly
 #'
-#' @param Symbols character vector of SPDR ETF symbols
+#' @param Symbols character vector of SPDR ETF symbols.  Presently, if 
+#'   no \code{Symbols} are provided, all SPDR symbols will be used.  However,
+#'   in the future it may be changed to require that \code{Symbols} is not
+#'   \code{missing}.
 #' @param env where to store holdings (only used if \code{auto.assign} is 
 #'   \code{TRUE}
 #' @param auto.assign should the results be assigned in \code{env}?
@@ -40,9 +60,8 @@ getHoldings.SPDR <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
     return(getHoldings.selectSPDR(Symbols, env=env, auto.assign=auto.assign))
   }
   stopifnot(require("RCurl"))
-  s <- sapply(strsplit(strsplit(getURL("https://www.spdrs.com/product/"), 
-                                "ticker=")[[1L]], "\">"), "[", 1L)[-1L]
-  Symbols <- Symbols[Symbols %in% s]
+  s <- SPDRSymbols()
+  Symbols <- if (missing(Symbols)) { s } else Symbols[Symbols %in% s]
   if (length(Symbols) == 0L) { return(NULL) }
   hlist <- lapply(Symbols, function(symbol) {
     if (length(Symbols) > 1) {
@@ -81,11 +100,7 @@ getHoldings.SPDR <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
     return(hlist)
   } else return(hlist[[1L]])
 }
-## For a list of all SPDR tickers, uncomment and run this
-#library(RCurl)
-#u <- getURL("https://www.spdrs.com/product/")
-#U <- strsplit(strsplit(u, "ticker=")[[1L]], "\">")
-#(s <- sapply(U, "[", 1L)[-1L])
+
 #===============================================================================
 
 
@@ -99,7 +114,8 @@ getHoldings.SPDR <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
 #' \code{\link{getHoldings.SPDR}} but it can also be called directly.
 #'
 #' @param Symbols character vector of Select Sector SPDR ETF symbols.  If not
-#'   provided, all 9 will be used.
+#'   provided, all 9 will be used.  However, in the future it may change to 
+#'   require that \code{Symbols} is not \code{missing}.
 #' @param env where to store holdings (only used if \code{auto.assign} is 
 #'   \code{TRUE}
 #' @param auto.assign should the results be assigned in \code{env}?

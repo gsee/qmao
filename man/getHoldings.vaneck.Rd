@@ -7,7 +7,7 @@
 }
 \arguments{
   \item{Symbols}{character vector of Van Eck ETF ticker
-  symbols}
+  symbols.}
 
   \item{env}{environment in which to store holdings data}
 

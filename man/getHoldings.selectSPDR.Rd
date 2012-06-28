@@ -7,7 +7,9 @@
 }
 \arguments{
   \item{Symbols}{character vector of Select Sector SPDR ETF
-  symbols.  If not provided, all 9 will be used.}
+  symbols.  If not provided, all 9 will be used.  However,
+  in the future it may change to require that
+  \code{Symbols} is not \code{missing}.}
 
   \item{env}{where to store holdings (only used if
   \code{auto.assign} is \code{TRUE}}

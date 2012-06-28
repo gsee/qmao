@@ -12,7 +12,7 @@
 dlPowerShares <- function(base.url = "http://www.invescopowershares.com/products/",
                           event.target = 'ctl00$FullPageOverrideContent$LinkButton1',
                           action = "") {
-    require("RCurl")
+    stopifnot(require("RCurl"))
     # The following code is copied with slight modifications from the answer
     # provided by ttmaccer at http://stackoverflow.com/a/11004901
     ftarget <- paste0(base.url, action)
@@ -57,7 +57,10 @@ dlPowerShares <- function(base.url = "http://www.invescopowershares.com/products
 #' unique=TRUE)}.  Finally, if there is no \dQuote{SecurityNum} column the 
 #' rows will not be named.
 #' 
-#' @param Symbols character vector of PowerShares ETF symbols
+#' @param Symbols character vector of PowerShares ETF symbols.  Presently, if
+#'   Symbols is not provided, then the symbols of all PowerShares that have
+#'   holdings data will be used.  However, in the future it may change to 
+#'   require that the user provide a value.
 #' @param env where to store holdings
 #' @param auto.assign should the results be assigned in \code{env}?
 #' @return if \code{auto.assign} is TRUE, holdings will be assigned as 

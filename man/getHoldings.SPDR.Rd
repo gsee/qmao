@@ -6,7 +6,11 @@
     auto.assign = TRUE)
 }
 \arguments{
-  \item{Symbols}{character vector of SPDR ETF symbols}
+  \item{Symbols}{character vector of SPDR ETF symbols.
+  Presently, if no \code{Symbols} are provided, all SPDR
+  symbols will be used.  However, in the future it may be
+  changed to require that \code{Symbols} is not
+  \code{missing}.}
 
   \item{env}{where to store holdings (only used if
   \code{auto.assign} is \code{TRUE}}

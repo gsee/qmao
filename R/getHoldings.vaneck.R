@@ -2,7 +2,7 @@
 #'
 #' Download the names and weights of Van Eck ETFs (Market Vector ETFs)
 #'
-#' @param Symbols character vector of Van Eck ETF ticker symbols
+#' @param Symbols character vector of Van Eck ETF ticker symbols. 
 #' @param env environment in which to store holdings data
 #' @param auto.assign TRUE/FALSE. If TRUE, the holdings data will be stored in 
 #'   an object that has a name that is he Symbol appended with \dQuote{.h}

@@ -7,7 +7,10 @@
 }
 \arguments{
   \item{Symbols}{character vector of PowerShares ETF
-  symbols}
+  symbols.  Presently, if Symbols is not provided, then the
+  symbols of all PowerShares that have holdings data will
+  be used.  However, in the future it may change to require
+  that the user provide a value.}
 
   \item{env}{where to store holdings}
 
