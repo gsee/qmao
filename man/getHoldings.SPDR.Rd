@@ -34,6 +34,11 @@
   independent (but only works for the 9 Select Sector
   SPDRs).
 }
+\details{
+  This function is usually called by
+  \code{\link{getHoldings}}, but it can also be called
+  directly
+}
 \note{
   this uses \code{download.file} with \code{method="curl"}
   which is not supported on Windows.

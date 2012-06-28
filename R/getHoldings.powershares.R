@@ -37,6 +37,9 @@ dlPowerShares <- function(base.url = "http://www.invescopowershares.com/products
 #' Download the holdings of PowerShares ETFs and return a data.frame containing
 #' the weights and names of the holdings (among other things).
 #' 
+#' This function is usually called by \code{\link{getHoldings}}, but it can also
+#' be called directly.
+#' 
 #' First, this will download a list of PowerShares ETFs.  If \code{Symbols} is
 #' missing, the holdings of all PowerShares ETFs will be retrieved.  Otherwise,
 #' only the \code{Symbols} that are in the list of PowerShares ETFs will be 
@@ -66,10 +69,10 @@ dlPowerShares <- function(base.url = "http://www.invescopowershares.com/products
 #' @author Garrett See with help from ttmaccer at 
 #'   \url{http://stackoverflow.com/a/11004901}
 #' @references \url{http://www.invescopowershares.com}
-#' @seealso \code{qmao:::getHoldings}, 
-#'   \code{gsee:::getHoldings.iShares.AsOf}
-#'   \code{gsee:::getHoldings.SPDR}
-#'   \code{gsee:::getHoldings.vaneck}
+#' @seealso \code{\link{etHoldings}}, 
+#'   \code{qmao:::getHoldings.iShares.AsOf}
+#'   \code{\link{getHoldings.SPDR}}
+#'   \code{\link{getHoldings.vaneck}}
 #' @examples
 #' \dontrun{
 #' getHoldings.powershares(c("QQQ", "PGX"))

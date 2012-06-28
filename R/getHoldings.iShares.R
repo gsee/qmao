@@ -1,6 +1,9 @@
 #' Get the holdings of iShares ETFs
 #' 
 #' Get the names and weights of iShares ETFs.
+#'
+#' This function is usually called by \code{\link{getHoldings}}, but it can also
+#' be called directly
 #' 
 #' Some iShares ETFs have more than one holding listed with the same Symbol.
 #' In the case that Symbols are duplicated, a \dQuote{duplicates} attribute

@@ -36,6 +36,11 @@
   \sQuote{XLV}, \sQuote{XLI}, \sQuote{XLB}, \sQuote{XLK},
   \sQuote{XLU}.
 }
+\details{
+  It is usually called by \code{\link{getHoldings}}, or
+  \code{\link{getHoldings.SPDR}} but it can also be called
+  directly.
+}
 \note{
   On non-Unix-like platforms, this function is called by
   \code{\link{getHoldings}} since this works cross-platform

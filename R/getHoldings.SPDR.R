@@ -5,6 +5,9 @@
 #' \code{\link{getHoldings.selectSPDR}} which is platform independent 
 #' (but only works for the 9 Select Sector SPDRs).
 #'
+#' This function is usually called by \code{\link{getHoldings}}, but it can also
+#' be called directly
+#'
 #' @param Symbols character vector of SPDR ETF symbols
 #' @param env where to store holdings (only used if \code{auto.assign} is 
 #'   \code{TRUE}
@@ -91,6 +94,9 @@ getHoldings.SPDR <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
 #' This function only works with the 9 Select Sector SPDRs: \sQuote{XLY},
 #' \sQuote{XLP}, \sQuote{XLE}, \sQuote{XLF}, \sQuote{XLV}, \sQuote{XLI}, 
 #' \sQuote{XLB}, \sQuote{XLK}, \sQuote{XLU}.  
+#'
+#' It is usually called by \code{\link{getHoldings}}, or 
+#' \code{\link{getHoldings.SPDR}} but it can also be called directly.
 #'
 #' @param Symbols character vector of Select Sector SPDR ETF symbols.  If not
 #'   provided, all 9 will be used.
