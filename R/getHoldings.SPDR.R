@@ -75,7 +75,7 @@ getHoldings.SPDR <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
                   "_All_Holdings.csv?fund=", symbol, "&docname=All+Holdings")
     tmp <- tempfile()
     download.file(lnk, destfile=tmp, method='curl', quiet=TRUE)
-    fr <- read.csv(tmp, skip=3)
+    fr <- read.csv(tmp, skip=3, stringsAsFactors=FALSE)
     unlink(tmp)
     if (length(colnames(fr)) == 1L) return(NULL) # HTTP.404..Page.Not.Found
     tcol <- grep("ticker", colnames(fr), ignore.case=TRUE)
