@@ -47,6 +47,6 @@ IVE.h
   Garrett See
 }
 \references{
-  Sector SPDRs \href{www.ishares.com}{iShares}
+  \href{www.ishares.com}{iShares}
 }
 

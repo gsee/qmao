@@ -21,7 +21,7 @@
 #' are \code{Symbols} appended with \dQuote{.h}.  Otherwise, the 
 #' \dQuote{weights} will be returned and not stored.
 #' @author Garrett See
-#' @references Sector SPDRs \href{www.ishares.com}{iShares}
+#' @references \href{www.ishares.com}{iShares}
 #' @examples
 #' \dontrun{
 #' getHoldings.iShares('IVE')

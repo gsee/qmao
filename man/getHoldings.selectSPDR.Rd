@@ -59,7 +59,7 @@ getHoldings.selectSPDR(auto.assign=FALSE) #list of all of them
   Garrett See
 }
 \references{
-  \href{www.sectorspdr.com}{Sector SPDR website}
+  \href{http://www.sectorspdr.com}{Sector SPDR website}
 }
 \seealso{
   \code{\link{getHoldings}},
