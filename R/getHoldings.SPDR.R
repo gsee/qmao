@@ -139,7 +139,7 @@ getHoldings.SPDR <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
 #' @seealso \code{\link{getHoldings}}, \code{\link{getHoldings.SPDR}},
 #'   \code{\link{getHoldings.iShares}}, \code{qmao:::getHoldings.iShares.AsOf}
 #'   \code{\link{getHoldings.vaneck}}, \code{\link{getHoldings.powershares}}
-#'   #' @references \href{www.sectorspdr.com}{Sector SPDR website}
+#' @references \href{www.sectorspdr.com}{Sector SPDR website}
 #' @examples
 #' \dontrun{
 #' getHoldings.selectSPDR("XLE")

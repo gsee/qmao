@@ -67,6 +67,6 @@ getHoldings.selectSPDR(auto.assign=FALSE) #list of all of them
   \code{\link{getHoldings.iShares}},
   \code{qmao:::getHoldings.iShares.AsOf}
   \code{\link{getHoldings.vaneck}},
-  \code{\link{getHoldings.powershares}} #'
+  \code{\link{getHoldings.powershares}}
 }
 
