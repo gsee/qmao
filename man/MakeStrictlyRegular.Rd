@@ -3,7 +3,8 @@
 \title{Make an xts object strictly regular.}
 \usage{
   MakeStrictlyRegular(x, timespan = "", by = "min",
-    tz = "America/Chicago", verbose = TRUE)
+    tz = "America/Chicago", verbose = TRUE, na.rm = TRUE,
+    maxgap = 5)
 }
 \arguments{
   \item{x}{xts object}
@@ -20,12 +21,23 @@
   \item{verbose}{logical. print to standard output the
   number of rows that were added to make the object
   strictly regular?}
+
+  \item{na.rm}{Should leading \code{NA}s be removed?}
+
+  \item{maxgap}{see \code{\link[zoo]{na.locf}}}
 }
 \value{
   a strictly regular xts object
 }
 \description{
-  Make an xts object strictly regular.
+  Fill in gaps in data, by day, using \code{na.locf}
+}
+\details{
+  By default, if there are 5 or more missing observations,
+  they will not be filled in.  This can be adjusted with
+  \code{maxgap}.  Also, note that this function operates on
+  each day separately.  Therefore, missing values at the
+  beginning of a day will not be filled-in.
 }
 \note{
   ALPHA code; not perfect

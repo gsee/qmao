@@ -1,4 +1,12 @@
-#' Make an xts object strictly regular.  
+#' Make an xts object strictly regular.
+#'
+#' Fill in gaps in data, by day, using \code{na.locf}
+#'
+#' By default, if there are 5 or more missing observations, they will not be 
+#' filled in.  This can be adjusted with \code{maxgap}.  Also, note that this
+#' function operates on each day separately.  Therefore, missing values at the
+#' beginning of a day will not be filled-in.
+#' 
 #' @param x xts object
 #' @param timespan time-of-day subset string (e.g. "T08:30/T15:00"). seealso
 #'   \code{\link[qmao]{TimeOfDaySubset}}
@@ -6,6 +14,8 @@
 #' @param tz timezone to use with \code{\link{seq.POSIXt}}
 #' @param verbose logical. print to standard output the number of rows that
 #'   were added to make the object strictly regular?
+#' @param na.rm Should leading \code{NA}s be removed?
+#' @param maxgap see \code{\link[zoo]{na.locf}}
 #' @return a strictly regular xts object
 #' @author Garrett See
 #' @note ALPHA code; not perfect
@@ -16,7 +26,7 @@
 #' head(x2[paste(start.x, "/")])
 #' @export
 MakeStrictlyRegular <- function(x, timespan="", by="min", tz="America/Chicago",
-                                verbose=TRUE) {
+                                verbose=TRUE, na.rm=TRUE, maxgap=5) {
     stime <- format(.parseISO8601(timespan)[[1]], "%H:%M:%S")
     if (is.na(stime)) {
         stime <- "00:00:00"
@@ -39,7 +49,8 @@ MakeStrictlyRegular <- function(x, timespan="", by="min", tz="America/Chicago",
     if (timespan != "") {
         xx <- TimeOfDaySubset(xx, timespan)
     }
-    out <- do.call.rbind(lapply(split(xx, 'days'), na.locf, na.rm=TRUE))
+    out <- do.call.rbind(lapply(split(xx, 'days'), na.locf, na.rm=na.rm, 
+                                maxgap=maxgap))
     ## if it has a volume column, don't fill forward the volume
     if (has.Vo(xx)) {
         vxx <- Vo(xx)
