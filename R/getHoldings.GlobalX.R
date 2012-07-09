@@ -24,11 +24,10 @@
 #' getHoldings.GlobalX('ALUM')
 #' ALUM.h
 #' }
-#' @importFrom gdata read.xls
 #' @export
 # TODO: try this on all Global X ETFs and make sure the column names are consistent
 getHoldings.GlobalX <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
-    #suppressPackageStartupMessages(require("gdata"))
+    suppressPackageStartupMessages(require("gdata"))
     if (missing(Symbols)) {
         etfs <- read.masterDATA()
         etfs[, 1] <- sapply(strsplit(etfs[, 1], " "), "[", 1)
@@ -37,7 +36,7 @@ getHoldings.GlobalX <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
     if (length(Symbols) == 0L) { return(NULL) }
     hlist <- lapply(Symbols, function(Symbol) {
         if (length(Symbols) > 1) {
-            message(paste("Getting holdings for", symbol))
+            message(paste("Getting holdings for", Symbol))
         }
 
         #html <- getURL("http://www.globalxfunds.com/COPX")

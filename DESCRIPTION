@@ -11,9 +11,8 @@ Depends:
 Suggests:
     XML,
     RCurl,
+    gdata,
     timeDate
-Imports:
-    gdata
 Maintainer: Garrett See <gsee000@gmail.com>
 Description: some quantmod-like functions.
 License: GPL-3

@@ -22,7 +22,6 @@
 #' getHoldings.FirstTrust('FDN')
 #' FDN.h
 #' }
-#' @importFrom gdata read.xls
 #' @export
 getHoldings.FirstTrust <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
     #TODO: FIXME: NO stringsAsFactors!!!
@@ -35,7 +34,7 @@ getHoldings.FirstTrust <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
     if (length(Symbols) == 0L) { return(NULL) }
     hlist <- lapply(Symbols, function(Symbol) {
         if (length(Symbols) > 1) {
-            message(paste("Getting holdings for", symbol))
+            message(paste("Getting holdings for", Symbol))
         }
 
         ## Download holdings into data.frame.
