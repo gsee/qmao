@@ -36,6 +36,10 @@ getHoldings.GlobalX <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
     }
     if (length(Symbols) == 0L) { return(NULL) }
     hlist <- lapply(Symbols, function(Symbol) {
+        if (length(Symbols) > 1) {
+            message(paste("Getting holdings for", symbol))
+        }
+
         #html <- getURL("http://www.globalxfunds.com/COPX")
         text <- readLines(paste("http://www.globalxfunds.com", Symbol, sep="/"))
         # sorry for the ugly regex below; I'm sure it could be simpler.  

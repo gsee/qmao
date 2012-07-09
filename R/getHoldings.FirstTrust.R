@@ -34,6 +34,10 @@ getHoldings.FirstTrust <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
     Symbols <- if (missing(Symbols)) { s } else Symbols[Symbols %in% s]
     if (length(Symbols) == 0L) { return(NULL) }
     hlist <- lapply(Symbols, function(Symbol) {
+        if (length(Symbols) > 1) {
+            message(paste("Getting holdings for", symbol))
+        }
+
         ## Download holdings into data.frame.
         URL <- paste0("http://www.ftportfolios.com/Retail/etf/ETFholdings.aspx",
                      "?Ticker=", Symbol, sep="")
