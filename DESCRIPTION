@@ -12,6 +12,8 @@ Suggests:
     XML,
     RCurl,
     timeDate
+Imports:
+    gdata
 Maintainer: Garrett See <gsee000@gmail.com>
 Description: some quantmod-like functions.
 License: GPL-3
@@ -53,3 +55,6 @@ Collate:
     'do.call.rbind.R'
     'getHoldings.iShares.R'
     'getHoldings.SPDR.R'
+    'getHoldings.GlobalX.R'
+    'getHoldings.skeleton.R'
+    'getHoldings.FirstTrust.R'

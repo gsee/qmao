@@ -47,6 +47,9 @@ IVE.h
   Garrett See
 }
 \references{
-  \href{www.ishares.com}{iShares}
+  \url{www.ishares.com}#'
+}
+\seealso{
+  \code{\link{getHoldings}}
 }
 

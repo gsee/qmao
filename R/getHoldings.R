@@ -30,9 +30,9 @@ read.masterDATA <- function() {
 #' as \code{\link{getHoldings.iShares}} and \code{\link{getHoldings.selectSPDR}}
 #' that act like \dQuote{methods}.  
 #'
-#' \code{getHoldings} looks up the \code{Symbols} in 
-#' \href{http://www.masterdata.com/helpfiles/ETF_List_Downloads/AllTypes.csv}{this csv} 
-#' from \href{http://www.masterdata.com/HelpFiles/ETF_List.htm}{masterdata.com}.  
+#' \code{getHoldings} looks up the \code{Symbols} in the CSV at 
+#' \url{http://www.masterdata.com/helpfiles/ETF_List_Downloads/AllTypes.csv}
+#' from \url{http://www.masterdata.com/HelpFiles/ETF_List.htm}.
 #' It uses the \code{Name} field to determine which 
 #' \code{getHoldings.*} function to call. 
 #' 
@@ -63,10 +63,10 @@ read.masterDATA <- function() {
 #' @seealso \code{\link{getHoldings.SPDR}}, 
 #'   \code{\link{getHoldings.selectSPDR}},
 #'   \code{\link{getHoldings.iShares}}, \code{qmao:::getHoldings.iShares.AsOf},
-#'   \code{\link{getHoldings.vaneck}}, \code{\link{getHoldings.powershares}}
-
+#'   \code{\link{getHoldings.vaneck}}, \code{\link{getHoldings.powershares}},
+#'   \code{\link{getHoldings.GlobalX}}, \code{\link{getHoldings.FirstTrust}}
 #' @references 
-#' \href{http://www.masterdata.com/HelpFiles/ETF_List.htm}{masterdata.com}, 
+#' \url{http://www.masterdata.com/HelpFiles/ETF_List.htm}
 #' @examples
 #' 
 #' \dontrun{
@@ -88,7 +88,7 @@ getHoldings <-function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
     msym <- etfs[etfs$Symbol %in% Symbols, ]
     spl.m <- split(msym, msym$Name)
     fams <- names(spl.m) # (first word of) unique fund families
-    spdr.out <- ishr.out <- van.out <- pow.out <- NULL
+    spdr.out <- ishr.out <- van.out <- pow.out <- globx.out <- fstr.out <- NULL
     # for each of the getHoldings.* functions, find the symbols that that 
     # function works with and apply it to them.  Then, remove those symbols 
     # from `Symbols` so that after we've processed everything we know how to 
@@ -116,7 +116,20 @@ getHoldings <-function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
         pow.out <- getHoldings.powershares(s, env=env, auto.assign=auto.assign)
         Symbols <- Symbols[!Symbols %in% s]
     }
-    out <- list(spdr.out, ishr.out, van.out, pow.out, Symbols)
-    names(out) <- c("SPDR", "iShares", "VanEck", "PowerShares", "NotFound")
+    #TODO: FIXME: add support for Global X and First Trust
+    if ("Global" %in% fams) { 
+        s <- spl.m[[grep("Global", spl.m)]][, 2]
+        globx.out <- getHoldings.GlobalX(s, env=env, auto.assign=auto.assign)
+        Symbols <- Symbols[!Symbols %in% s]
+    }
+    if ("First" %in% fams) { 
+        s <- spl.m[[grep("First", spl.m)]][, 2]
+        fstr.out <- getHoldings.FirstTrust(s, env=env, auto.assign=auto.assign)
+        Symbols <- Symbols[!Symbols %in% s]
+    }
+    out <- list(spdr.out, ishr.out, van.out, pow.out, globx.out, fstr.out, 
+                Symbols)
+    names(out) <- c("SPDR", "iShares", "VanEck", "PowerShares", "GlobalX", 
+                    "FirstTrust", "NotFound")
     Filter(function(x) length(x) > 0, out)
 }

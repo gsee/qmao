@@ -42,6 +42,15 @@
   This function is usually called by
   \code{\link{getHoldings}}, but it can also be called
   directly
+
+  As of July 8, 2012, the CSVs provided by spdrs.com no
+  longer include a Ticker column which means that the
+  returned \code{weights} object will no longer have the
+  ticker symbols of the holdings as rownames.
+
+  Beware that the CSV that spdrs.com provides for some ETFs
+  (e.g. DIA) has the same number of shares for all holdings
+  (which is incorrect).
 }
 \note{
   this uses \code{download.file} with \code{method="curl"}
@@ -64,6 +73,8 @@ SPY.h
   \code{\link{getHoldings.iShares}},
   \code{\link{getHoldings.selectSPDR}},
   \code{\link{getHoldings.vaneck}},
-  \code{\link{getHoldings.powershares}}
+  \code{\link{getHoldings.powershares}},
+  \code{\link{getHoldings.GlobalX}},
+  \code{\link{getHoldings.FirstTrust}}
 }
 

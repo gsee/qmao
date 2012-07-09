@@ -1,9 +1,9 @@
 \name{.getEconomicCalendarYahoo}
+\alias{.getEconomicCalendarBriefing}
+\alias{.getEconomicCalendarYahoo}
 \alias{getEconomicCalendar}
 \alias{getEconomicCalendarBriefing}
-\alias{.getEconomicCalendarBriefing}
 \alias{getEconomicCalendarYahoo}
-\alias{.getEconomicCalendarYahoo}
 \title{Get the Economic Calender from Briefing.com or Yahoo.}
 \usage{
   .getEconomicCalendarYahoo(YW = format(Sys.Date(), "\%Y\%W"))

@@ -35,10 +35,11 @@
   \code{\link{getHoldings.selectSPDR}} that act like
   \dQuote{methods}.
 
-  \code{getHoldings} looks up the \code{Symbols} in
-  \href{http://www.masterdata.com/helpfiles/ETF_List_Downloads/AllTypes.csv}{this
-  csv} from
-  \href{http://www.masterdata.com/HelpFiles/ETF_List.htm}{masterdata.com}.
+  \code{getHoldings} looks up the \code{Symbols} in the CSV
+  at
+  \url{http://www.masterdata.com/helpfiles/ETF_List_Downloads/AllTypes.csv}
+  from
+  \url{http://www.masterdata.com/HelpFiles/ETF_List.htm}.
   It uses the \code{Name} field to determine which
   \code{getHoldings.*} function to call.
 
@@ -72,7 +73,7 @@ getHoldings(c("XLY", "IVE", "QQQ", "GDX", "OIH", "XLU"))
   Garrett See
 }
 \references{
-  \href{http://www.masterdata.com/HelpFiles/ETF_List.htm}{masterdata.com},
+  \url{http://www.masterdata.com/HelpFiles/ETF_List.htm}
 }
 \seealso{
   \code{\link{getHoldings.SPDR}},
@@ -80,6 +81,8 @@ getHoldings(c("XLY", "IVE", "QQQ", "GDX", "OIH", "XLU"))
   \code{\link{getHoldings.iShares}},
   \code{qmao:::getHoldings.iShares.AsOf},
   \code{\link{getHoldings.vaneck}},
-  \code{\link{getHoldings.powershares}}
+  \code{\link{getHoldings.powershares}},
+  \code{\link{getHoldings.GlobalX}},
+  \code{\link{getHoldings.FirstTrust}}
 }
 

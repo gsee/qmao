@@ -21,8 +21,8 @@
 #' are \code{Symbols} appended with \dQuote{.h}.  Otherwise, the 
 #' \dQuote{weights} will be returned and not stored.
 #' @author Garrett See
-#' @references \href{www.ishares.com}{iShares}
-#' @examples
+#' @seealso \code{\link{getHoldings}}
+#' @references \url{www.ishares.com}#' @examples
 #' \dontrun{
 #' getHoldings.iShares('IVE')
 #' IVE.h
@@ -59,7 +59,8 @@ getHoldings.iShares <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
     dupes <- character(0)
     if (any(duplicated(fr[, 1])) && !all(fr[, 1] == "--")) {
       dupes <- fr[, 1][duplicated(fr[, 1])]
-      warning(paste("Some Symbols duplicated:", paste(dupes, collapse=" ")))
+      warning(paste(symbol, "has some holdings with duplicate Symbols:", 
+                    paste(dupes, collapse=" ")))
     }
     rownames(fr) <- make.names(fr[, 1], unique=TRUE)
     wcol <- grep("Net.Assets", colnames(fr))

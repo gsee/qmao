@@ -25,6 +25,13 @@ SPDRSymbols <- function() {
 #' This function is usually called by \code{\link{getHoldings}}, but it can also
 #' be called directly
 #'
+#' As of July 8, 2012, the CSVs provided by spdrs.com no longer include a Ticker
+#' column which means that the returned \code{weights} object will no longer 
+#' have the ticker symbols of the holdings as rownames.
+#'
+#' Beware that the CSV that spdrs.com provides for some ETFs (e.g. DIA) has the
+#' same number of shares for all holdings (which is incorrect).
+#'
 #' @param Symbols character vector of SPDR ETF symbols.  Presently, if 
 #'   no \code{Symbols} are provided, all SPDR symbols will be used.  However,
 #'   in the future it may be changed to require that \code{Symbols} is not
@@ -47,7 +54,8 @@ SPDRSymbols <- function() {
 #'   supported on Windows.
 #' @seealso \code{\link{getHoldings}}, 
 #'   \code{\link{getHoldings.iShares}}, \code{\link{getHoldings.selectSPDR}},
-#'   \code{\link{getHoldings.vaneck}}, \code{\link{getHoldings.powershares}}
+#'   \code{\link{getHoldings.vaneck}}, \code{\link{getHoldings.powershares}},
+#'   \code{\link{getHoldings.GlobalX}}, \code{\link{getHoldings.FirstTrust}}
 #' @references \url{https://www.spdrs.com/}
 #' @examples
 #' \dontrun{
@@ -67,10 +75,9 @@ getHoldings.SPDR <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
     if (length(Symbols) > 1) {
         message(paste("Getting holdings for", symbol))
     }
-
     lnk <- paste0("https://www.spdrs.com/site-content/csv/", symbol, 
                   "_All_Holdings.csv?fund=", symbol, "&docname=All+Holdings&",
-                  "onyx_code1=1286&onyx_code2=1521")
+                  "onyx_code1=1286&onyx_code2=1521") #1763
     lnk <- paste0("https://www.spdrs.com/site-content/csv/", symbol, 
                   "_All_Holdings.csv?fund=", symbol, "&docname=All+Holdings")
     tmp <- tempfile()
@@ -79,8 +86,10 @@ getHoldings.SPDR <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
     unlink(tmp)
     if (length(colnames(fr)) == 1L) return(NULL) # HTTP.404..Page.Not.Found
     tcol <- grep("ticker", colnames(fr), ignore.case=TRUE)
-    rownames(fr) <- make.names(fr[, tcol], unique=TRUE) 
-    fr <- fr[, -tcol]
+    if (length(tcol) == 1L) {
+        rownames(fr) <- make.names(fr[, tcol], unique=TRUE) 
+        fr <- fr[, -tcol]
+    }
     wcol <- grep("weight", colnames(fr), ignore.case=TRUE)
     if (length(wcol) > 0L) { 
         colnames(fr)[wcol] <- paste(symbol, "Weight", sep=".") 
