@@ -58,7 +58,7 @@ getHoldings.WisdomTree <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
     # Not supported yet. (and probably never will be)
     # As of 2012-07-12 there are 2 of these "76" WTDI, and "72" RRF
     #Symbols <- Symbols[!names(Symbols) %in% c("76", "72")]
-    Symbols <- Symbols[!unname(Symbols) %in% c("WTDI", "RRF")]
+    Symbols <- Symbols[!unname(Symbols) %in% c("WDTI", "RRF")]
     if (length(Symbols) == 0L) { return(NULL) }
     hlist <- lapply(seq_along(Symbols), function(i) {
         symbol <- Symbols[i]
