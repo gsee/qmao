@@ -1,7 +1,7 @@
 Package: qmao
 Type: Package
 Title: Quantmod Add-on
-Version: 1.2.10
+Version: 1.2.11
 Date: 2012-06-28
 Author: Garrett See
 Depends:
@@ -57,3 +57,4 @@ Collate:
     'getHoldings.GlobalX.R'
     'getHoldings.skeleton.R'
     'getHoldings.FirstTrust.R'
+    'getHoldings.WisdomTree.R'

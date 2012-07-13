@@ -66,7 +66,7 @@ getHoldings('XLB', auto.assign=FALSE) #getHoldings.SPDR or .selectSPDR depending
 getHoldings('IVE') #getHoldings.iShares
 IVE.h
 getHoldings(c("QQQ", "GDX")) #.powershares and .vaneck (Market Vectors)
-getHoldings(c("XLY", "IVE", "QQQ", "GDX", "OIH", "XLU"))
+getHoldings(c("XLY", "IVE", "QQQ", "GDX", "OIH", "XLU", "EPI"))
 }
 }
 \author{
@@ -83,6 +83,7 @@ getHoldings(c("XLY", "IVE", "QQQ", "GDX", "OIH", "XLU"))
   \code{\link{getHoldings.vaneck}},
   \code{\link{getHoldings.powershares}},
   \code{\link{getHoldings.GlobalX}},
-  \code{\link{getHoldings.FirstTrust}}
+  \code{\link{getHoldings.FirstTrust}},
+  \code{\link{getHoldings.WisdomTree}}
 }
 

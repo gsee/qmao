@@ -1,6 +1,6 @@
 #' Get the holdings of First Trust ETFs
 #' 
-#' Get the names and weights of First Trust ETFs.
+#' Get the names and weights of First Trust ETFs holdings.
 #'
 #' This function is usually called by \code{\link{getHoldings}}, but it can also
 #' be called directly

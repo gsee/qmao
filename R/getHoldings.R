@@ -64,7 +64,8 @@ read.masterDATA <- function() {
 #'   \code{\link{getHoldings.selectSPDR}},
 #'   \code{\link{getHoldings.iShares}}, \code{qmao:::getHoldings.iShares.AsOf},
 #'   \code{\link{getHoldings.vaneck}}, \code{\link{getHoldings.powershares}},
-#'   \code{\link{getHoldings.GlobalX}}, \code{\link{getHoldings.FirstTrust}}
+#'   \code{\link{getHoldings.GlobalX}}, \code{\link{getHoldings.FirstTrust}},
+#'   \code{\link{getHoldings.WisdomTree}}
 #' @references 
 #' \url{http://www.masterdata.com/HelpFiles/ETF_List.htm}
 #' @examples
@@ -74,7 +75,7 @@ read.masterDATA <- function() {
 #' getHoldings('IVE') #getHoldings.iShares
 #' IVE.h
 #' getHoldings(c("QQQ", "GDX")) #.powershares and .vaneck (Market Vectors)
-#' getHoldings(c("XLY", "IVE", "QQQ", "GDX", "OIH", "XLU"))
+#' getHoldings(c("XLY", "IVE", "QQQ", "GDX", "OIH", "XLU", "EPI"))
 #' }
 #' @export
 getHoldings <-function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
@@ -127,9 +128,14 @@ getHoldings <-function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
         fstr.out <- getHoldings.FirstTrust(s, env=env, auto.assign=auto.assign)
         Symbols <- Symbols[!Symbols %in% s]
     }
+    if ("WisdomTree" %in% fams) {
+        s <- spl.m[[grep("WisdomTree", spl.m)]][, 2]
+        wt.out <- getHoldings.WisdomTree(s, env=env, auto.assign=auto.assign)
+        Symbols <- Symbols[!Symbols %in% s]
+    }
     out <- list(spdr.out, ishr.out, van.out, pow.out, globx.out, fstr.out, 
-                Symbols)
+                wt.out, Symbols)
     names(out) <- c("SPDR", "iShares", "VanEck", "PowerShares", "GlobalX", 
-                    "FirstTrust", "NotFound")
+                    "FirstTrust", "WisdomTree", "NotFound")
     Filter(function(x) length(x) > 0, out)
 }
