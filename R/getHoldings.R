@@ -89,7 +89,8 @@ getHoldings <-function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
     msym <- etfs[etfs$Symbol %in% Symbols, ]
     spl.m <- split(msym, msym$Name)
     fams <- names(spl.m) # (first word of) unique fund families
-    spdr.out <- ishr.out <- van.out <- pow.out <- globx.out <- fstr.out <- NULL
+    spdr.out <- ishr.out <- van.out <- pow.out <- globx.out <- fstr.out <- 
+        wt.out <- dirx.out <- NULL
     # for each of the getHoldings.* functions, find the symbols that that 
     # function works with and apply it to them.  Then, remove those symbols 
     # from `Symbols` so that after we've processed everything we know how to 
@@ -133,9 +134,14 @@ getHoldings <-function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
         wt.out <- getHoldings.WisdomTree(s, env=env, auto.assign=auto.assign)
         Symbols <- Symbols[!Symbols %in% s]
     }
+    if ("Direxion" %in% fams) {
+        s <- spl.m[[grep("Direxion", spl.m)]][, 2]
+        dirx.out <- getHoldings.Direxion(s, env=env, auto.assign=auto.assign)
+        Symbols <- Symbols[!Symbols %in% s]
+    }
     out <- list(spdr.out, ishr.out, van.out, pow.out, globx.out, fstr.out, 
-                wt.out, Symbols)
+                wt.out, dirx.out, Symbols)
     names(out) <- c("SPDR", "iShares", "VanEck", "PowerShares", "GlobalX", 
-                    "FirstTrust", "WisdomTree", "NotFound")
+                    "FirstTrust", "WisdomTree", "Direxion", "NotFound")
     Filter(function(x) length(x) > 0, out)
 }
