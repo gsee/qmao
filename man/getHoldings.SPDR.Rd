@@ -45,7 +45,7 @@
 
   As of July 8, 2012, the CSVs provided by spdrs.com no
   longer include a Ticker column which means that the
-  returned \code{weights} object will no longer have the
+  returned \code{holdings} object will no longer have the
   ticker symbols of the holdings as rownames.
 
   Beware that the CSV that spdrs.com provides for some ETFs

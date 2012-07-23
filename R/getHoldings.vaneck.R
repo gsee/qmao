@@ -1,6 +1,6 @@
 #' Get the holdings of a Van Eck ETF
 #'
-#' Download the names and weights of Van Eck ETFs (Market Vector ETFs)
+#' Download the names and weights of holdings of Van Eck ETFs (Market Vector ETFs)
 #'
 #' @param Symbols character vector of Van Eck ETF ticker symbols. Presently,
 #'   if \code{Symbols} is \code{missing}, all the Market Vectors Symbols found
@@ -11,7 +11,7 @@
 #'   an object that has a name that is he Symbol appended with \dQuote{.h}
 #' @return either the names of the objects that contain the holdings if called
 #'   with \code{auto.assign=TRUE}, or a list of the holdings data.  The returned 
-#'   data will be in objects classed as \code{weights} that are data.frames 
+#'   data will be in objects classed as \code{holdings} that are data.frames 
 #'   with Weights (0-100) in the first column, and the Names of the stocks in 
 #'   the second column. The rownames are the the ticker symbols.
 #' @author Garrett See
@@ -61,7 +61,7 @@ getHoldings.vaneck <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
                     names(tbl))]])
         rn[is.na(rn)] <- "--"
         rownames(out) <- make.names(rn, unique=TRUE)
-        class(out) <- c("weights", "data.frame")
+        class(out) <- c("holdings", "data.frame")
         out
     })
     names(hlist) <- Symbols

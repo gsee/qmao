@@ -15,12 +15,12 @@
   \item{auto.assign}{assign data?}
 }
 \value{
-  An object classed as \dQuote{weights} will be created
+  An object classed as \dQuote{holdings} will be created
   that is a \code{data.frame} with columns for holdings'
   weights and names.  If called with
   \code{auto.assign=TRUE}, it will be assigned in
   \code{env} with names that are \code{Symbols} appended
-  with \dQuote{.h}.  Otherwise, the \dQuote{weights} will
+  with \dQuote{.h}.  Otherwise, the \dQuote{holdings} will
   be returned and not stored.
 }
 \description{

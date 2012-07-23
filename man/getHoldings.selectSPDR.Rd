@@ -19,7 +19,7 @@
 }
 \value{
   For each of the \code{Symbols}, an object classed as
-  \dQuote{weights}.  If \code{auto.assign} is TRUE,
+  \dQuote{holdings}.  If \code{auto.assign} is TRUE,
   holdings will be assigned as the ETF symbols appended
   with \dQuote{.h}, and the names of those objects will be
   returned. Otherwise, if \code{Symbols} is only one

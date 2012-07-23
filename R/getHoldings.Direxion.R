@@ -14,11 +14,11 @@ DirexionSymbols <- function() {
 #'   Direxion ETFs will be used.)
 #' @param env environment in which to store the holdings data
 #' @param auto.assign assign data?
-#' @return An object classed as \dQuote{weights} will be created that is a 
+#' @return An object classed as \dQuote{holdings} will be created that is a 
 #' \code{data.frame} with columns for holdings' weights and names.  If called 
 #' with \code{auto.assign=TRUE}, it will be assigned in \code{env} with names 
 #' that are \code{Symbols} appended with \dQuote{.h}.  Otherwise, the 
-#' \dQuote{weights} will be returned and not stored.
+#' \dQuote{holdings} will be returned and not stored.
 #' @author Garrett See
 #' @seealso \code{\link{getHoldings}}, \code{qmao:::DirexionSymbols}
 #' @references \url{http://www.direxionshares.com/etfs}
@@ -66,8 +66,8 @@ getHoldings.Direxion <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
             }
         } 
         if (length(dupes) > 0) attr(out, "duplicates") <- dupes
-        ## class as weights, data.frame.
-        class(out) <- c("weights", "data.frame")
+        ## class as holdings, data.frame.
+        class(out) <- c("holdings", "data.frame")
         out
     })
     names(hlist) <- Symbols

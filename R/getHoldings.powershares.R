@@ -122,7 +122,7 @@ getHoldings.powershares <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
         if (length(omit) > 0) {
             out <- out[, -omit]
         }
-        class(out) <- c("weights", "data.frame")
+        class(out) <- c("holdings", "data.frame")
         out
     })
     names(hlist) <- Symbols

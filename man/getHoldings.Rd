@@ -16,12 +16,12 @@
   \item{auto.assign}{assign data?}
 }
 \value{
-  An object classed as \dQuote{weights} will be created
+  An object classed as \dQuote{holdings} will be created
   that is a data.frame with columns for holdings' weights
   and names.  If called with \code{auto.assign=TRUE}, it
   will be assigned in \code{env} with names that are
   \code{Symbols} appended with \dQuote{.h}.  Otherwise, the
-  \dQuote{weights} will be returned and not stored.
+  \dQuote{holdings} will be returned and not stored.
   Returned objects may have more columns depending on which
   \code{getHoldings.*} \dQuote{method} is used.
 }
@@ -50,8 +50,8 @@
   \code{Weights} (0-100), and the second column should be
   \code{Name} (a description of the security).  Also, the
   returned holdings data will be a \code{data.frame} with
-  class \code{weights}, or a \code{list} of \code{weights}
-  classed objects.
+  class \code{holdings}, or a \code{list} of
+  \code{holdings} classed objects.
 
   Some iShares ETFs have more than one holding listed with
   the same Symbol. In the case that Symbols are duplicated,

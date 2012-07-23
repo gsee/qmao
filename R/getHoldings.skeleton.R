@@ -73,8 +73,8 @@ getHoldings.skeleton <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
         #} 
         #if (length(dupes) > 0) attr(dat, "duplicates") <- dupes
         #
-        ## class as weights, data.frame.
-        #class(dat) <- c("weights", "data.frame")
+        ## class as holdings, data.frame.
+        #class(dat) <- c("holdings", "data.frame")
         #out
     })
     names(hlist) <- Symbols

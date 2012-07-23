@@ -26,7 +26,7 @@ SPDRSymbols <- function() {
 #' be called directly
 #'
 #' As of July 8, 2012, the CSVs provided by spdrs.com no longer include a Ticker
-#' column which means that the returned \code{weights} object will no longer 
+#' column which means that the returned \code{holdings} object will no longer 
 #' have the ticker symbols of the holdings as rownames.
 #'
 #' Beware that the CSV that spdrs.com provides for some ETFs (e.g. DIA) has the
@@ -95,7 +95,7 @@ getHoldings.SPDR <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
         colnames(fr)[wcol] <- paste(symbol, "Weight", sep=".") 
     }
     out <- fr[, unique(c(wcol, seq_len(NCOL(fr))))]
-    class(out) <- c("weights", "data.frame")
+    class(out) <- c("holdings", "data.frame")
     out
   })
   names(hlist) <- Symbols
@@ -131,7 +131,7 @@ getHoldings.SPDR <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
 #'   \code{TRUE}
 #' @param auto.assign should the results be assigned in \code{env}?
 #' @return For each of the \code{Symbols}, an object 
-#'   classed as \dQuote{weights}.  If \code{auto.assign} is TRUE, holdings will 
+#'   classed as \dQuote{holdings}.  If \code{auto.assign} is TRUE, holdings will 
 #'   be assigned as the ETF symbols appended with \dQuote{.h}, and the names of 
 #'   those objects will be returned. Otherwise, if \code{Symbols} is only one 
 #'   symbol, its holdings will be returned.  If \code{Symbols} is of length 
@@ -176,7 +176,7 @@ getHoldings.selectSPDR <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
     fr <- data.frame(fr[, c(4, 2)], row.names=as.character(fr[,3]),
                      stringsAsFactors=FALSE)
     colnames(fr) <- c(paste(symbol,'Weight',sep='.'), "Name")
-    class(fr) <- c("weights", "data.frame")
+    class(fr) <- c("holdings", "data.frame")
     fr
   })
   names(hlist) <- Symbols

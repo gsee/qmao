@@ -41,7 +41,7 @@ read.masterDATA <- function() {
 #' identifier as the \code{rownames}, the first column should be \code{Weights}
 #' (0-100), and the second column should be \code{Name} (a description of the 
 #' security).  Also, the returned holdings data will be a \code{data.frame} with
-#' class \code{weights}, or a \code{list} of \code{weights} classed objects.
+#' class \code{holdings}, or a \code{list} of \code{holdings} classed objects.
 #' 
 #' Some iShares ETFs have more than one holding listed with the same Symbol.
 #' In the case that Symbols are duplicated, a \dQuote{duplicates} attribute
@@ -53,11 +53,11 @@ read.masterDATA <- function() {
 #'   changed to require that \code{Symbols} be provided by the user.
 #' @param env environment to store the holdings data in
 #' @param auto.assign assign data?
-#' @return An object classed as \dQuote{weights} will be created that is a 
+#' @return An object classed as \dQuote{holdings} will be created that is a 
 #' data.frame with columns for holdings' weights and names.  If called with 
 #' \code{auto.assign=TRUE}, it will be assigned in \code{env} with names that 
 #' are \code{Symbols} appended with \dQuote{.h}.  Otherwise, the 
-#' \dQuote{weights} will be returned and not stored.  Returned objects may have
+#' \dQuote{holdings} will be returned and not stored.  Returned objects may have
 #' more columns depending on which \code{getHoldings.*} \dQuote{method} is used.
 #' @author Garrett See
 #' @seealso \code{\link{getHoldings.SPDR}}, 
@@ -118,7 +118,6 @@ getHoldings <-function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
         pow.out <- getHoldings.powershares(s, env=env, auto.assign=auto.assign)
         Symbols <- Symbols[!Symbols %in% s]
     }
-    #TODO: FIXME: add support for Global X and First Trust
     if ("Global" %in% fams) { 
         s <- spl.m[[grep("Global", spl.m)]][, 2]
         globx.out <- getHoldings.GlobalX(s, env=env, auto.assign=auto.assign)

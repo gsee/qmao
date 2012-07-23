@@ -15,11 +15,11 @@
 #'   200 of them.)
 #' @param env environment to store the holdings data in
 #' @param auto.assign assign data?
-#' @return An object classed as \dQuote{weights} will be created that is a 
+#' @return An object classed as \dQuote{holdings} will be created that is a 
 #' data.frame with columns for holdings' weights and names.  If called with 
 #' \code{auto.assign=TRUE}, it will be assigned in \code{env} with names that 
 #' are \code{Symbols} appended with \dQuote{.h}.  Otherwise, the 
-#' \dQuote{weights} will be returned and not stored.
+#' \dQuote{holdings} will be returned and not stored.
 #' @author Garrett See
 #' @seealso \code{\link{getHoldings}}
 #' @references \url{www.ishares.com}#' @examples
@@ -72,7 +72,7 @@ getHoldings.iShares <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
     colnames(fr)[1] <- paste(symbol,'Weight',sep='.')
     fr <- fr[, -wcol]
     if (length(dupes) > 0) attr(fr, "duplicates") <- dupes
-    class(fr) <- c("weights", "data.frame")
+    class(fr) <- c("holdings", "data.frame")
     fr
   })
   names(hlist) <- Symbols

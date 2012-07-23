@@ -23,14 +23,14 @@
   either the names of the objects that contain the holdings
   if called with \code{auto.assign=TRUE}, or a list of the
   holdings data.  The returned data will be in objects
-  classed as \code{weights} that are data.frames with
+  classed as \code{holdings} that are data.frames with
   Weights (0-100) in the first column, and the Names of the
   stocks in the second column. The rownames are the the
   ticker symbols.
 }
 \description{
-  Download the names and weights of Van Eck ETFs (Market
-  Vector ETFs)
+  Download the names and weights of holdings of Van Eck
+  ETFs (Market Vector ETFs)
 }
 \examples{
 \dontrun{

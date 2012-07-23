@@ -1,6 +1,6 @@
 #' Get the holdings of First Trust ETFs
 #' 
-#' Get the names and weights of First Trust ETFs holdings.
+#' Get the names and weights of holdings of First Trust ETFs.
 #'
 #' This function is usually called by \code{\link{getHoldings}}, but it can also
 #' be called directly
@@ -9,11 +9,11 @@
 #'   First Trust ETFs will be used.)
 #' @param env environment in which to store the holdings data
 #' @param auto.assign assign data?
-#' @return An object classed as \dQuote{weights} will be created that is a 
+#' @return An object classed as \dQuote{holdings} will be created that is a 
 #' \code{data.frame} with columns for holdings' weights and names.  If called 
 #' with \code{auto.assign=TRUE}, it will be assigned in \code{env} with names 
 #' that are \code{Symbols} appended with \dQuote{.h}.  Otherwise, the 
-#' \dQuote{weights} will be returned and not stored.
+#' \dQuote{holdings} will be returned and not stored.
 #' @author Garrett See
 #' @seealso \code{\link{getHoldings}}
 #' @references \url{http://www.ftportfolios.com/index.aspx}
@@ -48,7 +48,7 @@ getHoldings.FirstTrust <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
                           row.names=make.names(dat[, 2], unique=TRUE))
         colnames(out) <- c(paste(Symbol, "Weight", sep="."), "Name", "Ticker")
         out[, 1] <- as.numeric(sub("%", "", out[, 1]))
-        class(out) <- c("weights", "data.frame")
+        class(out) <- c("holdings", "data.frame")
         out
     })
     names(hlist) <- Symbols
