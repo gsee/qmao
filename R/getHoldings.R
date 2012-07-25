@@ -138,9 +138,13 @@ getHoldings <-function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
         dirx.out <- getHoldings.Direxion(s, env=env, auto.assign=auto.assign)
         Symbols <- Symbols[!Symbols %in% s]
     }
-    out <- list(spdr.out, ishr.out, van.out, pow.out, globx.out, fstr.out, 
+    tmp <- list(spdr.out, ishr.out, van.out, pow.out, globx.out, fstr.out, 
                 wt.out, dirx.out, Symbols)
-    names(out) <- c("SPDR", "iShares", "VanEck", "PowerShares", "GlobalX", 
+    names(tmp) <- c("SPDR", "iShares", "VanEck", "PowerShares", "GlobalX", 
                     "FirstTrust", "WisdomTree", "Direxion", "NotFound")
-    Filter(function(x) length(x) > 0, out)
+    out <- Filter(function(x) length(x) > 0, tmp)
+    if (isTRUE(auto.assign)) {
+        out
+    } else out[[1L]]
 }
+
