@@ -23,13 +23,12 @@
 #' FDN.h
 #' }
 #' @export
+#tmp <- rHT[grep("ETFList", names(rHT))]
 getHoldings.FirstTrust <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
-    #TODO: FIXME: NO stringsAsFactors!!!
-    rHT <- readHTMLTable("http://www.ftportfolios.com/Retail/etf/etflist.aspx")#, stringsAsFactors=FALSE)
-    tmp <- rHT[grep("ETFList", names(rHT))]
-    s <- unique(unname(unlist(lapply(tmp, function(x) {
-        as.character(x[-1, 2])
-    }))))
+    rHT <- readHTMLTable("http://www.ftportfolios.com/Retail/etf/etflist.aspx", stringsAsFactors=FALSE)
+    s <- unique(unlist(lapply(rHT, function(x) {
+        x$TickerSymbol
+    }), use.names=FALSE))
     Symbols <- if (missing(Symbols)) { s } else Symbols[Symbols %in% s]
     if (length(Symbols) == 0L) { return(NULL) }
     hlist <- lapply(Symbols, function(Symbol) {
@@ -42,7 +41,9 @@ getHoldings.FirstTrust <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
                      "?Ticker=", Symbol, sep="")
         tbl <- try(readHTMLTable(URL, stringsAsFactors=FALSE))
         if (inherits(tbl, 'try-error')) { return(NULL) }
-        dat <- tbl[[grep("Holdings", names(tbl))]]
+
+        dat <- tbl[[grep("HoldingsListing_FundNavigation1", names(tbl)) + 1]]
+        colnames(dat) <- dat[1, ]
         dat <- dat[-1, ]
         out <- data.frame(dat[, c(3, 1, 2)], 
                           row.names=make.names(dat[, 2], unique=TRUE))
