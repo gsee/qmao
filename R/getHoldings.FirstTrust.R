@@ -49,6 +49,7 @@ getHoldings.FirstTrust <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
                           row.names=make.names(dat[, 2], unique=TRUE))
         colnames(out) <- c(paste(Symbol, "Weight", sep="."), "Name", "Ticker")
         out[, 1] <- as.numeric(sub("%", "", out[, 1]))
+        out$Name <- gsub("[^A-Za-z0-9 ,.&()-/]", "", out$Name)
         class(out) <- c("holdings", "data.frame")
         out
     })
