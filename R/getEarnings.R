@@ -5,7 +5,7 @@
 #' be the Dates/Times of the earnings release.  These Dates/Times may have one 
 #' of a few different formats, most of which are ambiguous.  
 #' \code{convertEarningsTime} will put the Dates/Times in an unambiguous format; 
-#' it will be called if \code{getHistoricEarnings} is called with 
+#' it will be called if \code{getEarnings} is called with 
 #' \code{doFormatTime = TRUE}.
 #'
 #' If one of the earnings Date/Time values contains \dQuote{BMO} or \dQuote{AMC},
