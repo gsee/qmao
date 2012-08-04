@@ -57,8 +57,8 @@
   of a few different formats, most of which are ambiguous.
   \code{convertEarningsTime} will put the Dates/Times in an
   unambiguous format; it will be called if
-  \code{getHistoricEarnings} is called with
-  \code{doFormatTime = TRUE}.
+  \code{getEarnings} is called with \code{doFormatTime =
+  TRUE}.
 }
 \details{
   If one of the earnings Date/Time values contains

@@ -51,8 +51,9 @@ getCalendarByDay <- function(FUN, from, to) {
     s <- seq(from, to, by='days')
     #s <- as.Date(from:to)
     s <- s[!weekdays(s) %in% c("Saturday", "Sunday")]
-    out <- lapply(s, FUN)
-    return(do.call(rbind, out))
+    out <- do.call(rbind, lapply(s, FUN))
+    rownames(out) <- NULL
+    out
   }
 }
 
@@ -432,10 +433,6 @@ getMergersCalendar <- function(from, to) {
 #   out
 # }
 
-
-
-
-
 # 
 # #surprises by day
 # http://biz.yahoo.com/z/extreme.html 
@@ -447,4 +444,73 @@ getMergersCalendar <- function(from, to) {
 # http://biz.yahoo.com/c/12/s5.html  #201205
 
 
+
+#' Get dividends calendar from earnings.com
+#' 
+#' Get information about dividends of stocks that go (went) ex-dividend on a
+#' given Date or range of dates.
+#' 
+#' \code{.getDividendsCalendar} will usually be called by 
+#' \code{\link{getCalendarByDay}}, but it can also be called directly.
+#' 
+#' \code{getDividendsCalendar} is a wrapper that creates a sequence of dates 
+#' between \code{from} and \code{to}, and then applies 
+#' \code{.getDividendsCalendar} to each of those dates and, finally, merges the 
+#' results together into a single \code{data.frame}.
+#' 
+#' @param Date a Date, or character string in the format CCYY-MM-DD
+#' @param from first Date for which to retrieve the Dividend Calendar
+#' @param to last Date for which to retrieve the Dividend Calendar
+#' @return a \code{data.frame} with columns \dQuote{SYMBOL}, \dQuote{COMPANY}, 
+#'   \dQuote{AMOUNT}, \dQuote{EX-DATE}, \dQuote{PAYABLE}, \dQuote{RECORD}, and
+#'   \dQuote{DECLARATION}
+#' @author Garrett See
+#' @references \url{http://www.earnings.com/dividend.asp?date=&client=cb}
+#' @note ALPHA CODE!!! Subject to change.
+#' @seealso \code{\link{getEconomicCalendar}}, 
+#'   \code{\link{getEarningsCalendar}},
+#'   \code{\link{getCalendarByDay}}
+#' @examples
+#' \dontrun{
+#' ## fetch the Dividends Calendar from yahoo for today
+#' .getDividendsCalendar()
+#' ## fetch the Dividends Calendar for a range of dates
+#' getDividendsCalendar(from=Sys.Date(), to=Sys.Date() + 7)
+#' }
+#' @export
+#' @rdname getDividendsCalendar
+.getDividendsCalendar <- function(Date=Sys.Date()) {
+    stopifnot(require("XML"))
+    Date <- as.Date(Date)
+    if (Date < Sys.Date() - 90) {
+        stop("earnings.com only provides last 3 months of dividend history.")
+    }
+    URL <- paste0("http://www.earnings.com/dividend.asp?date=", format(Date, "%Y%m%d"), "&client=cb")
+    x <- readHTMLTable(URL, stringsAsFactors=FALSE)
+    table.loc <- tail(grep("EX-DATE", x), 1)
+    if (length(table.loc) == 0L) return(NULL)
+    df <- x[[table.loc]]
+    header <- df[1, -1]
+    df <- df[-1, -1]
+    colnames(df) <- header
+    df[df == "n/a"] <- NA
+    df[, 1] <- gsub("[^A-Za-z0-9\\.-]", "", df[, 1]) #remove non-break spaces
+    df <- na.omit(df)
+    rownames(df) <- seq_len(NROW(df))
+    # Taiwan stocks report both pct and dollar amt.  
+    #For simplicity, I'm removing the percentages
+    df <- df[!grepl("%", df$AMOUNT), ]
+    df$AMOUNT <- gsub("-", "0", df$AMOUNT)
+    df$AMOUNT <- as.numeric(gsub("\\$", "", df$AMOUNT))
+    #if (gsub("^0", "", format(Date, "%d-%b")) != df[1, "EX-DATE"]) {
+    #    stop(paste("No dividend data available for", Date))
+    #}
+    df
+}
+
+#' @export
+#' @rdname getDividendsCalendar
+getDividendsCalendar <- function(from, to) {
+    getCalendarByDay(".getDividendsCalendar", from=from, to=to)
+}
 
