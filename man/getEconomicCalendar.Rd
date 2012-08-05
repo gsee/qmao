@@ -1,9 +1,9 @@
 \name{.getEconomicCalendarYahoo}
-\alias{.getEconomicCalendarBriefing}
-\alias{.getEconomicCalendarYahoo}
 \alias{getEconomicCalendar}
 \alias{getEconomicCalendarBriefing}
+\alias{.getEconomicCalendarBriefing}
 \alias{getEconomicCalendarYahoo}
+\alias{.getEconomicCalendarYahoo}
 \title{Get the Economic Calender from Briefing.com or Yahoo.}
 \usage{
   .getEconomicCalendarYahoo(YW = format(Sys.Date(), "\%Y\%W"))
@@ -53,10 +53,10 @@
   Download the Briefing.com economic calendar either
   directly from the briefing.com website, or via yahoo's
   website, and create a data.frame containing information
-  about previous and/or scheduled realeases of economic
-  economic indicators. The returned \code{data.frame} will
-  have a \code{Time} column that contains an intraday
-  timestamp with a time zone of \code{America/New_York}.
+  about previous and/or scheduled releases of economic
+  indicators. The returned \code{data.frame} will have a
+  \code{Time} column that contains an intraday timestamp
+  with a time zone of \code{America/New_York}.
 }
 \details{
   \code{.getEconomicCalendarYahoo} will retrieve the
@@ -91,7 +91,7 @@
   to download.  If \code{from} is a Date that is a
   Wednesday, the first data will be from previous Monday.
   Likewise, if \code{to} is a Date that is a Wednesday, the
-  last data will be from the Friday of that week.
+  last data will be the Friday of that week.
 
   \code{getEconomicCalendar} is a wrapper that will call
   \code{getEconomicCalendarYahoo} if any of the requested
@@ -123,7 +123,8 @@ getEconomicCalendar(from=Sys.Date(), to=Sys.Date() + 5) #uses Yahoo because it's
   Garrett See
 }
 \references{
-  \url{http://biz.yahoo.com/c/e.html}
+  \url{http://biz.yahoo.com/c/e.html},
+  \url{http://briefing.com/investor/calendars/economic/}
 }
 \seealso{
   \code{\link{getEarningsCalendar}},

@@ -106,7 +106,7 @@ getCalendarByMonth <- function(FUN, from, to) {
 #' Download the Briefing.com economic calendar either directly from the 
 #' briefing.com website, or via yahoo's website, and create 
 #' a data.frame containing information about previous and/or scheduled 
-#' realeases of economic economic indicators. The returned \code{data.frame} 
+#' releases of economic indicators. The returned \code{data.frame} 
 #' will have a \code{Time} column that contains an intraday timestamp with 
 #' a time zone of \code{America/New_York}.
 #' 
@@ -134,7 +134,7 @@ getCalendarByMonth <- function(FUN, from, to) {
 #' and \code{to} are used to pick the first and last \emph{week} to
 #' download.  If \code{from} is a Date that is a Wednesday, the first data will
 #' be from previous Monday.  Likewise, if \code{to} is a Date that is a 
-#' Wednesday, the last data will be from the Friday of that week.
+#' Wednesday, the last data will be the Friday of that week.
 #'
 #' \code{getEconomicCalendar} is a wrapper that will call 
 #' \code{getEconomicCalendarYahoo} if any of the requested Dates occur in the 
@@ -163,7 +163,8 @@ getCalendarByMonth <- function(FUN, from, to) {
 #'   \item{Market.Expects}{Consensus forecast}
 #'   \item{Prior}{prior reading}
 #' @author Garrett See
-#' @references \url{http://biz.yahoo.com/c/e.html}
+#' @references \url{http://biz.yahoo.com/c/e.html}, 
+#'   \url{http://briefing.com/investor/calendars/economic/}
 #' @note ALPHA CODE!!! Subject to change.
 #' @seealso \code{\link{getEarningsCalendar}}, 
 #'   \code{\link{getCalendarByWeek}}
