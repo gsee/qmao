@@ -505,6 +505,20 @@ getMergersCalendar <- function(from, to) {
     #if (gsub("^0", "", format(Date, "%d-%b")) != df[1, "EX-DATE"]) {
     #    stop(paste("No dividend data available for", Date))
     #}
+    to.date <- function(.x, md=Date) {
+        do.call(c, lapply(strsplit(.x, "-"), function(.xx) {
+            # if Ex.Date is in a month that comes before this one, it must be next year
+            if (match(.xx[[2]], month.abb) < match(format(md, "%b"), month.abb)) {
+                Y <- paste(as.numeric(format(md, "%Y")) + 1)
+            } else Y <- format(md, "%Y")
+            as.Date(paste0(Y, .xx[[1]], .xx[[2]]), "%Y%d%b")
+        }))
+    }
+    #SYMBOL COMPANY AMOUNT EX-DATE PAYABLE RECORD DECLARATION
+    df[["EX-DATE"]] <- to.date(df[["EX-DATE"]], Date)
+    df[["PAYABLE"]] <- to.date(df[["PAYABLE"]], Date)
+    df[["RECORD"]] <- to.date(df[["RECORD"]], Date)
+    df[["DECLARATION"]] <- to.date(df[["DECLARATION"]], Date)
     df
 }
 
