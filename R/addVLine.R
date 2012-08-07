@@ -44,6 +44,8 @@ function(dtlist, on=-1, col='blue') #add vertical line to a chart
     #xdata <- slot(quantmod:::get.chob()[[2]], "xdata")
     #xdata <- slot(get(".chob", pos=.GlobalEnv)[[2]], "xdata")
     dtlist <- index(xdata[endpoints(xdata, dtlist)])
+    dtlist <- head(dtlist, -1) #remove last element b/c it will always be the 
+                               #last bar of the graph
   }
   plot(addTA(xts( rep(TRUE, NROW(dtlist)), dtlist), on=on, col=col))
 }
