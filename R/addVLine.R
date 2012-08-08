@@ -43,11 +43,19 @@ function(dtlist, on=-1, col='blue') #add vertical line to a chart
     xdata <- lchob@xdata
     #xdata <- slot(quantmod:::get.chob()[[2]], "xdata")
     #xdata <- slot(get(".chob", pos=.GlobalEnv)[[2]], "xdata")
-    dtlist <- index(xdata[endpoints(xdata, dtlist)])
-    dtlist <- head(dtlist, -1) #remove last element b/c it will always be the 
-                               #last bar of the graph
+    if (substr(dtlist, nchar(dtlist), nchar(dtlist)) != "s") {
+        dtlist <- NULL
+    } else {
+      dtlist <- index(xdata[endpoints(xdata, dtlist)])
+      if (length(dtlist) > 1) {
+        dtlist <- head(dtlist, -1) #remove last element b/c it will always be the 
+                                   #last bar of the graph
+      }
+    }
   }
-  plot(addTA(xts( rep(TRUE, NROW(dtlist)), dtlist), on=on, col=col))
+  if (length(dtlist) > 0) {
+    plot(addTA(xts( rep(TRUE, NROW(dtlist)), dtlist), on=on, col=col))
+  }
 }
 
 
