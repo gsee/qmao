@@ -42,6 +42,13 @@
   \dQuote{weeks}, \dQuote{months}, \dQuote{quarters}, and
   \dQuote{years}.
 }
+\note{
+  Currently, this function is sort of a hack.  It does not
+  update the \code{chob}.  So, if you use this function,
+  then you will no longer be able to do things like
+  \code{\link[quantmod]{zoomChart}}.  There are a few
+  variations of this function in the works.
+}
 \examples{
 \dontrun{
 getSymbols('SPY', src='yahoo', from='2011-01-01', to='2012-08-01')
