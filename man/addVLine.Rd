@@ -2,7 +2,7 @@
 \alias{addVLine}
 \title{Add vertical line to a quantmod chart}
 \usage{
-  addVLine(dtlist, on = -1, col = "blue")
+  addVLine(dtlist, on = -1, col = "blue", ...)
 }
 \arguments{
   \item{dtlist}{Plots a vertical line at given index.
@@ -14,6 +14,9 @@
   \item{on}{panel to add vertical line on}
 
   \item{col}{color of the line}
+
+  \item{...}{parameters to pass to
+  \code{\link[quantmod]{addTA}}.  (e.g. `border=NA`)}
 }
 \value{
   used for its side effect.

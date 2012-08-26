@@ -16,12 +16,18 @@
 #' \dQuote{hours}, \dQuote{days}, \dQuote{weeks}, \dQuote{months}, 
 #' \dQuote{quarters}, and \dQuote{years}.
 #'
+#' @Note Currently, this function is sort of a hack.  It does not update the
+#' \code{chob}.  So, if you use this function, then you will no longer be able
+#' to do things like \code{\link[quantmod]{zoomChart}}.  There are a few 
+#' variations of this function in the works.
 #' @param dtlist Plots a vertical line at given index. Alternatively, this can
 #'   be one of the following strings: \dQuote{secs}, \dQuote{seconds}, 
 #'   \dQuote{mins}, \dQuote{minutes}, \dQuote{hours}, \dQuote{days}, 
 #'   \dQuote{weeks}, \dQuote{months}, \dQuote{years}
 #' @param on panel to add vertical line on
 #' @param col color of the line
+#' @param ... parameters to pass to \code{\link[quantmod]{addTA}}. 
+#'   (e.g. `border=NA`)
 #' @return used for its side effect.
 #' @seealso chartSeries, addTA
 #' @references 
@@ -35,7 +41,7 @@
 #' }
 #' @export
 addVLine <-
-function(dtlist, on=-1, col='blue') #add vertical line to a chart
+function(dtlist, on=-1, col='blue', ...) #add vertical line to a chart
 {
   if (is.character(dtlist)) {
     lchob <- quantmod:::get.current.chob()
@@ -54,7 +60,7 @@ function(dtlist, on=-1, col='blue') #add vertical line to a chart
     }
   }
   if (length(dtlist) > 0) {
-    plot(addTA(xts( rep(TRUE, NROW(dtlist)), dtlist), on=on, col=col))
+    plot(addTA(xts( rep(TRUE, NROW(dtlist)), dtlist), on=on, col=col, ...))
   }
 }
 
