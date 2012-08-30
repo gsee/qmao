@@ -40,7 +40,8 @@
   Default is \code{TRUE}}
 
   \item{subset}{xts style subsetting argument. (e.g.
-  "T08:30/T15:00") Default is \code{NULL}}
+  "T08:30/T15:00" or "last 10 days") Default is
+  \code{NULL}}
 
   \item{env}{environment in which to look for xts objects}
 

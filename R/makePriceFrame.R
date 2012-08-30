@@ -33,8 +33,8 @@
 #' @param notional Should the prices will be multiplied by their multipliers,
 #' to get notional values? Default is \code{TRUE}
 #' @param na.omit Should \code{NA} values be removed? Default is \code{TRUE}
-#' @param subset xts style subsetting argument. (e.g. "T08:30/T15:00") Default
-#' is \code{NULL}
+#' @param subset xts style subsetting argument. (e.g. "T08:30/T15:00" or 
+#' "last 10 days") Default is \code{NULL}
 #' @param env environment in which to look for xts objects
 #' @param silent silence warnings? (Currently, the only warning message is
 #' \dQuote{Instrument not found, using contract multiplier of 1})
@@ -86,7 +86,24 @@ function(Symbols, from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, 
     for (i in 1:length(Symbols)) {
         tmp.dat <- try(estAd(get(Symbols[i],pos=env),prefer=prefer),TRUE)
         if (!inherits(tmp.dat,'try-error') && length(tmp.dat)) {
-            if (!is.null(subset)) tmp.dat <- tmp.dat[subset]
+            # The following subset code is only a slight modification of code in
+            # quantmod::chartSeries
+            if (!is.null(subset) && is.character(subset)) {
+                if (strsplit(subset, " ")[[1]][1] %in% c("first", "last")) {
+                    subsetvec <- strsplit(subset, " ")[[1]]
+                    subset.n <- if (length(subsetvec) < 3) {
+                        if (length(subsetvec) == 1) { 
+                            1L 
+                        } else as.numeric(subsetvec[2])
+                    } else {
+                        paste(subsetvec[2:3], collapse=" ")
+                    }
+                    sub.index <- index(do.call(subsetvec[1], 
+                                               list(tmp.dat, subset.n)))
+                    subset <- paste(first(sub.index), last(sub.index), sep="/")
+                }
+                tmp.dat <- tmp.dat[subset]
+            }
             pframe <- cbind(pframe, tmp.dat * mult[i], all=TRUE)
         }
     }
