@@ -1,7 +1,6 @@
 
 #WTSymbols()
 WTSymbols <- function() {
-    stopifnot(require("RCurl"))
     URL <- getURL("http://www.wisdomtree.com/etfs/index.aspx")
     ss <- strsplit(URL, "etfid=")[[1L]][-1]
     gsub("(\\d+)\"><span class=\"ticker\">(\\w+)(<.*)", "\\2", 
@@ -41,7 +40,6 @@ WTSymbols <- function() {
 #' }
 #' @export
 getHoldings.WisdomTree <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
-    stopifnot(require("RCurl"))
     URL <- getURL("http://www.wisdomtree.com/etfs/index.aspx")
     #s <- gsub("^(\\w+)(<.*)", "\\1", strsplit(URL, "\"ticker\">")[[1L]][-1])
     #ids <- unique(gsub("^(\\w+)\\s?(.*)$", "\\1", 

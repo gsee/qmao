@@ -22,7 +22,6 @@ LastBusinessDateOfMonth <- function(YYYYMM) {
 # @examples
 # getHoldings.iShares.AsOf("IYE", "200909")
 getHoldings.iShares.AsOf <- function(Symbol, YYYYMM) {
-    require(XML)
     monthend <- LastBusinessDateOfMonth(YYYYMM)
     addy <- paste("http://us.ishares.com/product_info/fund/holdings/",
                     Symbol, ".htm?asofDt=", format(monthend,"%Y-%m-%d"),

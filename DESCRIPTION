@@ -7,12 +7,13 @@ Author: Garrett See
 Depends:
     xts,
     quantmod,
-    FinancialInstrument (>= 0.10.0)
+    FinancialInstrument (>= 0.10.0),
+    gdata
 Suggests:
-    XML,
-    RCurl,
-    gdata,
     timeDate
+Imports:
+    RCurl,
+    XML,
 Maintainer: Garrett See <gsee000@gmail.com>
 Description: some quantmod-like functions.
 License: GPL-3

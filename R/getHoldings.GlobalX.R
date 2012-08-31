@@ -26,7 +26,6 @@
 #' }
 #' @export
 getHoldings.GlobalX <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
-    suppressPackageStartupMessages(require("gdata"))
     if (missing(Symbols)) {
         etfs <- read.masterDATA()
         etfs[, 1] <- sapply(strsplit(etfs[, 1], " "), "[", 1)

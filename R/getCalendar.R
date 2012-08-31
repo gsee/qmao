@@ -185,10 +185,10 @@ getCalendarByMonth <- function(FUN, from, to) {
 #' getEconomicCalendar(from=Sys.Date()-5, to=Sys.Date() - 1) #uses Briefing.com because it's Dates from past
 #' getEconomicCalendar(from=Sys.Date(), to=Sys.Date() + 5) #uses Yahoo because it's Dates from future
 #' }
+#' @importFrom XML readHTMLTable
 #' @export
 #' @rdname getEconomicCalendar
 .getEconomicCalendarYahoo <- function(YW=format(Sys.Date(), "%Y%W")) {
-  require(XML)
   stopifnot(length(YW) == 1)
   if (is.timeBased(YW) || nchar(YW) == 10) {
     YW <- format(as.Date(YW), "%Y%W")
@@ -214,7 +214,6 @@ getCalendarByMonth <- function(FUN, from, to) {
 #' @export
 #' @rdname getEconomicCalendar
 .getEconomicCalendarBriefing <- function(Date=Sys.Date()) {
-  require("XML")
   Date <- as.Date(Date)
   Y <- format(Date, "%Y")
   if (Date > Sys.Date()) {
@@ -315,7 +314,6 @@ getEconomicCalendar <- function(from, to) {
 #' @export
 #' @rdname getEarningsCalendar
 .getEarningsCalendar <- function(Date=Sys.Date()) {
-  require("XML")
   Date <- as.Date(Date)
   rt <- try(readHTMLTable(paste0("http://biz.yahoo.com/research/earncal/",
                                  format(Date, "%Y%m%d"), ".html"), 
@@ -366,7 +364,6 @@ getEarningsCalendar <- function(from, to) {
 #' @export
 #' @rdname getMergersCalendar
 .getMergersCalendar <- function(YM=format(Sys.Date(), "%Y%m")) {
-  require(XML)
   stopifnot(length(YM) == 1)
   if (is.timeBased(YM) || nchar(YM) == 10) {
     YM <- format(as.Date(YM), "%Y%m")
@@ -481,7 +478,6 @@ getMergersCalendar <- function(from, to) {
 #' @export
 #' @rdname getDividendsCalendar
 .getDividendsCalendar <- function(Date=Sys.Date()) {
-    stopifnot(require("XML"))
     Date <- as.Date(Date)
     if (Date < Sys.Date() - 90) {
         stop("earnings.com only provides last 3 months of dividend history.")

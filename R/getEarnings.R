@@ -52,7 +52,6 @@ getEarnings <- function(Symbol,
                         doFormatTime=TRUE, 
                         return.tz='America/Chicago',
                         return.class=c('xts', 'data.frame')) {
-    require(XML)
     return.class <- return.class[[1]]
     if (!return.class %in% c("xts", "data.frame")) 
         stop('return.class must be either "xts" or "data.frame"')

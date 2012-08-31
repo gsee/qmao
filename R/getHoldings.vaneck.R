@@ -24,7 +24,6 @@
 #' }
 #' @export
 getHoldings.vaneck <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
-    require("XML")
     if (missing(Symbols)) {
         etfs <- read.masterDATA()
         etfs[, 1] <- sapply(strsplit(etfs[, 1], " "), "[", 1)

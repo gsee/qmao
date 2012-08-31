@@ -11,7 +11,6 @@
 #' SPDRSymbols()
 #' }
 SPDRSymbols <- function() {
-    stopifnot(require("RCurl"))
     sapply(strsplit(strsplit(getURL("https://www.spdrs.com/product/"), 
                                 "ticker=")[[1L]], "\">"), "[", 1L)[-1L]
 }
@@ -62,14 +61,12 @@ SPDRSymbols <- function() {
 #' getHoldings.SPDR("SPY")
 #' SPY.h
 #' }
+#' @import RCurl
 #' @export
 getHoldings.SPDR <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
   if (.Platform[["OS.type"]] != "unix") {
     return(getHoldings.selectSPDR(Symbols, env=env, auto.assign=auto.assign))
   }
-  # Should I suppresPackageStartupMessages here?
-  if (!require("gdata")) stop("Please install the gdata package")
-  stopifnot(require("RCurl"))
   s <- SPDRSymbols()
   Symbols <- if (missing(Symbols)) { s } else Symbols[Symbols %in% s]
   if (length(Symbols) == 0L) { return(NULL) }
@@ -80,18 +77,17 @@ getHoldings.SPDR <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
 
     lnk <- paste0("https://www.spdrs.com/site-content/xls/", symbol, 
                   "_All_Holdings.xls?fund=", symbol, "&docname=All+Holdings")
-                   #&onyx_code1=1286&onyx_code2=1506
-    #lnk <- paste0("https://www.spdrs.com/site-content/csv/", symbol, 
-    #              "_All_Holdings.csv?fund=", symbol, "&docname=All+Holdings")
+
     tmp <- tempfile()
     download.file(lnk, destfile=tmp, method='curl', quiet=TRUE)
-
+    if (substr(readLines(tmp, 1), 1, 9) == "<!DOCTYPE") {
+        stop(paste("Error downloading holdings of SPDR ETF", sQuote(symbol)))
+    }
     fr <- read.xls(tmp, skip=3, stringsAsFactors=FALSE)
-    #fr <- read.csv(tmp, skip=3, stringsAsFactors=FALSE)
     unlink(tmp)
     if (length(colnames(fr)) == 1L) {
         #return(NULL) # HTTP.404..Page.Not.Found
-        stop("Error downloading holdings of a SPDR ETF")
+        stop(paste("Error downloading holdings of SPDR ETF", sQuote(symbol)))
     }
     fr <- fr[, -grep("^X", colnames(fr))]
     fr <- fr[complete.cases(fr), ]

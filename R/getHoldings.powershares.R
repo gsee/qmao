@@ -12,7 +12,6 @@
 dlPowerShares <- function(base.url = "http://www.invescopowershares.com/products/",
                           event.target = 'ctl00$FullPageOverrideContent$LinkButton1',
                           action = "") {
-    stopifnot(require("RCurl"))
     ftarget <- paste0(base.url, action)
     dum <- getURL(ftarget)
     event.val <- unlist(strsplit(dum,"__EVENTVALIDATION\" value=\""))[2]
@@ -81,7 +80,6 @@ dlPowerShares <- function(base.url = "http://www.invescopowershares.com/products
 #' }
 #' @export
 getHoldings.powershares <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
-    stopifnot(require("RCurl"))
     pspl <- dlPowerShares() #PowerShares Product list
     ps.syms <- pspl[pspl[["Category_Name"]] != "Commodity & Currency", "Ticker"]
     if (missing(Symbols)) {
