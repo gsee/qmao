@@ -64,8 +64,8 @@ head(QQQ.h); head(PGX.h)
 }
 }
 \author{
-  Garrett See with help from ttmaccer at
-  \url{http://stackoverflow.com/a/11004901}
+  Garrett See with help from a user that requested to
+  remain anonymous on \url{http://stackoverflow.com}
 }
 \references{
   \url{http://www.invescopowershares.com}

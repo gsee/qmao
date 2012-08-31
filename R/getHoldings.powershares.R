@@ -6,15 +6,13 @@
 #'   the \dQuote{Download} link and \dQuote{Copy Link Address}
 #' @param action the product-specific part of the action url
 #' @return a csv downloaded from the PowerShares website
-#' @author Garrett See with help from ttmaccer at 
-#'   \url{http://stackoverflow.com/a/11004901}
+#' @author Garrett See with help from a user that requested to remain anonymous 
+#'   on \url{http://stackoverflow.com}
 #' @references \url{http://www.invescopowershares.com/products/}
 dlPowerShares <- function(base.url = "http://www.invescopowershares.com/products/",
                           event.target = 'ctl00$FullPageOverrideContent$LinkButton1',
                           action = "") {
     stopifnot(require("RCurl"))
-    # The following code is copied with slight modifications from the answer
-    # provided by ttmaccer at http://stackoverflow.com/a/11004901
     ftarget <- paste0(base.url, action)
     dum <- getURL(ftarget)
     event.val <- unlist(strsplit(dum,"__EVENTVALIDATION\" value=\""))[2]
@@ -69,8 +67,8 @@ dlPowerShares <- function(base.url = "http://www.invescopowershares.com/products
 #'   holdings will be returned.  If \code{Symbols} is of length greater than
 #'   one, a list will be returned where each element is the holdings of a
 #'   different ETF.
-#' @author Garrett See with help from ttmaccer at 
-#'   \url{http://stackoverflow.com/a/11004901}
+#' @author Garrett See with help from a user that requested to remain anonymous 
+#'   on \url{http://stackoverflow.com}
 #' @references \url{http://www.invescopowershares.com}
 #' @seealso \code{\link{getHoldings}}, 
 #'   \code{qmao:::getHoldings.iShares.AsOf}
