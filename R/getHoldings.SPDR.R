@@ -80,7 +80,8 @@ getHoldings.SPDR <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
 
     tmp <- tempfile()
     download.file(lnk, destfile=tmp, method='curl', quiet=TRUE)
-    if (substr(readLines(tmp, 1), 1, 9) == "<!DOCTYPE") {
+    test <- try(substr(readLines(tmp, 1), 1, 9) == "<!DOCTYPE", silent=TRUE)
+    if (!inherits(test, 'try-error') && isTRUE(test)) {
         stop(paste("Error downloading holdings of SPDR ETF", sQuote(symbol)))
     }
     fr <- read.xls(tmp, skip=3, stringsAsFactors=FALSE)
