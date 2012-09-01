@@ -82,13 +82,16 @@ getHoldings.SPDR <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
     download.file(lnk, destfile=tmp, method='curl', quiet=TRUE)
     test <- try(substr(readLines(tmp, 1), 1, 9) == "<!DOCTYPE", silent=TRUE)
     if (!inherits(test, 'try-error') && isTRUE(test)) {
-        stop(paste("Error downloading holdings of SPDR ETF", sQuote(symbol)))
+        warning(paste("Error downloading holdings of SPDR ETF", sQuote(symbol)))
+        #stop(paste("Error downloading holdings of SPDR ETF", sQuote(symbol)))
+        return(NULL)
     }
     fr <- read.xls(tmp, skip=3, stringsAsFactors=FALSE)
     unlink(tmp)
     if (length(colnames(fr)) == 1L) {
         #return(NULL) # HTTP.404..Page.Not.Found
-        stop(paste("Error downloading holdings of SPDR ETF", sQuote(symbol)))
+        warning(paste("Error downloading holdings of SPDR ETF", sQuote(symbol)))
+        return(NULL)
     }
     fr <- fr[, -grep("^X", colnames(fr))]
     fr <- fr[complete.cases(fr), ]
