@@ -61,7 +61,6 @@ SPDRSymbols <- function() {
 #' getHoldings.SPDR("SPY")
 #' SPY.h
 #' }
-#' @import RCurl
 #' @export
 getHoldings.SPDR <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
   if (.Platform[["OS.type"]] != "unix") {

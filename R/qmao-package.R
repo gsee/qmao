@@ -16,5 +16,5 @@
 #' Maintainer: Garrett See <gsee000@@gmail.com>
 NULL
 
-
-
+#' @import RCurl
+#' @importFrom XML readHTMLTable

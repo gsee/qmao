@@ -185,7 +185,6 @@ getCalendarByMonth <- function(FUN, from, to) {
 #' getEconomicCalendar(from=Sys.Date()-5, to=Sys.Date() - 1) #uses Briefing.com because it's Dates from past
 #' getEconomicCalendar(from=Sys.Date(), to=Sys.Date() + 5) #uses Yahoo because it's Dates from future
 #' }
-#' @importFrom XML readHTMLTable
 #' @export
 #' @rdname getEconomicCalendar
 .getEconomicCalendarYahoo <- function(YW=format(Sys.Date(), "%Y%W")) {
