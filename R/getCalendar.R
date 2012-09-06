@@ -540,47 +540,48 @@ getSplitsCalendar <- function(from, to) {
 #' @export
 #' @rdname getDividendsCalendar
 .getDividendsCalendar <- function(Date=Sys.Date()) {
-    Date <- as.Date(Date)
-    if (Date < Sys.Date() - 90) {
-        stop("earnings.com only provides last 3 months of dividend history.")
-    }
-    URL <- paste0("http://www.earnings.com/dividend.asp?date=", format(Date, "%Y%m%d"), "&client=cb")
-    x <- readHTMLTable(URL, stringsAsFactors=FALSE)
-    table.loc <- tail(grep("EX-DATE", x), 1)
-    if (length(table.loc) == 0L) return(NULL)
-    df <- x[[table.loc]]
-    header <- df[1, -1]
-    df <- df[-1, -1]
-    colnames(df) <- header
-    df[df == "n/a"] <- NA
-    df[, 1] <- gsub("[^A-Za-z0-9\\.-]", "", df[, 1]) #remove non-break spaces
-    df <- na.omit(df)
-    rownames(df) <- seq_len(NROW(df))
-    # Taiwan stocks report both pct and dollar amt.  
-    #For simplicity, I'm removing the percentages
-    df <- df[!grepl("%", df$AMOUNT), ]
-    df$AMOUNT <- gsub("-", "0", df$AMOUNT)
-    df$AMOUNT <- as.numeric(gsub("\\$", "", df$AMOUNT))
-    #if (gsub("^0", "", format(Date, "%d-%b")) != df[1, "EX-DATE"]) {
-    #    stop(paste("No dividend data available for", Date))
-    #}
-    to.date <- function(.x, md=Date) {
-        do.call(c, lapply(strsplit(.x, "-"), function(.xx) {
-            if (length(unlist(.xx)) > 0) {
-                # if Ex.Date is in a month that comes before this one, it must be next year
-                if (match(.xx[[2]], month.abb) < match(format(md, "%b"), month.abb)) {
-                    Y <- paste(as.numeric(format(md, "%Y")) + 1)
-                } else Y <- format(md, "%Y")
-                as.Date(paste0(Y, .xx[[1]], .xx[[2]]), "%Y%d%b")
-            } else NA
-        }))
-    }
-    #SYMBOL COMPANY AMOUNT EX-DATE PAYABLE RECORD DECLARATION
-    df[["EX-DATE"]] <- to.date(df[["EX-DATE"]], Date)
-    df[["PAYABLE"]] <- to.date(df[["PAYABLE"]], Date)
-    df[["RECORD"]] <- to.date(df[["RECORD"]], Date)
-    df[["DECLARATION"]] <- to.date(df[["DECLARATION"]], Date)
-    df
+  Date <- as.Date(Date)
+  if (Date < Sys.Date() - 90) {
+      stop("earnings.com only provides last 3 months of dividend history.")
+  }
+  URL <- paste0("http://www.earnings.com/dividend.asp?date=", 
+                format(Date, "%Y%m%d"), "&client=cb")
+  x <- readHTMLTable(URL, stringsAsFactors=FALSE)
+  table.loc <- tail(grep("EX-DATE", x), 1)
+  if (length(table.loc) == 0L) return(NULL)
+  df <- x[[table.loc]]
+  header <- df[1, -1]
+  df <- df[-1, -1]
+  colnames(df) <- header
+  df[df == "n/a"] <- NA
+  df[, 1] <- gsub("[^A-Za-z0-9\\.-]", "", df[, 1]) #remove non-break spaces
+  df <- na.omit(df)
+  rownames(df) <- seq_len(NROW(df))
+  # Taiwan stocks report both pct and dollar amt.  
+  #For simplicity, I'm removing the percentages
+  df <- df[!grepl("%", df$AMOUNT), ]
+  df$AMOUNT <- gsub("-", "0", df$AMOUNT)
+  df$AMOUNT <- as.numeric(gsub("\\$", "", df$AMOUNT))
+  #if (gsub("^0", "", format(Date, "%d-%b")) != df[1, "EX-DATE"]) {
+  #    stop(paste("No dividend data available for", Date))
+  #}
+  to.date <- function(.x, md=Date) {
+    do.call(c, lapply(strsplit(.x, "-"), function(.xx) {
+      if (length(unlist(.xx)) > 0) {
+        # if Ex.Date is in a month that comes before this one, it must be next year
+        if (match(.xx[[2]], month.abb) < match(format(md, "%b"), month.abb)) {
+          Y <- paste(as.numeric(format(md, "%Y")) + 1)
+        } else Y <- format(md, "%Y")
+        as.Date(paste0(Y, .xx[[1]], .xx[[2]]), "%Y%d%b")
+      } else NA
+    }))
+  }
+  #SYMBOL COMPANY AMOUNT EX-DATE PAYABLE RECORD DECLARATION
+  df[["EX-DATE"]] <- to.date(df[["EX-DATE"]], Date)
+  df[["PAYABLE"]] <- to.date(df[["PAYABLE"]], Date)
+  df[["RECORD"]] <- to.date(df[["RECORD"]], Date)
+  df[["DECLARATION"]] <- to.date(df[["DECLARATION"]], Date)
+  df
 }
 
 #' @export
