@@ -54,7 +54,7 @@ adjustIntraday.yahoo <- function(Symbols, adjustVolume=TRUE, env=.GlobalEnv,
     #    spl <- get_spl(sym)
         if (is.null(div)) div <- NA
     #    if (is.null(spl)) spl <- NA
-        cls <- if (!has.Mid(symdata) && !(has.Bid(symdata) && has.Ask(symdata))) {
+        cls <- if (!quantmod:::has.Mid(symdata) && !(has.Bid(symdata) && has.Ask(symdata))) {
             if (has.Cl(symdata)) {
                 Cl(symdata)
             } else if (has.Trade(symdata)) {

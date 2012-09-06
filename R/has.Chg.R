@@ -7,7 +7,7 @@
 #' are columns for Bid, Ask, Mid (and Trade for \code{is.BATM}).  Additional
 #' columns will not affect the value.
 #' 
-#' @aliases has.AskSize has.BidSize has.Chg has.BAM has.BATM is.BAM is.BATM has.Mid
+#' @aliases has.AskSize has.BidSize has.Chg has.BAM has.BATM is.BAM is.BATM 
 #' @param x data object
 #' @param which display position of match
 #' @return A logical value indicating success or failure by default.
@@ -106,16 +106,17 @@ function(x) {
     else FALSE
 }
 
-#' @export
-#' @rdname has.Chg
-has.Mid <- function(x, which=FALSE) {
-    colAttr <- attr(x, "Mid")
-    if(!is.null(colAttr))
-        return(if(which) colAttr else TRUE)
-
-	loc <- grep("Mid", colnames(x), ignore.case = TRUE)
-    if (!identical(loc, integer(0))) 
-        return(ifelse(which, loc, TRUE))
-    ifelse(which, loc, FALSE)
-}
+has.Mid <- quantmod:::has.Mid
+# @export
+# @rdname has.Chg
+#has.Mid <- function(x, which=FALSE) {
+#    colAttr <- attr(x, "Mid")
+#    if(!is.null(colAttr))
+#        return(if(which) colAttr else TRUE)
+#
+#	loc <- grep("Mid", colnames(x), ignore.case = TRUE)
+#    if (!identical(loc, integer(0))) 
+#        return(ifelse(which, loc, TRUE))
+#    ifelse(which, loc, FALSE)
+#}
 

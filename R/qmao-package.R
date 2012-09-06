@@ -17,4 +17,4 @@
 NULL
 
 #' @import RCurl
-#' @importFrom XML readHTMLTable
+NULL
