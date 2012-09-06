@@ -395,7 +395,6 @@ getMergersCalendar <- function(from, to) {
 }
 
 
-
 #Date <- "2012-06-11"
 #surprises by day
 #http://biz.yahoo.com/z/20120611.html
@@ -440,6 +439,70 @@ getMergersCalendar <- function(from, to) {
 # http://biz.yahoo.com/c/11/s12.html #201112
 # http://biz.yahoo.com/c/12/s5.html  #201205
 
+#' Get Calendar of Splits
+#' 
+#' Create a \code{data.frame} from yahoo's calender of splits
+#' 
+#' \code{.getSplitsCalendar} is used to get the Splits Calendar for a single 
+#' month.  It will usually be called by \code{\link{getCalendarByMonth}}, but 
+#' can also be called directly.
+#' 
+#' \code{getSplitsCalendar} is a wrapper to get the Splits Calendar over 
+#' many months.
+#' @param YM a six character string with the first 4 characters representing the
+#'   year and the last 2 characters representing the month of the year (01-12).
+#' @param from Date that is in the earliest month to retrieve.
+#' @param to Date that is in the last month to retrieve.
+#' @return a \code{data.frame} with Dates and information about Splits that 
+#'   occurred during the requested timeframe.
+#' @author Garrett See
+#' @references http://biz.yahoo.com/c/s.html
+#' @note ALPHA CODE!!! Subject to change.
+#' @seealso \code{\link{getMergersCalendar}}, 
+#' \code{\link{getEconomicCalendar}}, 
+#' \code{\link{getEarningsCalendar}},
+#' \code{\link{getCalendarByMonth}}
+#' @examples
+#' \dontrun{
+#' .getSplitsCalendar("201208")
+#' }
+#' @export
+#' @rdname getSplitsCalendar
+.getSplitsCalendar <- function(YM=format(Sys.Date(), "%Y%m")) {
+  stopifnot(length(YM) == 1)
+  if (is.timeBased(YM) || nchar(YM) == 10) {
+    YM <- format(as.Date(YM), "%Y%m")
+  } else if (nchar(YM) == 5) {
+    YM <- paste0(substr(YM, 1, 4), 0, substr(YM, 5, 5))
+  } else if (nchar(YM) == 7 && length(grep("-", YM) == 1)) {
+    YM <- sub("-", "", YM)
+  }
+  if (nchar(YM) != 6) stop("'YM' should be 6 digits or a Date")
+  Y <- substr(YM, 3, 4)
+  M <- as.numeric(substr(YM, 5, 6))
+  # there is a different URL for the current month than for other months
+  URL <- if (identical(format(Sys.Date(), "%Y%m"), YM)) {
+    "http://biz.yahoo.com/c/s.html"
+  } else paste0("http://biz.yahoo.com/c/", Y, "/s", M, ".html")    
+  rt <- try(readHTMLTable(URL, stringsAsFactors=FALSE), silent=TRUE)
+  if (inherits(rt, 'try-error')) return(NULL)
+  dat <- rt[[which.max(sapply(rt, nrow))]]
+  colnames(dat) <- make.names(dat[1, ])
+  dat <- dat[-c(1,2), -NCOL(dat)]
+  #read.zoo(dat, index.column=1:2
+  
+  dat[[1]] <- as.Date(paste(substr(YM, 1, 4), dat[[1]]), "%Y %b %d")
+  dat[[2]] <- as.Date(paste(substr(YM, 1, 4), dat[[2]]), "%Y %b %d")
+  dat[, NCOL(dat)] <- as.Date(paste(substr(YM, 1, 4), dat[, NCOL(dat)]), 
+                              "%Y %b %d")
+  dat
+}
+
+#' @export
+#' @rdname getSplitsCalendar
+getSplitsCalendar <- function(from, to) {
+  getCalendarByMonth(".getSplitsCalendar", from=from, to=to)
+}
 
 
 #' Get dividends calendar from earnings.com
