@@ -334,15 +334,16 @@ getEarningsCalendar <- function(from, to) {
 }
 
 
-# this will return a list of 2 data.frames: one for \emph{confirmed} scheduled 
-# earnings releases, the other for \emph{proposed} scheduled releases
+# this will download earnings calendars from earnings.com and return a list of 
+# 2 data.frames: one for \emph{confirmed} scheduled earnings releases, the 
+# other for \emph{proposed} scheduled releases
 #
 # It borrows some logic from \code{\link{getEarnings}}
 # 
 # The dates of proposed earnings releases are actually date ranges.  This
 # function calls \code{\link{convertEarningsTime}} which will only use the
 # first date of date ranges.  It will also issue warnings every time it does
-# that, so currently, this function produces a lot of warnings.
+# that -- currently, this function suppresses those warnings.
 .getEarningsCalendarEarnings <- function(Date=Sys.Date(), 
                                          return.tz='America/Chicago') {
     Date <- as.Date(Date)
@@ -396,11 +397,13 @@ getEarningsCalendar <- function(from, to) {
         } else if (any(grepl("BMO", x[["TIME"]]))) {
             "BMO"
         } else "AMC"
-        x[["TIME"]] <- unname(vapply(x[["TIME"]], convertEarningsTime, 
-                                     date.format="%d-%b-%y", 
-                                     default.time=default.time, 
-                                     return.tz=return.tz, 
-                                     FUN.VALUE=""))
+        x[["TIME"]] <- suppressWarnings(
+            unname(vapply(x[["TIME"]], 
+                          convertEarningsTime, 
+                          date.format="%d-%b-%y", 
+                          default.time=default.time, 
+                          return.tz=return.tz, 
+                          FUN.VALUE="")))
         x
     })
     names(L3) <- c("confirmed", "proposed")
