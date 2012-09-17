@@ -1,7 +1,25 @@
-# getSymbols from an environment
-getSymbols.pos <- function (Symbols, pos=.GlobalEnv, verbose=TRUE, ...) 
-{
-
+#' getSymbols from an environment
+#' 
+#' method to getSymbols from an environment
+#' 
+#' @param Symbols character vector of names of objects
+#' @param pos where to look for the object (see \code{\link{get}}); if omitted, 
+#' the function will search as if the name of the object appeared unquoted in 
+#' an expression.
+#' @param verbose be verbose?
+#' @param ... other arguments
+#' @return either the names of objects that were stored if called with 
+#'   \code{auto.assign=TRUE}, or an object of type \code{return.class}
+#' @author Garrett See
+#' @examples
+#' \dontrun{
+#' e <- new.env()
+#' getSymbols("SPY", src='yahoo', env=e) #data stored at e$SPY
+#' getSymbols("SPY", src='pos', pos=e) #fetch data from e and store in .GlobalEnv
+#' }
+#' @export
+getSymbols.pos <- function (Symbols, pos=.GlobalEnv, verbose=TRUE, ...) {
+    # getSymbols from an environment
     this.env <- environment()
     for(var in names(list(...))) {
         assign(var,list(...)[[var]], this.env)
