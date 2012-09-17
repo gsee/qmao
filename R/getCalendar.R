@@ -334,6 +334,81 @@ getEarningsCalendar <- function(from, to) {
 }
 
 
+# this will return a list of 2 data.frames: one for \emph{confirmed} scheduled 
+# earnings releases, the other for \emph{proposed} scheduled releases
+#
+# It borrows some logic from \code{\link{getEarnings}}
+# 
+# The dates of proposed earnings releases are actually date ranges.  This
+# function calls \code{\link{convertEarningsTime}} which will only use the
+# first date of date ranges.  It will also issue warnings every time it does
+# that, so currently, this function produces a lot of warnings.
+.getEarningsCalendarEarnings <- function(Date=Sys.Date(), 
+                                         return.tz='America/Chicago') {
+    Date <- as.Date(Date)
+    if (Date < Sys.Date() - 10) {
+        stop(paste("Use '.getEarningsCalendarYahoo' or 'getEarnings' for",
+                   "historical data."))
+    }
+    URL <- paste0("http://www.earnings.com/earning.asp?date=", 
+                  format(Date, "%Y%m%d"), "&client=cb&print=1")
+    
+    x <- readHTMLTable(URL, stringsAsFactors=FALSE)
+    xx <- lapply(x, "[", -1)  
+    # need to be more robust about this, but the 6th table is Confirmed
+    #8th table is Propsed
+    confirmed <- xx[[6L]][-1, ]
+    colnames(confirmed) <- xx[[6L]][1, ]
+    proposed <- xx[[8L]][-1, ]
+    colnames(proposed) <- xx[[8L]][1, ]
+    
+    L <- lapply(list(confirmed, proposed), function(.x) {
+        .x[.x == "n/a"] <- NA
+        .x[, 1] <- gsub("[^A-Za-z0-9\\.-]", "", .x[, 1]) #remove non-break spaces
+        rownames(.x) <- NULL
+        DTcol <- grep("DATE/TIME", colnames(.x), ignore.case=TRUE)    
+        colnames(.x)[DTcol] <- "TIME"
+        if (all(is.na(tail(.x, 1)))) {
+            head(.x, -1)
+        }else .x
+    })
+    add.year <- function(x, year=format(Date, "%y")) {
+        # replace 1-Oct with 1-Oct-12
+        # replace 10-Oct with 10-Oct-12
+        gsub("([0-9]+-[A-Za-z]+)", paste("\\1", year, sep="-"), x)      
+    }
+    
+    L2 <- lapply(L, function(x) {
+        x[["TIME"]] <- add.year(x[["TIME"]])
+        # replace "n/a " in EPS ESIMATE/ACTUAL/PREV with NA
+        x[, 4:6] <- apply(x[, 4:6], 2, function(.x) {
+            .x[grep(pattern="n/a", .x)] <- NA
+            .x <- gsub("\\$| ", "", .x)
+        })
+        x
+    })
+    
+    L3 <- lapply(L2, function(x) {
+        # AMC means after mkt close, which I'll interpret to mean 16:15 ET
+        # BMO means before mkt open, which I'll interpret to mean 07:00 ET
+        default.time <- if (any(grepl("AMC", x[["TIME"]]))) {
+            "AMC"
+        } else if (any(grepl("BMO", x[["TIME"]]))) {
+            "BMO"
+        } else "AMC"
+        x[["TIME"]] <- unname(vapply(x[["TIME"]], convertEarningsTime, 
+                                     date.format="%d-%b-%y", 
+                                     default.time=default.time, 
+                                     return.tz=return.tz, 
+                                     FUN.VALUE=""))
+        x
+    })
+    names(L3) <- c("confirmed", "proposed")
+    L3
+}
+
+
+
 #' Get Calendar of Mergers
 #' 
 #' Create a \code{data.frame} from yahoo's calender of mergers
