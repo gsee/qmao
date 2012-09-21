@@ -16,9 +16,10 @@
 read.masterDATA <- function() {
     etfs <- read.csv(paste0("http://www.masterdata.com/helpfiles/",
                             "ETF_List_Downloads/AllTypes.csv"), 
-                     stringsAsFactors = FALSE)[, 1:2]
+                     stringsAsFactors = FALSE)[, 1:3]
     #etfs[, 1] <- gsub("\xae", "", etfs[, 1])
     etfs[, 1] <- gsub("[^A-Za-z0-9 -]", "", etfs[, 1])
+    colnames(etfs) <- c("Name", "Symbol", "Fund.Type")
     etfs
 }
 

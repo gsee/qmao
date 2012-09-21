@@ -64,7 +64,7 @@ getHoldings.iShares <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
     }
     rownames(fr) <- make.names(fr[, 1], unique=TRUE)
     wcol <- grep("Net.Assets", colnames(fr))
-    if (wcol != 3) { 
+    if (wcol != 5) { 
       warning(paste0("The format of the spreadsheet has changed",
                      " since this function was written!")) 
     }
