@@ -46,7 +46,7 @@ getHoldings.iShares <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
                   'ticker=', symbol, sep="")
     tmp <- tempfile()
     download.file(lnk, destfile=tmp, quiet=TRUE)
-    fr <- try(read.csv(tmp, skip=11, stringsAsFactors=FALSE), silent=TRUE)
+    fr <- try(read.csv(tmp, skip=14, stringsAsFactors=FALSE), silent=TRUE)
     if (inherits(fr, 'try-error')) {
       fr <- try(read.csv(tmp, skip=16, stringsAsFactors=FALSE, header=FALSE), 
                 silent=TRUE)
@@ -54,6 +54,10 @@ getHoldings.iShares <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
       fr <- fr[-1, ]
     }
     unlink(tmp)
+    if (length(lr <- grep("Aggregated Underlying", fr[[1]]))) {
+        fr <- fr[1:lr, ]
+    }
+    
     fr <- fr[1:(length(fr[,1])-3), ]
     fr[, 1] <- gsub(" ", "", fr[, 1])
     dupes <- character(0)
@@ -63,10 +67,11 @@ getHoldings.iShares <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
                     paste(dupes, collapse=" ")))
     }
     rownames(fr) <- make.names(fr[, 1], unique=TRUE)
-    wcol <- grep("Net.Assets", colnames(fr))
-    if (wcol != 5) { 
-      warning(paste0("The format of the spreadsheet has changed",
-                     " since this function was written!")) 
+    wcol <- grep("Net.Assets", colnames(fr), fixed=TRUE)
+    if (length(wcol) == 0) { 
+      stop(paste0("Cannot find 'Net.Assets' column. ",
+                  "The format of the spreadsheet may have changed",
+                  " since this function was written!")) 
     }
     fr[, 1] <- fr[, wcol]
     colnames(fr)[1] <- paste(symbol,'Weight',sep='.')
