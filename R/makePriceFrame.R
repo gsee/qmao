@@ -10,7 +10,13 @@
 #'
 #' If \code{notional} is \code{TRUE} and any \code{Symbols} are the names of 
 #' \code{\link[FinancialInstrument]{instrument}}s, prices will be multiplied by
-#' their multipliers.
+#' their multipliers unless they have a \code{"notional"} \code{attr} that has
+#' a value of \code{TRUE} (which indicates that they have already been 
+#' notionalized.  If the object has already been notionalized, and 
+#' \code{notional} is \code{TRUE}, it will be used as is.  However, if
+#' it has already been notionalized (i.e. \code{isTRUE(attr(obj, 'notional'))})
+#' and the \code{notional} argument is \code{FALSE}, price will be divided by
+#' their multipliers to "denotionalize" them.
 #' 
 #' \code{makeReturnFrame} first calls \code{makePriceFrame}, then calculates 
 #' returns on those price series
@@ -30,8 +36,8 @@
 #' @param to include data through this date/timestamp
 #' @param prefer column to use. If NULL, the first of the following columns
 #' that is found will be used: \sQuote{Adjusted}, \sQuote{Close}, \sQuote{Mid}
-#' @param notional Should the prices will be multiplied by their multipliers,
-#' to get notional values? Default is \code{TRUE}
+#' @param notional Should notional values be returned? Default is \code{TRUE}
+#'   see Details
 #' @param na.omit Should \code{NA} values be removed? Default is \code{TRUE}
 #' @param subset xts style subsetting argument. (e.g. "T08:30/T15:00" or 
 #' "last 10 days") Default is \code{NULL}
@@ -83,7 +89,9 @@ function(Symbols, from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, 
     pframe <- NULL
     for (i in 1:length(Symbols)) {
         tmp.dat <- try(estAd(get(Symbols[i],pos=env),prefer=prefer),TRUE)
-        if (!inherits(tmp.dat,'try-error') && length(tmp.dat)) {
+        tmpinstr <- try(getInstrument(Symbol, silent=TRUE))
+        
+        if (!inherits(tmp.dat,'try-error') && length(tmp.dat) > 0) {
             # The following subset code is only a slight modification of code in
             # quantmod::chartSeries
             if (!is.null(subset) && is.character(subset)) {
@@ -102,10 +110,18 @@ function(Symbols, from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, 
                 }
                 tmp.dat <- tmp.dat[subset]
             }
-            if (!isTRUE(notional) || isTRUE(attr(tmp.dat, 'notional'))) {
-                mult[i] <- 1
-            }
-            pframe <- cbind(pframe, tmp.dat * mult[i], all=TRUE)
+            if (!is.instrument(tmpinstr)) {
+    		    if (!isTRUE(silent) && !isTRUE(notional)) {
+                    warning(paste("Instrument", Symbols[i], 
+                                  "not found, using contract multiplier of 1"))
+			    }
+			    mult <- 1
+		    } else if (isTRUE(attr(tmp.dat, 'notional'))) {
+                mult <- if (isTRUE(notional)) { 1 } else { #notional arg is FALSE. Need to denotionalized previously notionalized prices
+    			    1 / as.numeric(tmpinstr$multiplier)
+                }
+		    } else mult <- if (isTRUE(notional)) { tmpinstr$multiplier } else 1
+            pframe <- cbind(pframe, tmp.dat * mult, all=TRUE)
         }
     }
     if (na.omit) pframe <- na.omit(pframe)

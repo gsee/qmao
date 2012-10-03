@@ -32,9 +32,8 @@
   following columns that is found will be used:
   \sQuote{Adjusted}, \sQuote{Close}, \sQuote{Mid}}
 
-  \item{notional}{Should the prices will be multiplied by
-  their multipliers, to get notional values? Default is
-  \code{TRUE}}
+  \item{notional}{Should notional values be returned?
+  Default is \code{TRUE} see Details}
 
   \item{na.omit}{Should \code{NA} values be removed?
   Default is \code{TRUE}}
@@ -72,7 +71,16 @@
   If \code{notional} is \code{TRUE} and any \code{Symbols}
   are the names of
   \code{\link[FinancialInstrument]{instrument}}s, prices
-  will be multiplied by their multipliers.
+  will be multiplied by their multipliers unless they have
+  a \code{"notional"} \code{attr} that has a value of
+  \code{TRUE} (which indicates that they have already been
+  notionalized.  If the object has already been
+  notionalized, and \code{notional} is \code{TRUE}, it will
+  be used as is.  However, if it has already been
+  notionalized (i.e. \code{isTRUE(attr(obj, 'notional'))})
+  and the \code{notional} argument is \code{FALSE}, price
+  will be divided by their multipliers to "denotionalize"
+  them.
 
   \code{makeReturnFrame} first calls \code{makePriceFrame},
   then calculates returns on those price series
