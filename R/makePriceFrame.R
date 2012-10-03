@@ -79,8 +79,6 @@ function(Symbols, from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, 
 			mult <- c(mult,as.numeric(tmp_instr$multiplier))
 		}		
 	}
-    
-    if (!notional) mult <- rep(1,length(mult))
 
     pframe <- NULL
     for (i in 1:length(Symbols)) {
@@ -103,6 +101,9 @@ function(Symbols, from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, 
                     subset <- paste(first(sub.index), last(sub.index), sep="/")
                 }
                 tmp.dat <- tmp.dat[subset]
+            }
+            if (!isTRUE(notional) || isTRUE(attr(tmp.dat, 'notional'))) {
+                mult[i] <- 1
             }
             pframe <- cbind(pframe, tmp.dat * mult[i], all=TRUE)
         }
