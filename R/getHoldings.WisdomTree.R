@@ -104,9 +104,9 @@ getHoldings.WisdomTree <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
         #bonds <- tbl[["Name"]][grep("\\d+/\\d+/\\d+", tbl[["Name"]])]
         if (any(!is.eq)) { #Fixed Income, Repos, Forwards, etc.
             bnd <- tbl[!is.eq, ]
-            bout <- data.frame(bnd[["Weight"]], bnd[["Name"]], bnd[, 2], 
+            bout <- data.frame(bnd[["Weight"]], bnd[["Name"]], bnd[, 2], Symbol=NA,
                                stringsAsFactors=FALSE)
-            colnames(bout) <- c("Weight", "Name", names(bnd)[2])
+            colnames(bout) <- c("Weight", "Name", names(bnd)[2], "Symbol")
         }
         out <- NULL
         if (length(eqout) > 0L) {
