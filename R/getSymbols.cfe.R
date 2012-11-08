@@ -136,7 +136,11 @@ getSymbols.cfe <- function(Symbols,
         tmp <- tempfile()
         tmptry <- try(download.file(paste(cfe.URL,sym.file,sep=""), destfile=tmp, quiet=!verbose),TRUE)
         if(inherits(tmptry,'try-error')) next()
-        fr <- read.csv(tmp)
+        #if (!grepl("Trade Date", readLines(tmp, 1))) { #
+        fr <- if (grepl("Terms and Conditions", readLines(tmp, 1))) { #if T&C is in first row, skip that row
+            read.csv(tmp, skip=1)
+        } else read.csv(tmp)
+        
         unlink(tmp)
         if(verbose) cat("done.\n")
         fr <- fr[,-2]
