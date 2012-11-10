@@ -344,6 +344,9 @@ getEarningsCalendar <- function(from, to) {
 # function calls \code{\link{convertEarningsTime}} which will only use the
 # first date of date ranges.  It will also issue warnings every time it does
 # that -- currently, this function suppresses those warnings.
+#
+# This doesn't always work. Sometimes the tables aren't in the 6th and 8th position
+# Sometimes there are lots of things like '\t\t\t\r' 
 .getEarningsCalendarEarnings <- function(Date=Sys.Date(), 
                                          return.tz='America/Chicago') {
     Date <- as.Date(Date)

@@ -12,9 +12,10 @@
 #' Alternatively, the symbol roots can be used (e.g. 'VX', 'GV') and values can
 #' be provided for \code{Months} and \code{Years}. If roots are provided, but 
 #' \code{Years} and \code{Months} is \code{NULL}, the current year as reported by
-#' \code{Sys.Date()} will be used, and either the current month or, for "VT"
-#' (which is the only quarterly contract), the month of the end of the last
-#' quarter. See examples.
+#' \code{Sys.Date()} will be used, and either the current month, or, for "VT" 
+#' and "VA" (which are quarterly contracts), the month of the end of the last
+#' quarter, or, for "RPXC", (which is biannual), the most recent March or Sep
+#' contract. See examples.
 #' 
 #' The raw data will contain zero values for the first few rows. Also, the last
 #' row will have zeros in every column except the \sQuote{Settle} column. By
@@ -48,11 +49,23 @@
 #' @param \dots additional arguments
 #' @return will load data into the specified environment -- one object for each
 #' file downloaded.
-#' @note Currently listed contracts: VIX Futures (VX), Mini-VIX Futures (VM),
-#' CBOE S&P 500 3-Month Variance Futures (VT), CBOE Gold ETF Volatility Index
-#' Futures (GV)
+#' @note Currently listed contracts: 
+#' VX CBOE S&P 500 Volatility Index (VIX) Futures, 
+#' VM CBOE Mini-VIX Futures, 
+#' VN CBOE Nasdaq-100 Volatility Index (VXN) Futures (was delisted in 2009 and relisted in July 2012), 
+#' VXEM CBOE Emerging Markets ETF Volatility Index (VXEEM) Security Futures, 
+#' VXEW CBOE Brazil ETF Volatility Index (VXEWZ) Security Futures, 
+#' GV CBOE Gold ETF Volatility Index (GVZ) Security Futures, 
+#' OV CBOE Crude Oil ETF Volatility Index (OVX) Security Futures, 
+#' RPXC Radar Logic 28-Day Real Estate Index (RPX) Future
+#'
+#' Delisted contracts: 
+#' VT CBOE S&P 500 3-Month Variance Futures, 
+#' BX CBOE S&P 500 BuyWrite Index Futures (BX), 
+#' VR RUSSELL 2000 Volatility Index Futures (VR), 
+#' VA CBOE S&P 500 12-Month Variance Futures (VA) (product delisted March 18, 2011),
+#' DV CBOE DJIA Volatility Index (DV)
 #' 
-#' Delisted contracts: "DV","BX","VN","VR","VA"
 #' @author Garrett See, based on Jeff Ryan's quantmod framework
 #' @seealso \code{\link{remove_zero_rows}} for removing rows where a column has zero values.
 #' \code{getSymbols}, \code{setSymbolLookup}
@@ -101,22 +114,24 @@ getSymbols.cfe <- function(Symbols,
         if(length(xargs)==0) xargs=NULL
         
         for (Root in Roots) {
-            #TODO: add option to get rolling contract if month and year aren't specfied?            
+            #TODO: add option to get rolling contract if month and year aren't specfied?
             if (is.null(Months)) {
-                Months <- if(any(Roots == "VT")) { 
-                        round(as.numeric(format(Sys.Date(), "%m"))/3)*3
+                Months <- if(Root %in% c("VT", "VA")) { 
+                        floor(as.numeric(format(Sys.Date(), "%m"))/3)*3
+                    } else if (Root == "RPXC") {
+                        floor(as.numeric(format(Sys.Date(), "%m"))/6)*6 + 3
                     } else as.numeric(format(Sys.Date(), "%m"))
             }
             if (is.null(Years)) Years <- format(Sys.Date(),"%Y")
             Years[nchar(Years) == 4] <- substr(Years[nchar(Years) == 4], 3, 4)
             Years <- sprintf("%02d",as.numeric(Years))
             if (is.numeric(Months)) Months <- C2M()[Months]
-            Symbols <- c(Symbols, paste(Root, 
-                        as.vector(t(sapply(Months,
-                        FUN=function(x) paste(M2C(x), Years, sep="")))), 
-                        sep="_"))
-            #sym.file <- paste(M2C(Months), Years, "_", Symbol, ".csv",sep="")
-            
+            Symbols <- c(Symbols, 
+                         paste(Root, 
+                               as.character(outer(vapply(Months, M2C, 
+                                                         FUN.VALUE='', 
+                                                         USE.NAMES=FALSE), 
+                                                  Years, paste0)), sep="_"))
         }    
     } 
 

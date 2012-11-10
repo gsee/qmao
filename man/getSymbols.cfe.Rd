@@ -65,9 +65,10 @@
   \code{Months} and \code{Years}. If roots are provided,
   but \code{Years} and \code{Months} is \code{NULL}, the
   current year as reported by \code{Sys.Date()} will be
-  used, and either the current month or, for "VT" (which is
-  the only quarterly contract), the month of the end of the
-  last quarter. See examples.
+  used, and either the current month, or, for "VT" and "VA"
+  (which are quarterly contracts), the month of the end of
+  the last quarter, or, for "RPXC", (which is biannual),
+  the most recent March or Sep contract. See examples.
 
   The raw data will contain zero values for the first few
   rows. Also, the last row will have zeros in every column
@@ -86,11 +87,22 @@
   References.
 }
 \note{
-  Currently listed contracts: VIX Futures (VX), Mini-VIX
-  Futures (VM), CBOE S&P 500 3-Month Variance Futures (VT),
-  CBOE Gold ETF Volatility Index Futures (GV)
+  Currently listed contracts: VX CBOE S&P 500 Volatility
+  Index (VIX) Futures, VM CBOE Mini-VIX Futures, VN CBOE
+  Nasdaq-100 Volatility Index (VXN) Futures (was delisted
+  in 2009 and relisted in July 2012), VXEM CBOE Emerging
+  Markets ETF Volatility Index (VXEEM) Security Futures,
+  VXEW CBOE Brazil ETF Volatility Index (VXEWZ) Security
+  Futures, GV CBOE Gold ETF Volatility Index (GVZ) Security
+  Futures, OV CBOE Crude Oil ETF Volatility Index (OVX)
+  Security Futures, RPXC Radar Logic 28-Day Real Estate
+  Index (RPX) Future
 
-  Delisted contracts: "DV","BX","VN","VR","VA"
+  Delisted contracts: VT CBOE S&P 500 3-Month Variance
+  Futures, BX CBOE S&P 500 BuyWrite Index Futures (BX), VR
+  RUSSELL 2000 Volatility Index Futures (VR), VA CBOE S&P
+  500 12-Month Variance Futures (VA) (product delisted
+  March 18, 2011), DV CBOE DJIA Volatility Index (DV)
 }
 \examples{
 \dontrun{
