@@ -16,5 +16,7 @@
 #' Maintainer: Garrett See <gsee000@@gmail.com>
 NULL
 
+#' @importFrom RJSONIO fromJSON
+#' @importFrom pander pandoc.table
 #' @import RCurl
 NULL

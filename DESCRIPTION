@@ -1,19 +1,21 @@
 Package: qmao
 Type: Package
 Title: Quantmod Add-on
-Version: 1.3.12
+Version: 1.3.13
 Date: 2012-11-09
 Author: Garrett See
 Depends:
     xts,
-    quantmod,
+    quantmod (>= 0.3.22),
     FinancialInstrument (>= 0.10.0),
     gdata,
     XML
 Suggests:
     timeDate
 Imports:
-    RCurl
+    RCurl,
+    RJSONIO,
+    pander
 Maintainer: Garrett See <gsee000@gmail.com>
 Description: some quantmod-like functions.
 License: GPL-3
@@ -60,3 +62,4 @@ Collate:
     'getHoldings.WisdomTree.R'
     'getHoldings.Direxion.R'
     'getCalendar.R'
+    'getQuote.BATS.R'
