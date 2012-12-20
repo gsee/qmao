@@ -160,7 +160,7 @@ bids <- function(x, rev=FALSE) {
 #' @rdname getQuote.BATS
 ladder <- function(x) {
   out <- rbind(cbind(NA, asks(x, rev=TRUE)), cbind(bids(x), NA))
-  colnames(out) <- c("BidQty", "Price", "AskQty")
+  if (NCOL(out) == 3L) colnames(out) <- c("BidQty", "Price", "AskQty")
   structure(out, timestamp=x$data$timestamp, company=x$data$company, 
             volume=x$data$volume, last.price=x$data$trades[[1L]][3L],
             last.qty=x$data$trades[[1L]][2L], class="ladder")

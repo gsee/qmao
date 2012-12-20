@@ -18,5 +18,6 @@ NULL
 
 #' @importFrom RJSONIO fromJSON
 #' @importFrom pander pandoc.table
-#' @import RCurl
+#' @importFrom shiny runApp
+#' @importFrom RCurl getURL postForm
 NULL
