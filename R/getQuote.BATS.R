@@ -266,7 +266,7 @@ plot.ladder <- function(x, cex=1.5, font=2, ...) {
     if (length(attr(x, "last.qty")) < 1L || length(attr(x, "last.price")) < 1L) {
       stop("no data to plot")
     }
-    warning("No bids or offers")
+    #warning("No bids or offers")
     text(0.5/2, 1, label="Quantity", col='black', font=font[[1L]], cex=cex)
     text(1.5/2, 1, label="Price", col='black', font=font[[1L]], cex=cex)
     rect(0, 8.5/10, 1/2, 9.5/10, col='grey')
@@ -322,7 +322,7 @@ plot.depth <- function(x, cex=1.5, font=2, bg=c("black", "white"), ...) {
     if (length(attr(x, "last.qty")) < 1L || length(attr(x, "last.price")) < 1L) {
       stop("no data to plot")
     }
-    warning("No bids or offers")
+    #warning("No bids or offers")
     text(0.5/2, 1, label="Quantity", col=fg, font=font[[1L]], cex=cex)
     text(1.5/2, 1, label="Price", col=fg, font=font[[2L]], cex=cex)
     rect(0, 8.5/10, 1/2, 9.5/10, col='grey')
