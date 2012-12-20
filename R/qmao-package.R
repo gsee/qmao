@@ -3,7 +3,7 @@
 #' more functions for quantitative trade modelling
 #' 
 #' \tabular{ll}{ Package: \tab qmao\cr Type: \tab Package\cr Version: \tab
-#' 1.0\cr Date: \tab 2012-06-24\cr Depends: \tab
+#' 1.0\cr Date: \tab 2012-12-19\cr Depends: \tab
 #' quantmod(>=0.3-15),FinancialInstrument\cr License: \tab GPL-3\cr LazyLoad:
 #' \tab yes\cr } A few functions that are often useful when working in the
 #' xts/quantmod framework
