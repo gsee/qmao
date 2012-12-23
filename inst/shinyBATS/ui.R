@@ -2,9 +2,9 @@ shinyUI(pageWithSidebar(
   headerPanel("BATS"),
   sidebarPanel( 
     wellPanel(
+      # work around a shiny bug: http://groups.google.com/d/msg/shiny-discuss/77EU0HfYIZw/_yOnUTDzby0J
+      tags$script("$('form').on('submit', function(e){e.preventDefault();});"),
       textInput(inputId="Symbol", "Ticker:", "SPY"),
-      helpText("Do NOT press enter when you change the Symbol.",
-             "The plot will update automatically."),
       selectInput(inputId="what",
                   label="What:",
                   choices=c("bats"="bats", 
