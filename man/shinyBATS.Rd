@@ -2,8 +2,7 @@
 \alias{shinyBATS}
 \title{shiny BATS quotes}
 \usage{
-  shinyBATS(port = 8100L,
-    launch.browser = getOption("shiny.launch.browser", interactive()))
+  shinyBATS(port = 8100L, launch.browser = interactive())
 }
 \arguments{
   \item{port}{The TCP port that the application should

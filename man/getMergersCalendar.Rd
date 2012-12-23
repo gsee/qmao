@@ -1,6 +1,6 @@
 \name{.getMergersCalendar}
-\alias{getMergersCalendar}
 \alias{.getMergersCalendar}
+\alias{getMergersCalendar}
 \title{Get Calendar of Mergers}
 \usage{
   .getMergersCalendar(YM = format(Sys.Date(), "\%Y\%m"))

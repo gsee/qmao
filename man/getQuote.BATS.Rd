@@ -1,7 +1,7 @@
 \name{getQuote.BATS}
 \alias{depth}
-\alias{getQuote.bats}
 \alias{getQuote.BATS}
+\alias{getQuote.bats}
 \alias{ladder}
 \alias{trades}
 \title{getQuote from BATS}
