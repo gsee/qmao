@@ -22,8 +22,7 @@
 #'   \code{\link[shiny]{runApp}}
 #' @export
 shinyBATS <- function(port=8100L, 
-                      launch.browser=getOption("shiny.launch.browser", 
-                                               interactive())) {
+                      launch.browser=interactive()) {
     runApp(system.file('shinyBATS', package='qmao'), port=port, 
            launch.browser=launch.browser)
 }
