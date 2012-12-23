@@ -274,6 +274,7 @@ plot.ladder <- function(x, cex=1.5, font=2, ...) {
     rect(1, 8.5/10, 1/2, 9.5/10, col='grey')
     text(1.5/2, 9/10, label=attr(x, "last.price"), col='black', font=font[[1L]], cex=cex)
     title(main=attr(x, "company")) #attr(x, "timestamp"))
+    par(old.par)
     return(invisible(x))
   }
   
@@ -330,6 +331,7 @@ plot.depth <- function(x, cex=1.5, font=2, bg=c("black", "white"), ...) {
     rect(1, 8.5/10, 1/2, 9.5/10, col='grey')
     text(1.5/2, 9/10, label=as.numeric(attr(x, "last.price")), col='black', font=font[[2L]], cex=cex)
     title(main=list(attr(x, "company"), col=fg), sub=list(attr(x, "timestamp"), col=fg)) #attr(x, "timestamp")))
+    par(old.par)
     return(invisible(x))
   }
   
