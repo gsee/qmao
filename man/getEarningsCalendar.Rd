@@ -1,6 +1,6 @@
 \name{.getEarningsCalendar}
-\alias{.getEarningsCalendar}
 \alias{getEarningsCalendar}
+\alias{.getEarningsCalendar}
 \title{Get the earnings calendar from yahoo}
 \usage{
   .getEarningsCalendar(Date = Sys.Date())

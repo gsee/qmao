@@ -36,7 +36,6 @@
 #'     plotRelPerf(c('TLT','DBA'),env=twsData)    
 #'     plotBAT(c('TLT','DBA'),env=twsData)
 #' }
-#' @export
 #' @rdname plotRelPerf
 plotRelPerf <- function(symbols, timespan="", prefer=NULL, env=.GlobalEnv) {
     if (is.xts(symbols)) stop('symbols must be a character vector')
@@ -54,7 +53,6 @@ plotRelPerf <- function(symbols, timespan="", prefer=NULL, env=.GlobalEnv) {
 #getSymbols(symbols)
 #plotRelPerf(symbols)
 
-#' @export
 #' @rdname plotRelPerf
 plotInstruments <- function(symbols,timespan="",prefer=NULL, env=.GlobalEnv) {
     if (is.xts(symbols)) stop('symbols must be a character vector')
@@ -70,7 +68,6 @@ plotInstruments <- function(symbols,timespan="",prefer=NULL, env=.GlobalEnv) {
 
 #plotInstruments(c("VIX_JAN11","VIX_FEB11","VIX_MAR11","VIX_APR11"))
 
-#' @export
 #' @rdname plotRelPerf
 plotBAT <- function(symbols, timespan="", prefer=NULL, env=.GlobalEnv) {
     if (is.xts(symbols)) stop('symbols must be a character vector')

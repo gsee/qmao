@@ -1,6 +1,6 @@
 \name{.getDividendsCalendar}
-\alias{.getDividendsCalendar}
 \alias{getDividendsCalendar}
+\alias{.getDividendsCalendar}
 \title{Get dividends calendar from earnings.com}
 \usage{
   .getDividendsCalendar(Date = Sys.Date())

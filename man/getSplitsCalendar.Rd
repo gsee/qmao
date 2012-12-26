@@ -1,6 +1,6 @@
 \name{.getSplitsCalendar}
-\alias{.getSplitsCalendar}
 \alias{getSplitsCalendar}
+\alias{.getSplitsCalendar}
 \title{Get Calendar of Splits}
 \usage{
   .getSplitsCalendar(YM = format(Sys.Date(), "\%Y\%m"))
