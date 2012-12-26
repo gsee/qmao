@@ -45,7 +45,7 @@
   Currently, adjustBAM will adjust OHLC or BAM data using
   addition/subtraction of cash flows.  Also, it requires
   that there be a pre-calculated column with Adjusted
-  prices.  On the otherhand, adjustIntraday.yahoo will
+  prices.  On the other hand, adjustIntraday.yahoo will
   multiply the data by an adjustment ratio. Currently, the
   adjustment ratio does not account for splits.
   adjustIntraday.yahoo does not require a pre-calculated
@@ -57,6 +57,6 @@
   gsee
 }
 \seealso{
-  \code{\link{adjustBAM}}
+  \code{qmao:::adjustBAM}
 }
 

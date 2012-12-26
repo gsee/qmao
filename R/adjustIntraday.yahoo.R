@@ -21,11 +21,11 @@
 #' @return if \code{auto.assign=TRUE} (default) the name of the xts object is 
 #' returned.  Otherwise, the adjusted xts object is returned.  The Volume
 #' column (if there is one) will be moved to become the last column
-#' @seealso \code{\link{adjustBAM}}
 #' @author gsee
+#' @seealso \code{qmao:::adjustBAM}
 #' @note Currently, adjustBAM will adjust OHLC or BAM data using 
 #' addition/subtraction of cash flows.  Also, it requires that there be a 
-#' pre-calculated column with Adjusted prices.  On the otherhand, 
+#' pre-calculated column with Adjusted prices.  On the other hand, 
 #' adjustIntraday.yahoo will multiply the data by an adjustment ratio.  
 #' Currently, the adjustment ratio does not account for splits.  
 #' adjustIntraday.yahoo does not require a pre-calculated Adjusted column.
