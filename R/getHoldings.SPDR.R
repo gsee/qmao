@@ -11,8 +11,8 @@
 #' SPDRSymbols()
 #' }
 SPDRSymbols <- function() {
-    sapply(strsplit(strsplit(getURL("https://www.spdrs.com/product/"), 
-                                "ticker=")[[1L]], "\">"), "[", 1L)[-1L]
+    unique(sapply(strsplit(strsplit(getURL("https://www.spdrs.com/product/"), 
+                                    "ticker=")[[1L]], "\">"), "[", 1L)[-1L])
 }
 
 #' Get names and weights of the holdings of SPDR ETFs
