@@ -67,7 +67,11 @@ getHoldings.WisdomTree <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
         ## Download holdings into data.frame.
         hURL <- paste0("http://www.wisdomtree.com/etfs/fund-holdings.aspx?",
                        "etfid=", id)
-        tbl <- readHTMLTable(hURL, stringsAsFactors=FALSE)[[1L]]
+        tbl <- try(readHTMLTable(hURL, stringsAsFactors=FALSE)[[1L]])
+        if (inherits(tbl, "try-error")) {
+          warning(paste("holdings for", symbol, "could not be found."))
+          return(NULL)
+        }
         # Remove the row numbers that are embedded in text (e.g. "1. ", "2. ")
         tbl[["Name"]] <- gsub("(\\d+\\.\\s)(.*)", "\\2", tbl[["Name"]])
         # split up into 2 groups: 
