@@ -6,19 +6,19 @@
 \title{Merge Adjusted prices (or returns of adjusted prices) of several symbols}
 \usage{
   makePriceFrame(Symbols, from = NULL, to = NULL,
-    prefer = NULL, notional = TRUE, na.omit = TRUE,
+    prefer = NULL, notional = FALSE, na.omit = TRUE,
     subset = NULL, env = .GlobalEnv, silent)
 
   PF(Symbols, from = NULL, to = NULL, prefer = NULL,
-    notional = TRUE, na.omit = TRUE, subset = NULL,
+    notional = FALSE, na.omit = TRUE, subset = NULL,
     env = .GlobalEnv, silent)
 
   makeReturnFrame(Symbols, ..., from = NULL, to = NULL,
-    prefer = NULL, notional = TRUE, na.omit = TRUE,
+    prefer = NULL, notional = FALSE, na.omit = TRUE,
     subset = NULL, env = .GlobalEnv, silent)
 
   RF(Symbols, ..., from = NULL, to = NULL, prefer = NULL,
-    notional = TRUE, na.omit = TRUE, subset = NULL,
+    notional = FALSE, na.omit = TRUE, subset = NULL,
     env = .GlobalEnv, silent)
 }
 \arguments{
@@ -33,7 +33,7 @@
   \sQuote{Adjusted}, \sQuote{Close}, \sQuote{Mid}}
 
   \item{notional}{Should notional values be returned?
-  Default is \code{TRUE} see Details}
+  Default is \code{FALSE} see Details}
 
   \item{na.omit}{Should \code{NA} values be removed?
   Default is \code{TRUE}}

@@ -36,7 +36,7 @@
 #' @param to include data through this date/timestamp
 #' @param prefer column to use. If NULL, the first of the following columns
 #' that is found will be used: \sQuote{Adjusted}, \sQuote{Close}, \sQuote{Mid}
-#' @param notional Should notional values be returned? Default is \code{TRUE}
+#' @param notional Should notional values be returned? Default is \code{FALSE}
 #'   see Details
 #' @param na.omit Should \code{NA} values be removed? Default is \code{TRUE}
 #' @param subset xts style subsetting argument. (e.g. "T08:30/T15:00" or 
@@ -68,7 +68,7 @@
 #' @export
 #' @rdname PF
 makePriceFrame <-
-function(Symbols, from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, subset=NULL, env=.GlobalEnv, silent) {
+function(Symbols, from=NULL, to=NULL, prefer=NULL, notional=FALSE, na.omit=TRUE, subset=NULL, env=.GlobalEnv, silent) {
     Symbols <- do.call(c, strsplit(Symbols, ";")) 
     if (any(sapply(Symbols, exists, env) == FALSE))
        stop(paste("No data in", deparse(substitute(env)), "for", Symbols[!sapply(Symbols, exists, .GlobalEnv)], '\n'))
@@ -140,7 +140,7 @@ PF <- makePriceFrame
 
 #' @export
 #' @rdname PF
-makeReturnFrame <- function(Symbols, ..., from=NULL, to=NULL, prefer=NULL, notional=TRUE, na.omit=TRUE, subset=NULL, env=.GlobalEnv, silent) {
+makeReturnFrame <- function(Symbols, ..., from=NULL, to=NULL, prefer=NULL, notional=FALSE, na.omit=TRUE, subset=NULL, env=.GlobalEnv, silent) {
     if (missing(silent)) {
         silent <- if( "package:FinancialInstrument" %in% search() ) { FALSE } else TRUE
     }
