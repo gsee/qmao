@@ -19,7 +19,6 @@
 #' getSymbols('SPY')
 #' adjustBAM(SPY)
 #' }
-#' @export
 adjustBAM <-
 function(x) { 
 	symbol.name <- deparse(substitute(x))

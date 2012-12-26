@@ -1,6 +1,5 @@
 export(AddCumDiv)
 export(addVLine)
-export(adjustBAM)
 export(adjustIntraday.yahoo)
 export(alignSymbols)
 export(applyFilter)
