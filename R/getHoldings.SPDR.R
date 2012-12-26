@@ -85,7 +85,11 @@ getHoldings.SPDR <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
         #stop(paste("Error downloading holdings of SPDR ETF", sQuote(symbol)))
         return(NULL)
     }
-    fr <- read.xls(tmp, skip=3, stringsAsFactors=FALSE)
+    fr <- try(read.xls(tmp, skip=3, stringsAsFactors=FALSE))
+    if (inherits(fr, "try-error")) {
+      warning(paste("There is a problem with holdings file for", sQuote(symbol)))
+      return(NULL)
+    }
     unlink(tmp)
     if (length(colnames(fr)) == 1L) {
         #return(NULL) # HTTP.404..Page.Not.Found
