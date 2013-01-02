@@ -15,7 +15,7 @@
 #'   "Exchange", "GoogleID"
 #' @author Dirk Eddelbuettel, Garrett See
 #' @references http://digitalpbk.com/stock/google-finance-get-stock-quote-realtime
-#' @seealso \code{link[quantmod]{getQuote}}, \code{link{getQuote.BATS}}
+#' @seealso \code{\link[quantmod]{getQuote}}, \code{\link{getQuote.BATS}}
 #' @examples
 #' \dontrun{
 #' getQuote("SPY", src="google")

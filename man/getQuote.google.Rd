@@ -44,7 +44,7 @@ getQuote.google("GOOG") # Can call directly without using quantmod::getQuote
   http://digitalpbk.com/stock/google-finance-get-stock-quote-realtime
 }
 \seealso{
-  \code{link[quantmod]{getQuote}},
-  \code{link{getQuote.BATS}}
+  \code{\link[quantmod]{getQuote}},
+  \code{\link{getQuote.BATS}}
 }
 
