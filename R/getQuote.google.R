@@ -27,7 +27,7 @@
 #' }
 #' @export
 getQuote.google <- function(Symbols, ...) {
-  syms <- paste(unlist(strsplit(Symbols, ",|;")), collapse=",")
+  syms <- paste(gsub(" ", "", unlist(strsplit(Symbols, ",|;"))), collapse=",")
   base.url <- "http://finance.google.com/finance/info?client=ig&q="
   dat <- do.call(rbind, 
                  fromJSON(gsub("^// ", "", 
