@@ -5,11 +5,10 @@
   getQuote.google(Symbols, ...)
 }
 \arguments{
-  \item{Symbols}{character vector of ticker symbols, or
+  \item{Symbols}{character vector of ticker symbols, or a
   comma or semi-colon separated string}
 
-  \item{\dots}{pass through arguments; not currently in
-  use}
+  \item{\dots}{not currently in use}
 }
 \value{
   a data.frame with rownames corresponding to the ticker
@@ -26,6 +25,13 @@
   specified by \code{Symbols}.  Although this is not a
   documented API, it is used by the Google finance website.
   The data should only be used for personal use.
+
+  Only 100 Symbols may be requested from google at a time.
+  If \code{getQuote.google} is called with more than 100
+  Symbols, blocks of 100 Symbol calls will be made and the
+  results will be put in a single \code{data.frame}.  This
+  part of the code is mostly copied from Jeff Ryan's
+  \code{\link[quantmod]{getQuote.yahoo}}
 }
 \examples{
 \dontrun{
@@ -38,7 +44,7 @@ getQuote.google("GOOG") # Can call directly without using quantmod::getQuote
 }
 }
 \author{
-  Dirk Eddelbuettel, Garrett See
+  Dirk Eddelbuettel, Jeff Ryan, Garrett See
 }
 \references{
   http://digitalpbk.com/stock/google-finance-get-stock-quote-realtime

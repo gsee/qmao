@@ -7,13 +7,19 @@
 #' \code{Symbols}.  Although this is not a documented API, it is used by the
 #' Google finance website.  The data should only be used for personal use.
 #'
-#' @param Symbols character vector of ticker symbols, or comma or semi-colon 
+#' Only 100 Symbols may be requested from google at a time.  If 
+#' \code{getQuote.google} is called with more than 100 Symbols, blocks of 100
+#' Symbol calls will be made and the results will be put in a single 
+#' \code{data.frame}.  This part of the code is mostly copied from Jeff Ryan's
+#' \code{\link[quantmod]{getQuote.yahoo}}
+#' 
+#' @param Symbols character vector of ticker symbols, or a comma or semi-colon 
 #'   separated string
-#' @param \dots pass through arguments; not currently in use
+#' @param \dots not currently in use
 #' @return a data.frame with rownames corresponding to the ticker symbols, and
 #'   having the following columns: "TradeTime", "Last", "Change", "PctChg",
 #'   "Exchange", "GoogleID"
-#' @author Dirk Eddelbuettel, Garrett See
+#' @author Dirk Eddelbuettel, Jeff Ryan, Garrett See
 #' @references http://digitalpbk.com/stock/google-finance-get-stock-quote-realtime
 #' @seealso \code{\link[quantmod]{getQuote}}, \code{\link{getQuote.BATS}}
 #' @examples
@@ -27,12 +33,35 @@
 #' }
 #' @export
 getQuote.google <- function(Symbols, ...) {
-  syms <- paste(gsub(" ", "", unlist(strsplit(Symbols, ",|;"))), collapse=",")
+  syms <- gsub(" ", "", unlist(strsplit(Symbols, ",|;")))
+  sym.string <- paste(Symbols, collapse=",")
+  length.of.symbols <- length(syms)
   base.url <- "http://finance.google.com/finance/info?client=ig&q="
+  if (length.of.symbols > 100) {
+    # google only returns up to 100 symbols per call; call getQuote.yahoo 
+    # recursivly to handle each block of 100.  This code is mostly copied from
+    # quantmod::getQuote.yahoo (c) Jeff Ryan
+    all.symbols <- lapply(seq(1, length.of.symbols, 100),
+                          function(x) na.omit(syms[x:(x + 99)]))
+    df <- NULL
+    cat("downloading set: ")
+    for(i in 1:length(all.symbols)) {
+      Sys.sleep(0.1)
+      cat(i,", ")
+      df <- rbind(df, getQuote.google(all.symbols[[i]]))
+    }
+    cat("...done\n")
+    return(df)
+  }
+  # FIXME: check columns. Especially in the after-hours, some stocks do not have
+  # as many columns as others. Specifically, these columns aren't always 
+  # reported (most of these presumably refer to "electronic" after hours trading):
+  # "el", "el_cur", "elt", "ec", "ecp", "eccol", "div", "yld"
   dat <- do.call(rbind, 
-                 fromJSON(gsub("^// ", "", 
-                          paste(readLines(paste(base.url, syms, sep="")), 
-                                collapse=""))))
+tmp <-                 fromJSON(gsub("^// ", "", 
+                          paste(readLines(paste(base.url, sym.string, sep="")), 
+                                collapse="")))
+                                )
   ## getQuote.yahoo has these columns by default:
   ## Trade Time, Last, Change, % Change, Open, High, Low, Volume
   data.frame(TradeTime=strptime(dat[, "lt"], format="%b %d, %I:%M%p", tz="America/New_York"),
@@ -49,6 +78,11 @@ getQuote.google <- function(Symbols, ...) {
   ##   "l" (I think it's the same as l_cur)
   ##   "ltt" (Same as "lt", but without Date)
 }
+
+# all currently known column names:
+# "id", "t", "e", "l", "l_cur", "s", "ltt", "lt", "c", "cp", 
+# "ccol", "el", "el_cur", "elt", "ec", "ecp", "eccol", "div", "yld"
+
 
 #as.data.frame(do.call(rbind, fromJSON(gsub("^// ", "", paste(readLines("http://finance.google.com/finance/info?client=ig&q=NASDAQ:GOOG,NASDAQ:YHOO"), collapse="")))), stringsAsFactors=FALSE)
 #do.call(rbind, fromJSON(gsub("^// ", "", paste(readLines("http://finance.google.com/finance/info?client=ig&q=EEM,SCHE,AAPL"), collapse=""))))
