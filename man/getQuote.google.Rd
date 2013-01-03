@@ -47,7 +47,7 @@ getQuote.google("GOOG") # Can call directly without using quantmod::getQuote
   Dirk Eddelbuettel, Jeff Ryan, Garrett See
 }
 \references{
-  http://digitalpbk.com/stock/google-finance-get-stock-quote-realtime
+  \url{http://digitalpbk.com/stock/google-finance-get-stock-quote-realtime}
 }
 \seealso{
   \code{\link[quantmod]{getQuote}},

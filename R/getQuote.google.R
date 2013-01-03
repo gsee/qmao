@@ -20,7 +20,7 @@
 #'   having the following columns: "TradeTime", "Last", "Change", "PctChg",
 #'   "Exchange", "GoogleID"
 #' @author Dirk Eddelbuettel, Jeff Ryan, Garrett See
-#' @references http://digitalpbk.com/stock/google-finance-get-stock-quote-realtime
+#' @references \url{http://digitalpbk.com/stock/google-finance-get-stock-quote-realtime}
 #' @seealso \code{\link[quantmod]{getQuote}}, \code{\link{getQuote.BATS}}
 #' @examples
 #' \dontrun{
@@ -58,7 +58,7 @@ getQuote.google <- function(Symbols, ...) {
   # reported (most of these presumably refer to "electronic" after hours trading):
   # "el", "el_cur", "elt", "ec", "ecp", "eccol", "div", "yld"
   dat <- do.call(rbind, 
-tmp <-                 fromJSON(gsub("^// ", "", 
+                 fromJSON(gsub("^// ", "", 
                           paste(readLines(paste(base.url, sym.string, sep="")), 
                                 collapse="")))
                                 )
