@@ -31,7 +31,7 @@
   Symbols, blocks of 100 Symbol calls will be made and the
   results will be put in a single \code{data.frame}.  This
   part of the code is mostly copied from Jeff Ryan's
-  \code{\link[quantmod]{getQuote.yahoo}}
+  \code{\link[quantmod]{getQuote}}.yahoo
 }
 \examples{
 \dontrun{
