@@ -85,8 +85,8 @@ getQuote.BATS <- function(Symbols,
                           what=c("bats", "bbo", "ladder", "depth", "trades"), #, "most.active"), 
                           exch=c("bzx", "byx", "opt")) {
   #require(RJSONIO) # added at top of script; fromJSON will be Imported from RJSONIO in NAMESPACE
-  what <- tolower(match.arg(what))
-  exch <- tolower(match.arg(exch))
+  what <- match.arg(tolower(what))
+  exch <- match.arg(tolower(exch))
   
   # if Symbols is more than 1 symbol, then return a multi-row data.frame if 
   # what="bbo" or a list if what is anything else
