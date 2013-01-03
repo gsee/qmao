@@ -99,6 +99,7 @@ getQuote.BATS <- function(Symbols,
 
   x <- fromJSON(paste("http://www.batstrading.com/json", exch, 
                       "book", Symbol, sep="/"))
+  x$Last <- as.numeric(x$data$trades[[1L]][3L])
   class(x) <- c("bats", class(x))
   if (length(x$data$asks) == 0L) x$data$asks <- NULL
   if (length(x$data$bids) == 0L) x$data$bids <- NULL
