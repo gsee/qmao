@@ -53,24 +53,23 @@ getQuote.google <- function(Symbols, ...) {
     cat("...done\n")
     return(df)
   }
-  # FIXME: check columns. Especially in the after-hours, some stocks do not have
-  # as many columns as others. Specifically, these columns aren't always 
-  # reported (most of these presumably refer to "electronic" after hours trading):
+  # TODO: add support for after-hours and other columns
   # "el", "el_cur", "elt", "ec", "ecp", "eccol", "div", "yld"
-  dat <- do.call(rbind, 
-                 fromJSON(gsub("^// ", "", 
-                          paste(readLines(paste(base.url, sym.string, sep="")), 
-                                collapse=""))))
-  ## getQuote.yahoo has these columns by default:
-  ## Trade Time, Last, Change, % Change, Open, High, Low, Volume
-  data.frame(TradeTime=strptime(dat[, "lt"], format="%b %d, %I:%M%p", tz="America/New_York"),
-             Last=as.numeric(dat[, "l_cur"]),
-             Change=as.numeric(dat[, "c"]),
-             PctChg=as.numeric(dat[, "cp"]),
-             Exchange=dat[, "e"],
-             GoogleID=dat[, "id"],
-             row.names=dat[, "t"],
+  L <- fromJSON(gsub("^// ", "", 
+           paste(readLines(paste(base.url, sym.string, sep="")), 
+                 collapse="")))
+  # FIXME: creating a data.frame for each Symbol and then rbinding them all at
+  #  the end is inefficient.
+  do.call(rbind, lapply(L, function(x) {
+    data.frame(TradeTime=strptime(x["lt"], format="%b %d, %I:%M%p", tz="America/New_York"),
+             Last=as.numeric(x["l_cur"]),
+             Change=as.numeric(x["c"]),
+             PctChg=as.numeric(x["cp"]),
+             Exchange=x["e"],
+             GoogleID=x["id"],
+             row.names=x["t"],
              stringsAsFactors=FALSE)
+  }))
   ## I don't know what these columns from Google's JSONP are: "s", "ccol"           
   ## In addition to those, I did not include:
   ##   "t" (it becomes row.names)
