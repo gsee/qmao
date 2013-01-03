@@ -34,7 +34,7 @@
 #' @export
 getQuote.google <- function(Symbols, ...) {
   syms <- gsub(" ", "", unlist(strsplit(Symbols, ",|;")))
-  sym.string <- paste(Symbols, collapse=",")
+  sym.string <- paste(syms, collapse=",")
   length.of.symbols <- length(syms)
   base.url <- "http://finance.google.com/finance/info?client=ig&q="
   if (length.of.symbols > 100) {
@@ -60,8 +60,7 @@ getQuote.google <- function(Symbols, ...) {
   dat <- do.call(rbind, 
                  fromJSON(gsub("^// ", "", 
                           paste(readLines(paste(base.url, sym.string, sep="")), 
-                                collapse="")))
-                                )
+                                collapse=""))))
   ## getQuote.yahoo has these columns by default:
   ## Trade Time, Last, Change, % Change, Open, High, Low, Volume
   data.frame(TradeTime=strptime(dat[, "lt"], format="%b %d, %I:%M%p", tz="America/New_York"),
