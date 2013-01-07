@@ -21,8 +21,7 @@
 #' @references \url{http://www.globalxfunds.com/}
 #' @examples
 #' \dontrun{
-#' getHoldings.GlobalX('ALUM')
-#' ALUM.h
+#' getHoldings.GlobalX('SIL', auto.assign=FALSE)
 #' }
 #' @export
 getHoldings.GlobalX <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {

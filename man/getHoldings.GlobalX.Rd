@@ -36,8 +36,7 @@
 }
 \examples{
 \dontrun{
-getHoldings.GlobalX('ALUM')
-ALUM.h
+getHoldings.GlobalX('SIL', auto.assign=FALSE)
 }
 }
 \author{
