@@ -92,7 +92,8 @@ getHoldings.WisdomTree <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
                 Name=gsub("(.*)(\\s.*)", "\\1", eq[["Name"]]),
                 eq[, 2], Symbol, row.names=make.names(Symbol, unique=TRUE), 
                 stringsAsFactors=FALSE)
-            colnames(eqout) <- c("Weight", "Name", names(eq)[2L], "Symbol")
+            colnames(eqout) <- c(paste(symbol, "Weight", sep="."), "Name", 
+                                 names(eq)[2L], "Symbol")
             ## check to see if any holdings' symbols are duplicated; if so, add 
             ## a duplicates attr
             dupes <- character(0)
@@ -108,9 +109,10 @@ getHoldings.WisdomTree <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
         #bonds <- tbl[["Name"]][grep("\\d+/\\d+/\\d+", tbl[["Name"]])]
         if (any(!is.eq)) { #Fixed Income, Repos, Forwards, etc.
             bnd <- tbl[!is.eq, ]
-            bout <- data.frame(bnd[["Weight"]], bnd[["Name"]], bnd[, 2], Symbol=NA,
-                               stringsAsFactors=FALSE)
-            colnames(bout) <- c("Weight", "Name", names(bnd)[2], "Symbol")
+            bout <- data.frame(bnd[["Weight"]], bnd[["Name"]], bnd[, 2], 
+                               Symbol=NA, stringsAsFactors=FALSE)
+            colnames(bout) <- c(paste(symbol, "Weight", sep="."), "Name", 
+                                names(bnd)[2], "Symbol")
         }
         out <- NULL
         if (length(eqout) > 0L) {

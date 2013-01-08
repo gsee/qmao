@@ -62,9 +62,11 @@ getHoldings.iShares <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
     fr[, 1] <- gsub(" ", "", fr[, 1])
     dupes <- character(0)
     if (any(duplicated(fr[, 1])) && !all(fr[, 1] == "--")) {
-      dupes <- fr[, 1][duplicated(fr[, 1])]
-      warning(paste(symbol, "has some holdings with duplicate Symbols:", 
-                    paste(dupes, collapse=" ")))
+      dupes <- unique(fr[, 1][duplicated(fr[, 1])])
+      dupes <- dupes[dupes != "--"]
+      if (length(dupes) > 0L)
+        warning(paste(symbol, "has some holdings with duplicate Symbols:", 
+                      paste(dupes, collapse=" ")))
     }
     rownames(fr) <- make.names(fr[, 1], unique=TRUE)
     wcol <- grep("Net.Assets", colnames(fr), fixed=TRUE)
