@@ -101,7 +101,15 @@ getQuote.BATS <- function(Symbols,
 
   x <- fromJSON(paste("http://www.batstrading.com/json", exch, 
                       "book", Symbol, sep="/"))
-  x$Last <- as.numeric(x$data$trades[[1L]][3L])
+  
+  if (length(x$data$trades) > 0L) {
+    x$LastSize <- as.numeric(x$data$trades[[1L]][2L])
+    x$Last <- as.numeric(x$data$trades[[1L]][3L])
+    x$TradeTime <- x$data$trades[[1L]][1L]
+  } else {
+    x$LastSize <- x$Last <- x$TradeTime <- NA
+  }
+  
   class(x) <- c("bats", class(x))
   if (length(x$data$asks) == 0L) x$data$asks <- NULL
   if (length(x$data$bids) == 0L) x$data$bids <- NULL
@@ -109,14 +117,14 @@ getQuote.BATS <- function(Symbols,
          "bats"={
            x
          }, "bbo"={
-           data.frame(cbind(TradeTime=x$data$trades[[1L]][1L],
+           data.frame(cbind(TradeTime=x$TradeTime,
                             BidSize=as.numeric(x$data$bids[[1L]][1L]),
                             BidPrice=as.numeric(x$data$bids[[1L]][2L]),
                             AskPrice=as.numeric(x$data$asks[[1L]][2L]),
                             AskSize=as.numeric(x$data$asks[[1L]][1L]),
-                            Last=as.numeric(x$data$trades[[1L]][3L]),
-                            LastSize=as.numeric(x$data$trades[[1L]][2L])), 
-                            row.names=Symbol)
+                            Last=x$Last,
+                            LastSize=x$LastSize, 
+                            row.names=Symbol))
          }, "ladder"={
            ladder(x)  
          }, "depth"={
@@ -165,13 +173,15 @@ ladder <- function(x) {
   out <- rbind(cbind(NA, asks(x, rev=TRUE)), cbind(bids(x), NA))
   if (NCOL(out) == 3L) colnames(out) <- c("BidQty", "Price", "AskQty")
   structure(out, timestamp=x$data$timestamp, company=x$data$company, 
-            volume=x$data$volume, last.price=x$data$trades[[1L]][3L],
-            last.qty=x$data$trades[[1L]][2L], class="ladder")
+            volume=x$data$volume, 
+            last.price=x$Last,
+            last.qty=x$LastSize, class="ladder")
 }
 
 #' @rdname getQuote.BATS
 trades <- function(x) {
   ul <- unlist(rev(x$data$trades))
+  if (length(ul) == 0L) return(NA)
   times <- as.POSIXct(paste(Sys.Date(), ul[c(TRUE, FALSE, FALSE)]))
   structure(setNames(xts(matrix(as.numeric(ul[c(FALSE, TRUE, TRUE)]), ncol=2, 
                                 byrow=TRUE), times), c("Qty", "Price")),
@@ -188,13 +198,13 @@ depth <- function(x, ...) {
     out <- cbind(b, a[, 2:1]) 
     colnames(out) <- c("BidQty", "BidPrice", "AskPrice", "AskQty")
     structure(out, timestamp=x$data$timestamp, company=x$data$company, 
-              volume=x$data$volume, last.price=x$data$trades[[1L]][3L],
-              last.qty=x$data$trades[[1L]][2L], class="depth")
+              volume=x$data$volume, last.price=x$Last,
+              last.qty=x$LastSize, class="depth")
   } else {
     structure(sapply(c("BidQty", "BidPrice", "AskPrice", "AskQty"), function(x) rep(NA, 5)), 
               timestamp=x$data$timestamp, company=x$data$company, 
-              volume=x$data$volume, last.price=x$data$trades[[1L]][3L],
-              last.qty=x$data$trades[[1L]][2L], class="depth")
+              volume=x$data$volume, last.price=x$Last,
+              last.qty=x$LastSize, class="depth")
   }
 }
 #depth(x)
