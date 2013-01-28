@@ -438,11 +438,12 @@ plot.bats <- function(x, cex=1, ...) {
   tob <- rbind(ask, bid)  
   
   # can I vectorize text()?
-  for (i in seq_len(n)) {
+  for (i in seq_len(NROW(tob))) {
     # top of book; tob
     text(0.5/5, (10.5 - i)/14, label=tob[i, 1], col='black')
     text(1.5/5, (10.5 - i)/14, label=tob[i, 2], col='black', font=ifelse(i %in% 5:6, 2, 1))
-    
+  }
+  for (i in seq_len(n)) {    
     # trades
     dat <- x$data$trades[[i]]
     text(2.5/5, (10.5 - i)/14, label=dat[1L], col='black')
