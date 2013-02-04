@@ -30,8 +30,7 @@
 #' @export
 getHoldings.ipath <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
     if (missing(Symbols)) {
-      Symbols <- readHTMLTable("http://www.ipathetn.com/us/product_information", 
-                               stringsAsFactors=FALSE)[[2]][, 2]
+      Symbols <- iPathSymbols()
     }
     if (length(Symbols) == 0L) { return(NULL) }
     hlist <- lapply(Symbols, function(Symbol) {
@@ -88,4 +87,10 @@ getHoldings.ipath <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
     if (length(hlist) > 1) { 
       return(hlist)
     } else return(hlist[[1]])
+}
+
+
+iPathSymbols <- function() {
+  readHTMLTable("http://www.ipathetn.com/us/product_information", 
+                stringsAsFactors=FALSE)[[2]][, 2]
 }

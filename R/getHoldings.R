@@ -91,7 +91,7 @@ getHoldings <-function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
     spl.m <- split(msym, msym$Name)
     fams <- names(spl.m) # (first word of) unique fund families
     spdr.out <- ishr.out <- van.out <- pow.out <- globx.out <- fstr.out <- 
-        wt.out <- dirx.out <- NULL
+        wt.out <- dirx.out <- ipath.out <- NULL
     # for each of the getHoldings.* functions, find the symbols that that 
     # function works with and apply it to them.  Then, remove those symbols 
     # from `Symbols` so that after we've processed everything we know how to 
@@ -139,10 +139,15 @@ getHoldings <-function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
         dirx.out <- getHoldings.Direxion(s, env=env, auto.assign=auto.assign)
         Symbols <- Symbols[!Symbols %in% s]
     }
+    if (length(Symbols) > 0L) { # check to see if it's iPath (which isn't in masterDATA csv)
+        s <- Symbols[Symbols %in% iPathSymbols()]
+        ipath.out <- getHoldings.ipath(s, env=env, auto.assign=auto.assign)
+        Symbols <- Symbols[!Symbols %in% s]
+    }
     tmp <- list(spdr.out, ishr.out, van.out, pow.out, globx.out, fstr.out, 
-                wt.out, dirx.out, Symbols)
+                wt.out, dirx.out, ipath.out, Symbols)
     names(tmp) <- c("SPDR", "iShares", "VanEck", "PowerShares", "GlobalX", 
-                    "FirstTrust", "WisdomTree", "Direxion", "NotFound")
+                    "FirstTrust", "WisdomTree", "Direxion", "iPath", "NotFound")
     out <- Filter(function(x) length(x) > 0, tmp)
     if (isTRUE(auto.assign)) {
         out
