@@ -63,8 +63,10 @@ getHoldings.ipath <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
       dupes <- character(0)
       if (any(duplicated(dat[, tcol]))) {
         dupes <- dat[, tcol][duplicated(dat[, tcol])]
-        warning(paste(Symbol, "has some holdings with duplicate Symbols:", 
-                      paste(dupes, collapse=" ")))
+        if (!all(is.na(dupes))) {
+          warning(paste(Symbol, "has some holdings with duplicate Symbols:", 
+                        paste(dupes, collapse=" ")))
+        }
       } 
       if (length(dupes) > 0) attr(dat, "duplicates") <- dupes
       ## class as holdings, data.frame.
