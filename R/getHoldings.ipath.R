@@ -21,7 +21,7 @@
 #'   dispatch \code{getHoldings.ipath} -- it \emph{must} be called directly.
 #' @seealso \code{\link{getHoldings}}, \code{\link{getHoldings.SPDR}}, 
 #'   \code{\link{getHoldings.iShares}}, \code{\link{getHoldings.powershares}},
-#'   \code{\link{getHoldings.vaneck
+#'   \code{\link{getHoldings.vaneck}}
 #' @references \url{http://www.ipathetn.com/}
 #' @examples
 #' \dontrun{

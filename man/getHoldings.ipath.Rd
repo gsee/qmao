@@ -54,6 +54,6 @@ getHoldings.ipath("BCM")
   \code{\link{getHoldings.SPDR}},
   \code{\link{getHoldings.iShares}},
   \code{\link{getHoldings.powershares}},
-  \code{\link{getHoldings.vaneck
+  \code{\link{getHoldings.vaneck}}
 }
 
