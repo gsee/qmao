@@ -90,36 +90,41 @@ getHoldings.powershares <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
         if (length(Symbols) > 1) {
             message(paste("Getting holdings for", Symbol))
         }
-        dat <- dlPowerShares(
+        dat <- try(dlPowerShares(
             event.target=paste0("ctl00$MainPageLeft$MainPageContent$", 
                                 "ExportHoldings1$LinkButton1"),
-            action=paste0("holdings.aspx?ticker=", Symbol))    
-        wt.col <- grep("Weight|PercentageOfFund", names(dat), ignore.case=TRUE)
-        name.col <- grep("Name", names(dat), ignore.case=TRUE)
-        out <- dat[, c(wt.col, name.col, seq_along(dat)[-c(wt.col, name.col)])]
-        # Name the 1st 2 columns like other getHoldings functions
-        colnames(out)[1:2] <- paste(c(paste(Symbol, "Weight", sep="."), "Name"))
-        
-        if (any(grepl("HoldingsTicker", names(out), ignore.case=TRUE))) {
-            rownames(out) <- make.names(out[[grep("HoldingsTicker", names(out), 
-                                                  ignore.case=TRUE)]], 
-                                        unique=TRUE)
-        } else if (any(grepl("SecurityNum", names(out), ignore.case=TRUE))) {
-            rownames(out) <- make.names(out[[grep("SecurityNum", names(out), 
-                                                  ignore.case=TRUE)]], 
-                                        unique=TRUE)
+            action=paste0("holdings.aspx?ticker=", Symbol)), silent=TRUE) 
+        if (inherits(dat, "try-error")) {
+            warning(paste("Error downloading holdings for", shQuote(Symbol)))
+            NULL
+        } else {
+            wt.col <- grep("Weight|PercentageOfFund", names(dat), ignore.case=TRUE)
+            name.col <- grep("Name", names(dat), ignore.case=TRUE)
+            out <- dat[, c(wt.col, name.col, seq_along(dat)[-c(wt.col, name.col)])]
+            # Name the 1st 2 columns like other getHoldings functions
+            colnames(out)[1:2] <- paste(c(paste(Symbol, "Weight", sep="."), "Name"))
+            
+            if (any(grepl("HoldingsTicker", names(out), ignore.case=TRUE))) {
+                rownames(out) <- make.names(out[[grep("HoldingsTicker", names(out), 
+                                                      ignore.case=TRUE)]], 
+                                            unique=TRUE)
+            } else if (any(grepl("SecurityNum", names(out), ignore.case=TRUE))) {
+                rownames(out) <- make.names(out[[grep("SecurityNum", names(out), 
+                                                      ignore.case=TRUE)]], 
+                                            unique=TRUE)
+            }
+            # to be consistent with other getHoldings functions, weights should 
+            # sum to 100 (not 1)
+            out[[1L]] <- out[[1L]] * 100
+            #remove some redundant info
+            omit <- grep("ticker", names(out), ignore.case=TRUE) 
+            omit <- omit[omit > 2]
+            if (length(omit) > 0) {
+                out <- out[, -omit]
+            }
+            class(out) <- c("holdings", "data.frame")
+            out
         }
-        # to be consistent with other getHoldings functions, weights should 
-        # sum to 100 (not 1)
-        out[[1L]] <- out[[1L]] * 100
-        #remove some redundant info
-        omit <- grep("ticker", names(out), ignore.case=TRUE) 
-        omit <- omit[omit > 2]
-        if (length(omit) > 0) {
-            out <- out[, -omit]
-        }
-        class(out) <- c("holdings", "data.frame")
-        out
     })
     names(hlist) <- Symbols
     if (isTRUE(auto.assign)) {
