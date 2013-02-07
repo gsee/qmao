@@ -128,7 +128,7 @@ getHoldings.WisdomTree <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
         out
     }
 
-    processMultiPartFile <- function(tmpfile, hURL) {
+    processMultiPartFile <- function(tmpfile, hURL, symbol) {
         # extract sections, process, rbind
         lines <- gsub("^\\s+|\\s+$", "", readLines(tmpfile))
         # find rows that are not holdings data which may be either an empty row or the
@@ -143,7 +143,8 @@ getHoldings.WisdomTree <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
 
             do.call(rbind, lapply(seq_along(sp), function(i) {
                 raw <- lines[sp[i]:ep[i]]
-                processTable(read.csv(text=grep(",", raw, value=TRUE))) # only reading lines that contain commas
+                processTable(read.csv(text=grep(",", raw, value=TRUE)), hURL, 
+                             symbol) # only reading lines that contain commas
             }))
         } else {
             tryCatch(read.csv(text=grep(",", lines, value=TRUE)), error=function(e) {
@@ -173,7 +174,7 @@ getHoldings.WisdomTree <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
                 return(NULL)
             }
             out <- processTable(tbl, hURL, symbol)
-        } else out <- processMultiPartFile(tmpfile, hURL)
+        } else out <- processMultiPartFile(tmpfile, hURL, symbol)
 
         if (any(grepl("(NDF|FWD)(\\s+)(BUY|SELL)(*.)", out$Name))) {
             warning(paste(symbol, 
