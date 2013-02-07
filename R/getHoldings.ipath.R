@@ -60,16 +60,24 @@ getHoldings.ipath <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
       ## check to see if any holdings' symbols are duplicated; if so, add a 
       ## duplicates attr
       dupes <- character(0)
-      if (any(duplicated(dat[, tcol]))) {
-        dupes <- dat[, tcol][duplicated(dat[, tcol])]
+      if (any(duplicated(out[, tcol]))) {
+        dupes <- out[, tcol][duplicated(out[, tcol])]
         if (!all(is.na(dupes))) {
           warning(paste(Symbol, "has some holdings with duplicate Symbols:", 
                         paste(dupes, collapse=" ")))
         }
-      } 
-      if (length(dupes) > 0) attr(dat, "duplicates") <- dupes
+      }
+      if (length(dupes) > 0) attr(out, "duplicates") <- dupes
+      # The first row has a Descrition of the ETF and the Date of the holdings file
+      # Let's add those as attributes
+      line1 <- readLines(paste(base.url, toupper(Symbol), sep=""), n=1)
+      ss <- try(strsplit(gsub("\xae|\\?", "", line1), ",")[[1]])
+      if (!inherits(ss, "try-error") && length(ss) > 1) {
+        attr(out, "Description") <- ss[1]
+        attr(out, "Date") <- as.Date(tail(ss, 1), format="%m/%d/%Y")
+      }
       ## class as holdings, data.frame.
-      class(dat) <- c("holdings", "data.frame")
+      class(out) <- c("holdings", "data.frame")
       out
     })
     names(hlist) <- Symbols
