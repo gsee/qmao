@@ -17,7 +17,7 @@
 \value{
   An object classed as \dQuote{holdings} will be created
   that is a \code{data.frame} with columns for holdings'
-  weights and names.  If called with
+  weights, names, and symbols. If called with
   \code{auto.assign=TRUE}, it will be assigned in
   \code{env} with names that are \code{Symbols} appended
   with \dQuote{.h}.  Otherwise, the \dQuote{holdings} will
@@ -38,6 +38,13 @@
   \dQuote{RRF}.  Wisdom Tree provides these holdings data
   in the form of Excel spreadsheets and a POST is required
   to download them.
+
+  WisdomTree provides more columns than this function
+  returns, but some of their files have multiple sections
+  with differing numbers of columns.  Also, they have
+  different numbers of columns for different ETFs.  So, at
+  least for now, only 3 columns are returned with names
+  "Weight", "Name", and "Symbol"
 }
 \examples{
 \dontrun{

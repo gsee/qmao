@@ -20,15 +20,20 @@ WTSymbols <- function() {
 #' @param env environment in which to store the holdings data
 #' @param auto.assign assign data?
 #' @return An object classed as \dQuote{holdings} will be created that is a 
-#' \code{data.frame} with columns for holdings' weights and names.  If called 
-#' with \code{auto.assign=TRUE}, it will be assigned in \code{env} with names 
-#' that are \code{Symbols} appended with \dQuote{.h}.  Otherwise, the 
+#' \code{data.frame} with columns for holdings' weights, names, and symbols.  
+#' If called with \code{auto.assign=TRUE}, it will be assigned in \code{env} 
+#' with names that are \code{Symbols} appended with \dQuote{.h}.  Otherwise, the 
 #' \dQuote{holdings} will be returned and not stored.
 #' @author Garrett See
 #' @note This does not support Alternative Investment ETFs which, as of this 
 #' writing (2012-07), are \dQuote{WDTI} and \dQuote{RRF}.  Wisdom Tree provides
 #' these holdings data in the form of Excel spreadsheets and a POST is required
 #' to download them.
+#'
+#' WisdomTree provides more columns than this function returns, but some of 
+#' their files have multiple sections with differing numbers of columns.  Also,
+#' they have different numbers of columns for different ETFs.  So, at least for 
+#' now, only 3 columns are returned with names "Weight", "Name", and "Symbol"
 #' @seealso \code{\link{getHoldings}}
 #' @references \url{http://www.wisdomtree.com/etfs/}
 #' @examples
@@ -58,61 +63,58 @@ getHoldings.WisdomTree <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
     #Symbols <- Symbols[!names(Symbols) %in% c("76", "72")]
     Symbols <- Symbols[!unname(Symbols) %in% c("WDTI", "RRF")]
     if (length(Symbols) == 0L) { return(NULL) }
-    hlist <- lapply(seq_along(Symbols), function(i) {
-        symbol <- Symbols[i]
-        if (i > 1) {
-            message(paste("Getting holdings for", symbol))
+
+    processTable <- function(tbl, hURL, symbol) {
+        # this function was extracted from the lapply below.  Some holdings 
+        # files have multiple sections, and this function can be applied to each
+        if (!"Security.Description" %in% names(tbl)) {
+            stop(paste("Column names have changed in csv",
+                       "(no Security.Description). Check", hURL))
         }
-        id <- names(symbol)
-        ## Download holdings into data.frame.
-        hURL <- paste0("http://www.wisdomtree.com/etfs/fund-holdings.aspx?",
-                       "etfid=", id)
-        tbl <- try(readHTMLTable(hURL, stringsAsFactors=FALSE)[[1L]])
-        if (inherits(tbl, "try-error")) {
-          warning(paste("holdings for", symbol, "could not be found."))
-          return(NULL)
+        if (!"Security.Ticker" %in% names(tbl)) {
+            cs <- grep("CUSIP|SEDOL", colnames(tbl))
+            if (length(cs) > 0L) {
+                names(tbl)[cs[1]] <- "Security.Ticker"
+            } else stop(paste("Column names have changed in csv",
+                              "(no Security.Ticker). Check", hURL))
         }
-        # Remove the row numbers that are embedded in text (e.g. "1. ", "2. ")
-        tbl[["Name"]] <- gsub("(\\d+\\.\\s)(.*)", "\\2", tbl[["Name"]])
+        if (!any(grepl("Weight", colnames(tbl)))) tbl$Weight <- NA
+
+        names(tbl)[match("Security.Ticker", names(tbl))] <- "Symbol"
+        names(tbl)[match("Security.Description", names(tbl))] <- "Name"
+        names(tbl) <- gsub("\\.+$", "", names(tbl)) # remove trailing dot so we don't have "Weight.."
+
         # split up into 2 groups: 
-        # (1) Equities which have a Symbol like (XXX), and
+        # (1) Equities (well, really just things that don't have 
+        #     expirations/maturities in the Name)
         # (2) everything else (Fixed Income includes Date like 07/12/12, 
         #     or 09/06/2012)
-        ## It's an equity if it has an embedded ticker like "(XXX)" and it does
-        ## not have an embedded date like "10/2013"
-        is.eq <- grepl("\\([A-Z0-9-]+\\)", tbl[["Name"]]) & 
-                 !grepl("\\d+/\\d+", tbl[["Name"]])
+        
+        ## Assume a holding is an equity if it does not have a (maturity) date 
+        ## in the Name
+        is.eq <- !grepl("\\d+/\\d+/\\d+", tbl$Name)
+
         eqout <- bout <- NULL
         if (any(is.eq)) {
             eq <- tbl[is.eq, ]
-            #Symbol <- gsub("[\\(\\)]", "", gsub("(.*)(\\s)(\\(\\w+\\))", "\\3", 
-            Symbol <- gsub("[\\(\\)]", "", gsub("(.*)(\\s)(\\([A-Z0-9-]+\\))", 
-                                                "\\3", eq[["Name"]]))
-            eqout <- data.frame(eq[["Weight"]], 
-                Name=gsub("(.*)(\\s.*)", "\\1", eq[["Name"]]),
-                eq[, 2], Symbol, row.names=make.names(Symbol, unique=TRUE), 
-                stringsAsFactors=FALSE)
-            colnames(eqout) <- c(paste(symbol, "Weight", sep="."), "Name", 
-                                 names(eq)[2L], "Symbol")
+            eqout <- eq[, c("Weight", "Name", "Symbol")]
+            rownames(eqout) <- make.names(eq$Symbol, unique=TRUE)
+            colnames(eqout)[1] <- paste(symbol, "Weight", sep=".")
             ## check to see if any holdings' symbols are duplicated; if so, add 
             ## a duplicates attr
             dupes <- character(0)
-            if (any(duplicated(Symbol))) {
-                dupes <- Symbol[duplicated(Symbol)]
+            if (any(duplicated(na.omit(eqout$Symbol)))) {
+                dupes <- with(eqout, Symbol[duplicated(Symbol)])
+                
                 warning(paste(symbol, 
                               "has some holdings with duplicate Symbols:",
                               paste(dupes, collapse=" ")))
             }
             if (length(dupes) > 0) attr(eqout, "duplicates") <- dupes
         }
-        # Could use something like this to find Fixed Income
-        #bonds <- tbl[["Name"]][grep("\\d+/\\d+/\\d+", tbl[["Name"]])]
         if (any(!is.eq)) { #Fixed Income, Repos, Forwards, etc.
-            bnd <- tbl[!is.eq, ]
-            bout <- data.frame(bnd[["Weight"]], bnd[["Name"]], bnd[, 2], 
-                               Symbol=NA, stringsAsFactors=FALSE)
-            colnames(bout) <- c(paste(symbol, "Weight", sep="."), "Name", 
-                                names(bnd)[2], "Symbol")
+            bout <- tbl[!is.eq, c("Weight", "Name", "Symbol")]
+            colnames(bout)[1] <- paste(symbol, "Weight", sep=".")
         }
         out <- NULL
         if (length(eqout) > 0L) {
@@ -123,6 +125,56 @@ getHoldings.WisdomTree <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
                 out <- rbind(out, bout)
             } else out <- bout
         }
+        out
+    }
+
+    processMultiPartFile <- function(tmpfile, hURL) {
+        # extract sections, process, rbind
+        lines <- gsub("^\\s+|\\s+$", "", readLines(tmpfile))
+        # find rows that are not holdings data which may be either an empty row or the
+        # name of a category of holdings ("Equities", "Currency Contracts", etc.)
+        # remove leading and trailing spaces
+        #tmp <- gsub("^\\s+|\\s+$", "", grep(",", lines, invert=TRUE, value=TRUE))
+        tmp <- grep(",", lines, invert=TRUE, value=TRUE)
+        categories <- tmp[nchar(tmp) > 0L]
+        if (length(categories) > 0L) {
+            sp <- vapply(categories, grep, lines, FUN.VALUE=1L) # start points 
+            ep <- c(sp[-1], length(lines) + 1) - 1              # end points
+
+            do.call(rbind, lapply(seq_along(sp), function(i) {
+                raw <- lines[sp[i]:ep[i]]
+                processTable(read.csv(text=grep(",", raw, value=TRUE))) # only reading lines that contain commas
+            }))
+        } else {
+            tryCatch(read.csv(text=grep(",", lines, value=TRUE)), error=function(e) {
+                stop(paste("Cannot read holdings file. Check", hURL))
+            })
+        }
+    }
+
+    hlist <- lapply(seq_along(Symbols), function(i) {
+        symbol <- Symbols[i]
+        if (i > 1) {
+            message(paste("Getting holdings for", symbol))
+        }
+        id <- names(symbol)
+        ## Download holdings into data.frame.
+        hURL <- paste0("http://www.wisdomtree.com/etfs/export-holdings.aspx?",
+                       "id=", id)
+        tmpfile <- tempfile()
+        download.file(hURL, destfile=tmpfile, quiet=TRUE)
+
+        tbl <- try(read.csv(tmpfile, stringsAsFactors=FALSE), silent=TRUE)
+        if (!inherits(tbl, "try-error")) {
+            if (grepl("not.found", colnames(tbl)[1])) {
+                # file not found. Bad ticker?
+                warning(paste("Error downloading holdings of WisdomTree ETF", 
+                              sQuote(symbol)))
+                return(NULL)
+            }
+            out <- processTable(tbl, hURL, symbol)
+        } else out <- processMultiPartFile(tmpfile, hURL)
+
         if (any(grepl("(NDF|FWD)(\\s+)(BUY|SELL)(*.)", out$Name))) {
             warning(paste(symbol, 
                        "holds forwards which may not be reflected in 'Weight'"))
