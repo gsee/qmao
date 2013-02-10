@@ -139,7 +139,7 @@ getHoldings <-function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
         dirx.out <- getHoldings.Direxion(s, env=env, auto.assign=auto.assign)
         Symbols <- Symbols[!Symbols %in% s]
     }
-    if (length(Symbols) > 0L) { # check to see if it's iPath (which isn't in masterDATA csv)
+    if (any(grepl("iPath", fams, ignore.case=TRUE))) {
         s <- Symbols[Symbols %in% iPathSymbols()]
         ipath.out <- getHoldings.ipath(s, env=env, auto.assign=auto.assign)
         Symbols <- Symbols[!Symbols %in% s]
