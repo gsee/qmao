@@ -7,6 +7,15 @@ WTSymbols <- function() {
         ss[grep("<span class=\"ticker\">", ss)])
 }
 
+WTIds <- function() {
+    URL <- getURL("http://www.wisdomtree.com/etfs/index.aspx")
+    ss <- strsplit(URL, "etfid=")[[1L]][-1]
+    ss2 <- ss[grep("<span class=\"ticker\">", ss)]
+    ids <- gsub("(\\d+)\"><span class=\"ticker\">(\\w+)(<.*)", "\\1", ss2)
+    tickers <- gsub("(\\d+)\"><span class=\"ticker\">(\\w+)(<.*)", "\\2", ss2)
+    names(ids) <- tickers
+    ids
+}
 
 #' Get the holdings of Wisdom Tree ETFs
 #' 
