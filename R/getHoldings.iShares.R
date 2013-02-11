@@ -35,7 +35,8 @@ getHoldings.iShares <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
   ishr.syms <- as.character(read.csv(tmp, stringsAsFactors=FALSE, 
                                      header=FALSE, skip=3)[, 2])
   unlink(tmp)
-  if (missing(Symbols)) { Symbols <- ishr.syms }
+  # There are a couple symbols with inconvenient holdings files; for now, they're being ignored.
+  if (missing(Symbols)) { Symbols <- ishr.syms[!ishr.syms %in% c("ALT", "GSG")] }
   Symbols <- Symbols[Symbols %in% ishr.syms]
   if (length(Symbols) == 0L) { return(NULL) }
   hlist <- lapply(Symbols, function(symbol) {
@@ -46,7 +47,16 @@ getHoldings.iShares <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
                   'ticker=', symbol, sep="")
     tmp <- tempfile()
     download.file(lnk, destfile=tmp, quiet=TRUE)
-    fr <- try(read.csv(tmp, skip=14, stringsAsFactors=FALSE), silent=TRUE)
+
+    lines <- grep(",", readLines(tmp), value=TRUE)
+    row1 <- grep("Name,", lines, ignore.case=TRUE)
+    if (length(row1) > 1L) {
+      warning("There appears to be more than one row with headers.")
+      row1 <- if (row1[2] - 1L == row1[1]) row1 <- row1[2] else row1[1]
+    } else if (length(row1) == 0L) {
+      stop("Problem reading holdings file.  Could not find headers.")
+    }
+    fr <- try(read.csv(text=lines, skip=row1-1, stringsAsFactors=FALSE), silent=TRUE)
     if (inherits(fr, 'try-error')) {
       fr <- try(read.csv(tmp, skip=16, stringsAsFactors=FALSE, header=FALSE), 
                 silent=TRUE)
@@ -58,7 +68,7 @@ getHoldings.iShares <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
         fr <- fr[1:lr, ]
     }
     
-    fr <- fr[1:(length(fr[,1])-3), ]
+    #fr <- fr[1:(length(fr[,1])-3), ]
     fr[, 1] <- gsub(" ", "", fr[, 1])
     dupes <- character(0)
     if (any(duplicated(fr[, 1])) && !all(fr[, 1] == "--")) {
