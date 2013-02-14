@@ -1,8 +1,8 @@
 Package: qmao
 Type: Package
 Title: Quantmod Add-on
-Version: 1.5.1
-Date: 2013-02-07
+Version: 1.6
+Date: 2013-02-13
 Author: Garrett See
 Contributors: Dirk Eddelbuettel
 Depends:
@@ -12,7 +12,8 @@ Depends:
     gdata,
     XML
 Suggests:
-    timeDate
+    timeDate,
+    testthat
 Imports:
     RCurl,
     RJSONIO,

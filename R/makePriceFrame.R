@@ -75,21 +75,11 @@ function(Symbols, from=NULL, to=NULL, prefer=NULL, notional=FALSE, na.omit=TRUE,
     if (missing(silent)) {
         silent <- if( "package:FinancialInstrument" %in% search() ) { FALSE } else TRUE
     }
-	mult <- NULL
-	for (Symbol in Symbols) {
-		tmp_instr <- try(getInstrument(Symbol,silent=TRUE))
-		if (inherits(tmp_instr, "try-error") || !is.instrument(tmp_instr)) {
-			if (!silent && notional) warning(paste("Instrument", Symbol, " not found, using contract multiplier of 1"))
-			mult <- c(mult,1)
-		} else {
-			mult <- c(mult,as.numeric(tmp_instr$multiplier))
-		}		
-	}
 
     pframe <- NULL
-    for (i in 1:length(Symbols)) {
+    for (i in seq_along(Symbols)) {
         tmp.dat <- try(estAd(get(Symbols[i],pos=env),prefer=prefer),TRUE)
-        tmpinstr <- try(getInstrument(Symbol, silent=TRUE))
+        tmpinstr <- try(getInstrument(Symbols[i], silent=TRUE))
         
         if (!inherits(tmp.dat,'try-error') && length(tmp.dat) > 0) {
             # The following subset code is only a slight modification of code in
@@ -111,16 +101,16 @@ function(Symbols, from=NULL, to=NULL, prefer=NULL, notional=FALSE, na.omit=TRUE,
                 tmp.dat <- tmp.dat[subset]
             }
             if (!is.instrument(tmpinstr)) {
-    		    if (!isTRUE(silent) && !isTRUE(notional)) {
+                if (!isTRUE(silent) && !isTRUE(notional)) {
                     warning(paste("Instrument", Symbols[i], 
                                   "not found, using contract multiplier of 1"))
-			    }
-			    mult <- 1
+                }
+                mult <- 1
 		    } else if (isTRUE(attr(tmp.dat, 'notional'))) {
                 mult <- if (isTRUE(notional)) { 1 } else { #notional arg is FALSE. Need to denotionalized previously notionalized prices
-    			    1 / as.numeric(tmpinstr$multiplier)
+                    1 / as.numeric(tmpinstr$multiplier)
                 }
-		    } else mult <- if (isTRUE(notional)) { tmpinstr$multiplier } else 1
+            } else mult <- if (isTRUE(notional)) { tmpinstr$multiplier } else 1
             pframe <- cbind(pframe, tmp.dat * mult, all=TRUE)
         }
     }
