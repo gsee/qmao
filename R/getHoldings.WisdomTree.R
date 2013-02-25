@@ -152,11 +152,13 @@ getHoldings.WisdomTree <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
 
             do.call(rbind, lapply(seq_along(sp), function(i) {
                 raw <- lines[sp[i]:ep[i]]
-                processTable(read.csv(text=grep(",", raw, value=TRUE)), hURL, 
+                processTable(read.csv(text=grep(",", raw, value=TRUE), 
+                                      stringsAsFactors=FALSE), hURL, 
                              symbol) # only reading lines that contain commas
             }))
         } else {
-            tryCatch(read.csv(text=grep(",", lines, value=TRUE)), error=function(e) {
+            tryCatch(read.csv(text=grep(",", lines, value=TRUE), 
+                              stringsAsFactors=FALSE), error=function(e) {
                 stop(paste("Cannot read holdings file. Check", hURL))
             })
         }
