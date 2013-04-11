@@ -31,6 +31,10 @@
   from yahoo.  If the instrument exists, but it did not
   have a 'div' or 'spl' slot, the newly downloaded data
   will be stored there.
+
+  If the instrument has an \code{identifier} named "yahoo",
+  that ticker will be used in the \code{getDividends} or
+  \code{getSplits} call.
 }
 \examples{
 \dontrun{
@@ -41,6 +45,11 @@ getInstrument("SPY")$div
 getInstrument("SPY")$
 get_div("SPY") # no download...gets data from .instrument envir
 get_div("SPY", force=TRUE) # downloads from yahoo
+
+# A non-U.S. stock
+# get_div("BMW")  # this doesn't work because BMW is not a U.S. stock
+stock("BMW", currency("EUR"), identifiers=list(yahoo="BMW.DE"))
+get_div("BMW") # uses the yahoo identifier BMW.DE
 }
 }
 
