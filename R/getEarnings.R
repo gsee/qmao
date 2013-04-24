@@ -60,9 +60,9 @@ getEarnings <- function(Symbol,
     table.loc <- tail(grep("Earnings Releases", x), 1) + 1
     if (identical(numeric(0), table.loc)) return(NULL)
     df <- x[[table.loc]]
-    header <- df[1, ]
-    df <- df[-1, ]
-    colnames(df) <- header
+    #header <- df[1, ]
+    #df <- df[-1, ]
+    #colnames(df) <- header
     #format ticker column
     df[, 1] <- gsub("\r\n\t\t\t", "", df[, 1])
     df <- na.omit(df)

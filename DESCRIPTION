@@ -1,8 +1,8 @@
 Package: qmao
 Type: Package
 Title: Quantmod Add-on
-Version: 1.6.1
-Date: 2013-04-11
+Version: 1.6.2
+Date: 2013-04-24
 Author: Garrett See
 Contributors: Dirk Eddelbuettel
 Depends:
@@ -69,3 +69,4 @@ Collate:
     'shinyBATS.R'
     'getQuote.google.R'
     'getHoldings.ipath.R'
+    'getHoldings.iShares.ca.R'
