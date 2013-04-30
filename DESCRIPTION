@@ -1,8 +1,8 @@
 Package: qmao
 Type: Package
 Title: Quantmod Add-on
-Version: 1.6.2
-Date: 2013-04-24
+Version: 1.6.3
+Date: 2013-04-30
 Author: Garrett See
 Contributors: Dirk Eddelbuettel
 Depends:
@@ -10,7 +10,7 @@ Depends:
     quantmod (>= 0.3.22),
     FinancialInstrument (>= 0.10.0),
     gdata,
-    XML
+    XML (>= 3.96-1.1)
 Suggests:
     timeDate,
     testthat
