@@ -1,4 +1,4 @@
-context("makePriceFrame")
+context("getEarnings")
 
 test_that("return.class of xts", {
   earn <- getEarnings("AAPL")
