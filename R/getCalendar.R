@@ -199,9 +199,10 @@ getCalendarByMonth <- function(FUN, from, to) {
   rt <- try(readHTMLTable(paste0("http://biz.yahoo.com/c/ec/", YW, ".html"), 
                       stringsAsFactors=FALSE), silent=TRUE)
   if (inherits(rt, 'try-error')) { return(NULL) }
-  dat <- rt[[which.max(sapply(rt, nrow))]]
-  colnames(dat) <- make.names(dat[1, ])
-  dat <- dat[-1, ]
+  dat <- rt[[which.max(sapply(rt, NROW))]]
+  #colnames(dat) <- make.names(dat[1, ])
+  colnames(dat) <- make.names(gsub("\n", "", colnames(dat)))
+  #dat <- dat[-1, ]
   #read.zoo(dat, index.column=1:2
   cal <- data.frame(Time=as.POSIXct(paste(Y, dat[, 1], dat[, 2]), 
                                     format="%Y %b %d %I:%M %p", 
@@ -358,13 +359,13 @@ getEarningsCalendar <- function(from, to) {
                   format(Date, "%Y%m%d"), "&client=cb&print=1")
     
     x <- readHTMLTable(URL, stringsAsFactors=FALSE)
-    xx <- lapply(x, "[", -1)  
+    #xx <- lapply(x, "[", -1)  
     # need to be more robust about this, but the 6th table is Confirmed
     #8th table is Propsed
-    confirmed <- xx[[6L]][-1, ]
-    colnames(confirmed) <- xx[[6L]][1, ]
-    proposed <- xx[[8L]][-1, ]
-    colnames(proposed) <- xx[[8L]][1, ]
+    confirmed <- x[[6L]]
+    #colnames(confirmed) <- make.names(colnames(confirmed))
+    proposed <- x[[8L]]
+    #colnames(proposed) <- make.names(colnames(proposed))
     
     L <- lapply(list(confirmed, proposed), function(.x) {
         .x[.x == "n/a"] <- NA
@@ -460,9 +461,9 @@ getEarningsCalendar <- function(from, to) {
   } else paste0("http://biz.yahoo.com/me/", YM, ".html")    
   rt <- try(readHTMLTable(URL, stringsAsFactors=FALSE), silent=TRUE)
   if (inherits(rt, 'try-error')) return(NULL)
-  dat <- rt[[which.max(sapply(rt, nrow))]]
-  colnames(dat) <- make.names(dat[1, ])
-  dat <- dat[-1, -1]
+  dat <- rt[[which.max(sapply(rt, NROW))]]
+  colnames(dat) <- make.names(gsub("\n", "", names(dat)))
+  dat <- dat[, -1]
   #read.zoo(dat, index.column=1:2
   cal <- data.frame(Date=as.Date(paste(Y, dat[, 1]), format="%Y %b %d"), 
                     dat[, -1])
@@ -567,9 +568,9 @@ getMergersCalendar <- function(from, to) {
   } else paste0("http://biz.yahoo.com/c/", Y, "/s", M, ".html")    
   rt <- try(readHTMLTable(URL, stringsAsFactors=FALSE), silent=TRUE)
   if (inherits(rt, 'try-error')) return(NULL)
-  dat <- rt[[which.max(sapply(rt, nrow))]]
-  colnames(dat) <- make.names(dat[1, ])
-  dat <- dat[-c(1,2), -NCOL(dat)]
+  dat <- rt[[which.max(sapply(rt, NROW))]]
+  colnames(dat) <- make.names(colnames(dat))
+  dat <- dat[-1, -NCOL(dat)]
   #read.zoo(dat, index.column=1:2
   
   dat[[1]] <- as.Date(paste(substr(YM, 1, 4), dat[[1]]), "%Y %b %d")

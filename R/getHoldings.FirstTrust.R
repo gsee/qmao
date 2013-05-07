@@ -43,9 +43,10 @@ getHoldings.FirstTrust <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
         if (inherits(tbl, 'try-error')) { return(NULL) }
 
         dat <- tbl[[grep("HoldingsListing_FundNavigation1", names(tbl)) + 1]]
-        colnames(dat) <- dat[1, ]
-        dat <- dat[-1, ]
-        out <- data.frame(dat[, c(3, 1, 2)], 
+        #colnames(dat) <- dat[1, ]
+        colnames(dat) <- make.names(colnames(dat))
+        #dat <- dat[-1, ]
+        out <- data.frame(dat[, c(4, 1, 2)], 
                           row.names=make.names(dat[, 2], unique=TRUE))
         colnames(out) <- c(paste(Symbol, "Weight", sep="."), "Name", "Ticker")
         out[, 1] <- as.numeric(sub("%", "", out[, 1]))
