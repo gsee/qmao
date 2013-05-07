@@ -631,9 +631,10 @@ getSplitsCalendar <- function(from, to) {
   table.loc <- tail(grep("EX-DATE", x), 1)
   if (length(table.loc) == 0L) return(NULL)
   df <- x[[table.loc]]
-  header <- df[1, -1]
-  df <- df[-1, -1]
-  colnames(df) <- header
+  #header <- df[1, -1]
+  #df <- df[-1, -1]
+  df <- df[, -1]
+  #colnames(df) <- header
   df[df == "n/a"] <- NA
   df[, 1] <- gsub("[^A-Za-z0-9\\.-]", "", df[, 1]) #remove non-break spaces
   df <- na.omit(df)
