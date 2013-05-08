@@ -60,14 +60,14 @@ getEarnings <- function(Symbol,
     table.loc <- tail(grep("Earnings Releases", x), 1) + 1
     if (identical(numeric(0), table.loc)) return(NULL)
     df <- x[[table.loc]]
-    #header <- df[1, ]
-    #df <- df[-1, ]
-    #colnames(df) <- header
-    #format ticker column
-    df[, 1] <- gsub("\r\n\t\t\t", "", df[, 1])
+    # remove non-break spaces, tabs, newlines, etc.
+    df <- data.frame(lapply(df, gsub, pattern="(?!-)[^0-9A-Za-z/ ]", 
+                            replacement="", perl=TRUE), 
+                     check.names=FALSE, stringsAsFactors=FALSE)
+    # add back space to be backward compatible: e.g. "Q12013" --> "Q1 2013"
+    df[, 2] <- gsub("(Q[1-4])(\\d{4})", "\\1 \\2", df[, 2])
     df <- na.omit(df)
-    df[df == "n/a\uA0"] <- NA #on Ubuntu there is a non-break space
-    df[df == "n/a"] <- NA #on Mac there is neither a space nor a non-break space
+    df[df == "n/a"] <- NA
     #format Date/Time column
     # AMC means after mkt close, which I'll interpret to mean 16:15 ET
     # BMO means before mkt open, which I'll interpret to mean 07:00 ET
