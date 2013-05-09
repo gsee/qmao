@@ -61,7 +61,7 @@ getEarnings <- function(Symbol,
     if (identical(numeric(0), table.loc)) return(NULL)
     df <- x[[table.loc]]
     # remove non-break spaces, tabs, newlines, etc.
-    df <- data.frame(lapply(df, gsub, pattern="(?!-)[^0-9A-Za-z/ .]", 
+    df <- data.frame(lapply(df, gsub, pattern="(?!-)[^0-9A-Za-z/ .,:;!@'&()%]", 
                             replacement="", perl=TRUE), 
                      check.names=FALSE, stringsAsFactors=FALSE)
     # add back space to be backward compatible: e.g. "Q12013" --> "Q1 2013"
