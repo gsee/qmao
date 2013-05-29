@@ -36,6 +36,7 @@
 \examples{
 \dontrun{
 getQuote("SPY", src="google")
+getQuote("TYO:8316", src="google")      # non-U.S.
 getQuote(c("GS", "DE"), src="google")   # vector of Symbols
 getQuote("EDD;SEE", src="google")       #semi-colon delimited
 getQuote("GS,SEE,DE,EDD", src="google") #comma delimited

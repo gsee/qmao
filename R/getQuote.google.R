@@ -25,6 +25,7 @@
 #' @examples
 #' \dontrun{
 #' getQuote("SPY", src="google")
+#' getQuote("TYO:7203", src="google")      # non-U.S.
 #' getQuote(c("GS", "DE"), src="google")   # vector of Symbols
 #' getQuote("EDD;SEE", src="google")       #semi-colon delimited
 #' getQuote("GS,SEE,DE,EDD", src="google") #comma delimited
@@ -62,7 +63,7 @@ getQuote.google <- function(Symbols, ...) {
   #  the end is inefficient.
   do.call(rbind, lapply(L, function(x) {
     data.frame(TradeTime=strptime(x["lt"], format="%b %d, %I:%M%p", tz="America/New_York"),
-             Last=as.numeric(x["l_cur"]),
+             Last=as.numeric(gsub(",", "", x["l"])),
              Change=as.numeric(x["c"]),
              PctChg=as.numeric(x["cp"]),
              Exchange=x["e"],
