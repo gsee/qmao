@@ -3,16 +3,18 @@
 WTSymbols <- function() {
     URL <- getURL("http://www.wisdomtree.com/etfs/index.aspx")
     ss <- strsplit(URL, "etfid=")[[1L]][-1]
-    gsub("(\\d+)\"><span class=\"ticker\">(\\w+)(<.*)", "\\2", 
-        ss[grep("<span class=\"ticker\">", ss)])
+    unique(gsub(".*<span class=\"ticker\">(\\w+)<.*", "\\1", 
+                ss[grep("<span class=\"ticker\">", ss)]))    
 }
 
 WTIds <- function() {
     URL <- getURL("http://www.wisdomtree.com/etfs/index.aspx")
     ss <- strsplit(URL, "etfid=")[[1L]][-1]
     ss2 <- ss[grep("<span class=\"ticker\">", ss)]
-    ids <- gsub("(\\d+)\"><span class=\"ticker\">(\\w+)(<.*)", "\\1", ss2)
-    tickers <- gsub("(\\d+)\"><span class=\"ticker\">(\\w+)(<.*)", "\\2", ss2)
+    tickers <- gsub(".*<span class=\"ticker\">(\\w+)<.*", "\\1", 
+                ss2[grep("<span class=\"ticker\">", ss2)])
+    ids <- gsub("(^\\d+)\\\".*$", "\\1", ss2)
+    #vapply(strsplit(ss2, "\\\""), "[", "", 1) # alternative to above
     names(ids) <- tickers
     ids
 }
@@ -55,13 +57,11 @@ WTIds <- function() {
 #' @export
 getHoldings.WisdomTree <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
     URL <- getURL("http://www.wisdomtree.com/etfs/index.aspx")
-    #s <- gsub("^(\\w+)(<.*)", "\\1", strsplit(URL, "\"ticker\">")[[1L]][-1])
-    #ids <- unique(gsub("^(\\w+)\\s?(.*)$", "\\1", 
-    #                   strsplit(URL, "etfid=")[[1L]][-1]))
     ss <- strsplit(URL, "etfid=")[[1L]][-1]
     ss2 <- ss[grep("<span class=\"ticker\">", ss)]
-    ids <- gsub("(\\d+)\"><span class=\"ticker\">(\\w+)(<.*)", "\\1", ss2)
-    tickers <- gsub("(\\d+)\"><span class=\"ticker\">(\\w+)(<.*)", "\\2", ss2)
+    tickers <- gsub(".*<span class=\"ticker\">(\\w+)<.*", "\\1", 
+                ss2[grep("<span class=\"ticker\">", ss2)])
+    ids <- gsub("(^\\d+)\\\".*$", "\\1", ss2)
     Symbols <- if (missing(Symbols)) {
         tickers
     } else Symbols[Symbols %in% tickers]
