@@ -52,11 +52,11 @@ getEarnings <- function(Symbol,
                         doFormatTime=TRUE, 
                         return.tz='America/Chicago',
                         return.class=c('xts', 'data.frame')) {
+    message("This is no longer functioning because the data is no longer provided by the source.")
     return.class <- return.class[[1]]
     if (!return.class %in% c("xts", "data.frame")) 
         stop('return.class must be either "xts" or "data.frame"')
-    URL <- paste("http://retail.ccbn.com/company.asp?client=cb&ticker=", Symbol, sep="")
-    #URL <- paste("http://earnings.com/company.asp?client=cb&ticker=", Symbol, sep="")
+    URL <- paste("http://earnings.com/company.asp?client=cb&ticker=", Symbol, sep="")
     x <- readHTMLTable(URL, stringsAsFactors=FALSE)
     table.loc <- tail(grep("Earnings Releases", x), 1) + 1
     if (identical(numeric(0), table.loc)) return(NULL)
