@@ -55,7 +55,8 @@ getEarnings <- function(Symbol,
     return.class <- return.class[[1]]
     if (!return.class %in% c("xts", "data.frame")) 
         stop('return.class must be either "xts" or "data.frame"')
-    URL <- paste("http://earnings.com/company.asp?client=cb&ticker=", Symbol, sep="")
+    URL <- paste("http://retail.ccbn.com/company.asp?client=cb&ticker=", Symbol, sep="")
+    #URL <- paste("http://earnings.com/company.asp?client=cb&ticker=", Symbol, sep="")
     x <- readHTMLTable(URL, stringsAsFactors=FALSE)
     table.loc <- tail(grep("Earnings Releases", x), 1) + 1
     if (identical(numeric(0), table.loc)) return(NULL)
@@ -104,7 +105,7 @@ getEarnings <- function(Symbol,
     colnames(df) <- cn
     if (return.class == 'data.frame') return(df)
     if (return.class == 'xts') {
-        out <- apply(df[, grep("EPS|ACTUAL", cn)], 2, as.numeric)
+        out <- suppressWarnings(apply(df[, grep("EPS|ACTUAL", cn)], 2, as.numeric))
         return(xts(out, as.POSIXct(df[, "TIME"])))
     }
     NULL
