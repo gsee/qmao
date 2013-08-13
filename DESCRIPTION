@@ -1,8 +1,8 @@
 Package: qmao
 Type: Package
 Title: Quantmod Add-on
-Version: 1.6.8
-Date: 2013-07-07
+Version: 1.6.9
+Date: 2013-08-13
 Author: Garrett See
 Contributors: Dirk Eddelbuettel
 Depends:
@@ -18,7 +18,7 @@ Imports:
     RCurl,
     RJSONIO,
     pander,
-    shiny
+    shiny (>= 0.6.0)
 Maintainer: Garrett See <gsee000@gmail.com>
 Description: some quantmod-like functions.
 License: GPL-3

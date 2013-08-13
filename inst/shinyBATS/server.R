@@ -1,7 +1,7 @@
-shinyServer(function(input, output) {
-  output$plot_symbol <- reactivePlot(function() { 
+shinyServer(function(input, output, session) {
+  output$plot_symbol <- reanderPlot({ 
     plot(qmao::getQuote.BATS(toupper(input$Symbol), what=input$what, 
          exch=input$exch))
-    invalidateLater(1000)
+    invalidateLater(1000, session)
   })
 })
