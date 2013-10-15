@@ -30,6 +30,9 @@ DirexionSymbols <- function() {
 #' @export
 getHoldings.Direxion <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
     s <- DirexionSymbols() # this downloads all Direxion symbols
+    # bad hack because I don't have time to figure out where on the site the
+    # holdings are for these 2 symbols.
+    s <- s[!s %in% c("JNUG", "JDST")] 
     Symbols <- if (missing(Symbols)) { s } else Symbols[Symbols %in% s]
     if (length(Symbols) == 0L) { return(NULL) }
     hlist <- lapply(Symbols, function(Symbol) {
