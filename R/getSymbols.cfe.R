@@ -223,16 +223,21 @@ getSymbols.cfe <- function(Symbols,
 #' }
 #' @export
 CBOEcalendar <- function(year=format(Sys.Date(),'%Y'), show=c("pdf", "webpage")) {
+    url <- if (year < 2014) {
+        paste("http://www.cboe.com/AboutCBOE/xcal", year, ".pdf", sep="")
+    } else {
+        paste("http://www.cboe.com/TradTool/", year, "_CBOEwebsite.pdf", sep="")
+    }
     if (is.numeric(show)) show <- c("pdf","webpage")[show]
     switch (show[[1]], 
         pdf={
             tmp <- tempfile()
-            download.file(paste("http://www.cboe.com/AboutCBOE/xcal", year, ".pdf", sep=""), destfile=tmp)
+            download.file(url, destfile=tmp)
             if (.Platform$OS.type == "windows") { #thanks to Jeff Ryan's "IBrokersRef" function for this if else usage
                 shell.exec(tmp) 
             } else system(paste(shQuote(getOption("pdfviewer")), shQuote(tmp)), wait=FALSE)
         }, webpage=, web=, url= {
-            browseURL(paste("http://www.cboe.com/AboutCBOE/xcal", year, ".pdf", sep=""))            
+            browseURL(url) 
         })
 }
 
