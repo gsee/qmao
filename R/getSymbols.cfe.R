@@ -49,20 +49,24 @@
 #' @param \dots additional arguments
 #' @return will load data into the specified environment -- one object for each
 #' file downloaded.
+#'
 #' @note Currently listed contracts: 
 #' \itemize{
+#' \item{VSW -}{ CBOE Short Term Volatility Index Futures (VSW)}
 #' \item{VX -}{ CBOE S&P 500 Volatility Index (VIX) Futures}
-#' \item{VM -}{ CBOE Mini-VIX Futures} 
+#' \item{VU -}{ CBOE Russell 2000 Volatility Index (RVX) Futures}
 #' \item{VN -}{ CBOE Nasdaq-100 Volatility Index (VXN) Futures (was delisted in 2009 and relisted in July 2012)}
+#' \item{VA -}{ S&P 500 Variance Futures  (product launched December 10th, 2012)}
 #' \item{VXEM -}{ CBOE Emerging Markets ETF Volatility Index (VXEEM) Security Futures}
 #' \item{VXEW -}{ CBOE Brazil ETF Volatility Index (VXEWZ) Security Futures}
 #' \item{GV -}{ CBOE Gold ETF Volatility Index (GVZ) Security Futures}
 #' \item{OV -}{ CBOE Crude Oil ETF Volatility Index (OVX) Security Futures} 
-#' \item{RPXC -}{ Radar Logic 28-Day Real Estate Index (RPX) Future}
 #' }
 #'
 #' Delisted contracts: 
 #' \itemize{
+#' \item{VM -}{ CBOE Mini-VIX Futures} 
+#' \item{RPXC -}{ Radar Logic 28-Day Real Estate Index (RPX) Future}
 #' \item{VT -}{ CBOE S&P 500 3-Month Variance Futures}
 #' \item{BX -}{ CBOE S&P 500 BuyWrite Index Futures (BX)} 
 #' \item{VR -}{ RUSSELL 2000 Volatility Index Futures (VR)}
@@ -169,7 +173,8 @@ getSymbols.cfe <- function(Symbols,
             c("Open", "High", "Low", "Close", "Settle", "Change", "Volume", "EFP", "OpInt"), 
             sep = ".")
         fr <- fr[paste(from,to,sep="/")] #Subset by from and to
-        if (nonzero.close && !identical(integer(0), grep('Close', colnames(fr), ignore.case = TRUE)) ) {
+        
+        if (nonzero.close && !identical(integer(0), grep('Close', colnames(fr), ignore.case = TRUE)) && NROW(fr) > 0) {
             {
                 volm <- fr[, grep('Close',colnames(fr),ignore.case=TRUE)]
                 fr <- fr[volm > 0]

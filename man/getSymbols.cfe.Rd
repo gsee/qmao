@@ -87,25 +87,28 @@
   References.
 }
 \note{
-  Currently listed contracts: \itemize{ \item{VX -}{ CBOE
-  S&P 500 Volatility Index (VIX) Futures} \item{VM -}{ CBOE
-  Mini-VIX Futures} \item{VN -}{ CBOE Nasdaq-100 Volatility
-  Index (VXN) Futures (was delisted in 2009 and relisted in
-  July 2012)} \item{VXEM -}{ CBOE Emerging Markets ETF
-  Volatility Index (VXEEM) Security Futures} \item{VXEW -}{
-  CBOE Brazil ETF Volatility Index (VXEWZ) Security
-  Futures} \item{GV -}{ CBOE Gold ETF Volatility Index
-  (GVZ) Security Futures} \item{OV -}{ CBOE Crude Oil ETF
-  Volatility Index (OVX) Security Futures} \item{RPXC -}{
-  Radar Logic 28-Day Real Estate Index (RPX) Future} }
+  Currently listed contracts: \itemize{ \item{VSW -}{ CBOE
+  Short Term Volatility Index Futures (VSW)} \item{VX -}{
+  CBOE S&P 500 Volatility Index (VIX) Futures} \item{VU -}{
+  CBOE Russell 2000 Volatility Index (RVX) Futures}
+  \item{VN -}{ CBOE Nasdaq-100 Volatility Index (VXN)
+  Futures (was delisted in 2009 and relisted in July 2012)}
+  \item{VA -}{ S&P 500 Variance Futures (product launched
+  December 10th, 2012)} \item{VXEM -}{ CBOE Emerging
+  Markets ETF Volatility Index (VXEEM) Security Futures}
+  \item{VXEW -}{ CBOE Brazil ETF Volatility Index (VXEWZ)
+  Security Futures} \item{GV -}{ CBOE Gold ETF Volatility
+  Index (GVZ) Security Futures} \item{OV -}{ CBOE Crude Oil
+  ETF Volatility Index (OVX) Security Futures} }
 
-  Delisted contracts: \itemize{ \item{VT -}{ CBOE S&P 500
-  3-Month Variance Futures} \item{BX -}{ CBOE S&P 500
-  BuyWrite Index Futures (BX)} \item{VR -}{ RUSSELL 2000
-  Volatility Index Futures (VR)} \item{VA -}{ CBOE S&P 500
-  12-Month Variance Futures (VA) (product delisted March
-  18, 2011)} \item{DV -}{ CBOE DJIA Volatility Index (DV)}
-  }
+  Delisted contracts: \itemize{ \item{VM -}{ CBOE Mini-VIX
+  Futures} \item{RPXC -}{ Radar Logic 28-Day Real Estate
+  Index (RPX) Future} \item{VT -}{ CBOE S&P 500 3-Month
+  Variance Futures} \item{BX -}{ CBOE S&P 500 BuyWrite
+  Index Futures (BX)} \item{VR -}{ RUSSELL 2000 Volatility
+  Index Futures (VR)} \item{VA -}{ CBOE S&P 500 12-Month
+  Variance Futures (VA) (product delisted March 18, 2011)}
+  \item{DV -}{ CBOE DJIA Volatility Index (DV)} }
 }
 \examples{
 \dontrun{
