@@ -37,7 +37,7 @@ getHoldings.vaneck <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
 
         tmp <- tempfile()
 
-        download.file(paste0("http://vaneck.com/FundHoldings.aspx?ticker=",
+        download.file(paste0("http://www.vaneck.com/FundHoldings.aspx?ticker=",
                              Symbol), destfile=tmp, quiet=TRUE)
         tbl <- try(readHTMLTable(tmp, skip.rows=1, header=TRUE, 
                     stringsAsFactors=FALSE)[[1L]], silent=TRUE)
