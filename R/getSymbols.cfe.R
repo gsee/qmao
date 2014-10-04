@@ -228,11 +228,12 @@ getSymbols.cfe <- function(Symbols,
 #' }
 #' @export
 CBOEcalendar <- function(year=format(Sys.Date(),'%Y'), show=c("pdf", "webpage")) {
-    url <- if (year < 2014) {
-        paste("http://www.cboe.com/AboutCBOE/xcal", year, ".pdf", sep="")
-    } else {
-        paste("http://www.cboe.com/TradTool/", year, "_CBOEwebsite.pdf", sep="")
-    }
+    #url <- if (year < 2014) {
+    #    paste("http://www.cboe.com/AboutCBOE/xcal", year, ".pdf", sep="")
+    #} else {
+    #    paste("http://www.cboe.com/TradTool/", year, "_CBOEwebsite.pdf", sep="")
+    #}
+    url <- paste("http://www.cboe.com/AboutCBOE/xcal", year, ".pdf", sep="")
     if (is.numeric(show)) show <- c("pdf","webpage")[show]
     switch (show[[1]], 
         pdf={
