@@ -63,9 +63,9 @@ SPDRSymbols <- function() {
 #' }
 #' @export
 getHoldings.SPDR <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
-  if (.Platform[["OS.type"]] != "unix") {
-    return(getHoldings.selectSPDR(Symbols, env=env, auto.assign=auto.assign))
-  }
+#   if (.Platform[["OS.type"]] != "unix") {
+#     return(getHoldings.selectSPDR(Symbols, env=env, auto.assign=auto.assign))
+#   }
   s <- SPDRSymbols()
   Symbols <- if (missing(Symbols)) { s } else Symbols[Symbols %in% s]
   if (length(Symbols) == 0L) { return(NULL) }
@@ -73,13 +73,13 @@ getHoldings.SPDR <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
     if (length(Symbols) > 1) {
         message(paste("Getting holdings for", symbol))
     }
-
+    
     lnk <- paste0("https://www.spdrs.com/site-content/xls/", symbol, 
                   "_All_Holdings.xls?fund=", symbol, "&docname=All+Holdings")
-
+    
     tmp <- tempfile()
     download.file(lnk, destfile=tmp, method='curl', quiet=TRUE)
-    test <- try(substr(readLines(tmp, 1), 1, 9) == "<!DOCTYPE", silent=TRUE)
+    test <- suppressWarnings(try(substr(readLines(tmp, 1), 1, 9) == "<!DOCTYPE", silent=TRUE))
     if (!inherits(test, 'try-error') && isTRUE(test)) {
         warning(paste("Error downloading holdings of SPDR ETF", sQuote(symbol)))
         #stop(paste("Error downloading holdings of SPDR ETF", sQuote(symbol)))
@@ -96,10 +96,13 @@ getHoldings.SPDR <- function(Symbols, env=.GlobalEnv, auto.assign=TRUE) {
         warning(paste("Error downloading holdings of SPDR ETF", sQuote(symbol)))
         return(NULL)
     }
-    fr <- fr[, -grep("^X", colnames(fr))]
-    fr <- fr[complete.cases(fr), ]
+    
+    last.row <- suppressWarnings(grep("Performance quoted represents past performance", fr$Name))-1
+    fr <- fr[seq_len(last.row),]
+    #fr <- fr[, -grep("^X", colnames(fr))]
+    #fr <- fr[complete.cases(fr), ]
 
-    tcol <- grep("ticker", colnames(fr), ignore.case=TRUE)
+    tcol <- grep("ticker|identifier", colnames(fr), ignore.case=TRUE)
     if (length(tcol) == 1L) {
         rownames(fr) <- make.names(fr[, tcol], unique=TRUE) 
         fr <- fr[, -tcol]
